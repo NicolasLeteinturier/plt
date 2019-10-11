@@ -25,12 +25,12 @@ state/Type.h
 src/shared/state/Type.h
 state/Unit.h
 src/shared/state/Unit.h
-state/Attack.h
-src/shared/state/Attack.h
 state/Country.h
 src/shared/state/Country.h
 state/GameState.h
 src/shared/state/GameState.h
+state/Attack.h
+src/shared/state/Attack.h
 state/Movement.h
 src/shared/state/Movement.h
 state/Reinforcements.h
@@ -51,6 +51,8 @@ memory
 -
 Country.h
 src/shared/state/Country.h
+Unit.h
+src/shared/state/Unit.h
 Action.h
 src/shared/state/Action.h
 
@@ -67,8 +69,6 @@ Type.h
 src/shared/state/Type.h
 Unit.h
 src/shared/state/Unit.h
-Attack.h
-src/shared/state/Attack.h
 GameState.h
 src/shared/state/GameState.h
 
@@ -87,12 +87,18 @@ Action.h
 src/shared/state/Action.h
 Country.h
 src/shared/state/Country.h
+Unit.h
+src/shared/state/Unit.h
 
 src/shared/state/Initialisation.h
 vector
 -
 memory
 -
+Country.h
+src/shared/state/Country.h
+Player.h
+src/shared/state/Player.h
 Action.h
 src/shared/state/Action.h
 
@@ -103,6 +109,8 @@ vector
 -
 Country.h
 src/shared/state/Country.h
+Unit.h
+src/shared/state/Unit.h
 Action.h
 src/shared/state/Action.h
 
@@ -119,6 +127,10 @@ vector
 -
 memory
 -
+Unit.h
+src/shared/state/Unit.h
+Country.h
+src/shared/state/Country.h
 Action.h
 src/shared/state/Action.h
 
