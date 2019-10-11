@@ -16,8 +16,25 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    Exemple exemple;
-    exemple.setX(53);
+    /*GameState etat;
+    Country argentina;
+    Country east_asia;
+    Country north_asia;
+    Country south_asia;
+    Country west_asia;
+    Country brazil;
+    Country central_africa;
+    Country east_europe;
+    Country north_europe;
+    Country west_europe;
+    Country north_africa;
+    Country north_america;
+    Country east_oceania;
+    Country north_oceania;
+    Country west_oceania;
+    Country orient;
+    Country south_africa;
+    Country usa;*/
 
     cout << "It works !" << endl;
 
