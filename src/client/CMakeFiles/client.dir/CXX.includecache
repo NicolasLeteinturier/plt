@@ -19,6 +19,8 @@ state/Player.h
 src/shared/state/Player.h
 state/GamePhase.h
 src/shared/state/GamePhase.h
+state/ActionType.h
+src/shared/state/ActionType.h
 state/Action.h
 src/shared/state/Action.h
 state/Type.h
@@ -27,6 +29,14 @@ state/Unit.h
 src/shared/state/Unit.h
 state/Country.h
 src/shared/state/Country.h
+state/EventType.h
+src/shared/state/EventType.h
+state/Event.h
+src/shared/state/Event.h
+state/Observer.h
+src/shared/state/Observer.h
+state/Observable.h
+src/shared/state/Observable.h
 state/GameState.h
 src/shared/state/GameState.h
 state/Attack.h
@@ -37,10 +47,16 @@ state/Reinforcements.h
 src/shared/state/Reinforcements.h
 state/Initialisation.h
 src/shared/state/Initialisation.h
+state/CountryOwnerChanged.h
+src/shared/state/CountryOwnerChanged.h
+state/CountryUnitChanged.h
+src/shared/state/CountryUnitChanged.h
 
 src/shared/state/Action.h
-GameState.h
-src/shared/state/GameState.h
+ActionType.h
+src/shared/state/ActionType.h
+
+src/shared/state/ActionType.h
 
 src/shared/state/Attack.h
 string
@@ -53,6 +69,8 @@ Country.h
 src/shared/state/Country.h
 Unit.h
 src/shared/state/Unit.h
+ActionType.h
+src/shared/state/ActionType.h
 Action.h
 src/shared/state/Action.h
 
@@ -72,6 +90,34 @@ src/shared/state/Unit.h
 GameState.h
 src/shared/state/GameState.h
 
+src/shared/state/CountryOwnerChanged.h
+memory
+-
+Country.h
+src/shared/state/Country.h
+Player.h
+src/shared/state/Player.h
+EventType.h
+src/shared/state/EventType.h
+Event.h
+src/shared/state/Event.h
+
+src/shared/state/CountryUnitChanged.h
+vector
+-
+memory
+-
+EventType.h
+src/shared/state/EventType.h
+Event.h
+src/shared/state/Event.h
+
+src/shared/state/Event.h
+EventType.h
+src/shared/state/EventType.h
+
+src/shared/state/EventType.h
+
 src/shared/state/GamePhase.h
 
 src/shared/state/GameState.h
@@ -89,6 +135,8 @@ Country.h
 src/shared/state/Country.h
 Unit.h
 src/shared/state/Unit.h
+Observable.h
+src/shared/state/Observable.h
 
 src/shared/state/Initialisation.h
 vector
@@ -99,6 +147,8 @@ Country.h
 src/shared/state/Country.h
 Player.h
 src/shared/state/Player.h
+ActionType.h
+src/shared/state/ActionType.h
 Action.h
 src/shared/state/Action.h
 
@@ -111,8 +161,22 @@ Country.h
 src/shared/state/Country.h
 Unit.h
 src/shared/state/Unit.h
+ActionType.h
+src/shared/state/ActionType.h
 Action.h
 src/shared/state/Action.h
+
+src/shared/state/Observable.h
+vector
+-
+memory
+-
+Observer.h
+src/shared/state/Observer.h
+
+src/shared/state/Observer.h
+Event.h
+src/shared/state/Event.h
 
 src/shared/state/Player.h
 string
@@ -131,6 +195,8 @@ Unit.h
 src/shared/state/Unit.h
 Country.h
 src/shared/state/Country.h
+ActionType.h
+src/shared/state/ActionType.h
 Action.h
 src/shared/state/Action.h
 
