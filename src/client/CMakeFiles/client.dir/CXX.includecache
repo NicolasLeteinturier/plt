@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/anarchist1/PLT/plt/src/client/main.cpp
+/home/nicolas/plt/src/client/main.cpp
 iostream
 -
 SFML/Graphics.hpp

@@ -1,2 +1,2 @@
-cd "/home/anarchist1/PLT/plt/test"
+cd "/home/nicolas/plt/test"
 ctest

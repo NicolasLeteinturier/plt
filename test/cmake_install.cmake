@@ -1,4 +1,4 @@
-# Install script for directory: /home/anarchist1/PLT/plt/test
+# Install script for directory: /home/nicolas/plt/test
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,8 +39,8 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/anarchist1/PLT/plt/test/shared/cmake_install.cmake")
-  include("/home/anarchist1/PLT/plt/test/client/cmake_install.cmake")
+  include("/home/nicolas/plt/test/shared/cmake_install.cmake")
+  include("/home/nicolas/plt/test/client/cmake_install.cmake")
 
 endif()
 

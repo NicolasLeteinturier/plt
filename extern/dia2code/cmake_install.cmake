@@ -1,4 +1,4 @@
-# Install script for directory: /home/anarchist1/PLT/plt/extern/dia2code
+# Install script for directory: /home/nicolas/plt/extern/dia2code
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

@@ -1,4 +1,4 @@
-# Install script for directory: /home/anarchist1/PLT/plt/test/client
+# Install script for directory: /home/nicolas/plt/test/client
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

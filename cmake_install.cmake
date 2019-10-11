@@ -1,4 +1,4 @@
-# Install script for directory: /home/anarchist1/PLT/plt
+# Install script for directory: /home/nicolas/plt
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -39,11 +39,11 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/anarchist1/PLT/plt/extern/dia2code/cmake_install.cmake")
-  include("/home/anarchist1/PLT/plt/src/shared/cmake_install.cmake")
-  include("/home/anarchist1/PLT/plt/src/client/cmake_install.cmake")
-  include("/home/anarchist1/PLT/plt/rapport/cmake_install.cmake")
-  include("/home/anarchist1/PLT/plt/test/cmake_install.cmake")
+  include("/home/nicolas/plt/extern/dia2code/cmake_install.cmake")
+  include("/home/nicolas/plt/src/shared/cmake_install.cmake")
+  include("/home/nicolas/plt/src/client/cmake_install.cmake")
+  include("/home/nicolas/plt/rapport/cmake_install.cmake")
+  include("/home/nicolas/plt/test/cmake_install.cmake")
 
 endif()
 
@@ -55,5 +55,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/anarchist1/PLT/plt/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/nicolas/plt/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/home/anarchist1/PLT/plt/test/client/test_client_dummy.cpp
+/home/nicolas/plt/test/client/test_client_dummy.cpp
 boost/test/unit_test.hpp
 -
 SFML/Graphics.hpp

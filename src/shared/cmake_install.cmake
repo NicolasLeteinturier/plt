@@ -1,4 +1,4 @@
-# Install script for directory: /home/anarchist1/PLT/plt/src/shared
+# Install script for directory: /home/nicolas/plt/src/shared
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
