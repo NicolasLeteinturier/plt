@@ -5,3 +5,6 @@ nbproject
 src/*/*.h
 src/*/*/*.h
 .idea
+CMakeCache.txt
+cmake_install.cmake
+run_test.sh
