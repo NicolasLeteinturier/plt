@@ -32,14 +32,14 @@ int Player::ReinforcementNumber(){//est ce qu'il ne faudrait pas en entrée l'id
 
 void Player::AddOwnedCountry(std::shared_ptr<Country> country){
    unsigned int n = listOwnedCountry.size();
-   int enable=1
+   int enable=1;
    /*for (unsigned int i = 0; i < n; i++){
       if(listOwnedCountry[i]==country){
          enable=0;
       }
    }*/
    if (enable==1){
-      ennemy = country->owner;//shared pointer player
+      std::shared_ptr<Player> ennemy = country->owner;//shared pointer player
       n=ennemy->listOwnedCountry.size();
       for (unsigned int i = 0; i < n; i++){
          if(listOwnedCountry[i] == country){
