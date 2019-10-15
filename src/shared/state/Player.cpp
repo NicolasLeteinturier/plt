@@ -26,9 +26,36 @@ Player::Player()
 
 
 int Player::ReinforcementNumber(){//est ce qu'il ne faudrait pas en entrée l'id du joueur ??
-   int nbrCountrys= Player::GetCountryList().size(); //je ne sais pas si j'ai le droit dappler comme ca une fonction de la meme classe
+   int nbrCountrys= Player::listOwnedCountry.size(); //je ne sais pas si j'ai le droit dappler comme ca une fonction de la meme classe
    return floor(nbrCountrys/2);}
 
+
+void Player::AddOwnedCountry(std::shared_ptr<Country> country){
+   unsigned int n = listOwnedCountry.size();
+   int enable=1
+   /*for (unsigned int i = 0; i < n; i++){
+      if(listOwnedCountry[i]==country){
+         enable=0;
+      }
+   }*/
+   if (enable==1){
+      ennemy = country->owner;//shared pointer player
+      n=ennemy->listOwnedCountry.size();
+      for (unsigned int i = 0; i < n; i++){
+         if(listOwnedCountry[i] == country){
+            ennemy->listOwnedCountry.erase(ennemy->listOwnedCountry.begin()+i);
+         }
+      }
+      
+      listOwnedCountry.push_back(country);
+   } 
+
+return;}
+
+
+void DeleteOwnedCountry (std::shared_ptr<Country> country){
+   printf("fonction inutille");
+   return;}
 
 
 
