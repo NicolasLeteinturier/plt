@@ -20,7 +20,7 @@ void GameState::DeletePlayer(std::shared_ptr<Player> player)
 	{
 		if(listPlayer[i] == player)
 		{
-			//effacer listCountry[i] du vecteur
+			listPlayer.erase(listPlayer.begin() + i);
 		}
 	}
 }
