@@ -37,7 +37,7 @@ void Movement::MoveAllUnit()
 	return;
 }
 
-void StopMovement()
+void Movement::StopMovement()
 {
 	for(unsigned int i = 0; i < units.size(); i++)
 	{
