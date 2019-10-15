@@ -9,6 +9,7 @@ Initialisation::Initialisation(){
 void Initialisation::AttributeCountry(std::shared_ptr<Country> country, std::shared_ptr<Player> player)
 {
 	country->owner = player;
+	player->listOwnedCountry.push_back(country);
 	for(unsigned int i = 0; i < unattributedCountry.size(); i++)
 	{
 		if(unattributedCountry[i] == country)
