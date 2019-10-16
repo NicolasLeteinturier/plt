@@ -4,7 +4,6 @@ using namespace state;
 
 Movement::Movement()
 {
-	return;
 }
 
 void Movement::MoveUnit(std::shared_ptr<Unit> unit)
@@ -50,9 +49,25 @@ void Movement::StopMovement()
 	return;
 }
 
+void Movement::AddUnitToMove(std::shared_ptr<Unit> unit)
+{
+	for(unsigned int i = 0; i < origin->listUnit.size(); i++)
+	{
+		if(origin->listUnit[i] == unit)
+		{
+			units.push_back(unit);		//On rajoute l'unité à la liste des unités de l'attaquant
+			origin->listUnit.erase(origin->listUnit.begin() + i);			//On efface cette même unité des unités disponible dans le pays (elle sera remise à la fin si elle a survecu)
+			return;
+		}
+	}
+
+	printf("Cette unité n'appartient ni au pays attaquant, ni au pays attaqué, elle n'a pas été ajouté");
+	return;
+}
+
 ActionType Movement::GetActionType()
 {
-	return(ActionType::Movement);
+	return(ActionType::_MOVEMENT);
 }
 
 

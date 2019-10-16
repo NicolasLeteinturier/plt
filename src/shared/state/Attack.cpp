@@ -2,8 +2,8 @@
 
 using namespace state;
 
-Attack::Attack(){
-	return;
+Attack::Attack()
+{
 }
 
 void Attack::AddUnit(std::shared_ptr<Unit> unit)
@@ -22,7 +22,7 @@ void Attack::AddUnit(std::shared_ptr<Unit> unit)
 	{
 		if(defencerCountry->listUnit[i] == unit)
 		{
-			attackerUnits.push_back(unit);		//On rajoute l'unité à la liste des unités du defenseur
+			defencerUnits.push_back(unit);		//On rajoute l'unité à la liste des unités du defenseur
 			defencerCountry->listUnit.erase(defencerCountry->listUnit.begin() + i);
 			return;
 		}
@@ -78,7 +78,7 @@ void Attack::AttackIsOver()
 
 ActionType Attack::GetActionType()
 {
-	return(ActionType::Attack);
+	return(ActionType::_ATTACK);
 }
 
 

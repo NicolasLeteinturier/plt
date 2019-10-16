@@ -16,29 +16,6 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-	/*
-    GameState etat;
-    std::shared_ptr<Country> argentina;
-    Country east_asia;
-    Country north_asia;
-    Country south_asia;
-    Country west_asia;
-    Country brazil;
-    Country central_africa;
-    Country east_europe;
-    Country north_europe;
-    Country west_europe;
-    Country north_africa;
-    Country north_america;
-    Country east_oceania;
-    Country north_oceania;
-    Country west_oceania;
-    Country orient;
-    Country south_africa;
-    Country usa;
-    //etat.AddCountry
-*/
     cout << "It works !" << endl;
-
     return 0;
 }

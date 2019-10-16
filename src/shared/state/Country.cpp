@@ -11,10 +11,10 @@ int Country::FindTypeNumber(Type type){
    if (n == 0){
       printf("there must be at least one unit on this country");
       return 0;}
-   int output;
+   unsigned int output = 0;
    for (unsigned int i = 0; i < n; i++){
       if(listUnit[i]->type == type){
-        output +=1;
+        output++;
       }
    }
    return output;}

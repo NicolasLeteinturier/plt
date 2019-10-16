@@ -4,5 +4,9 @@ using namespace state;
 
 Action::Action()
 {
-	return;
+}
+
+ActionType Action::GetActionType ()
+{
+	return(ActionType::_INITIALISATION);
 }

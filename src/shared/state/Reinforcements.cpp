@@ -22,7 +22,7 @@ void Reinforcements::PlaceUnit(std::shared_ptr<Unit> unit, std::shared_ptr<Count
 
 ActionType Reinforcements::GetActionType()
 {
-	return(ActionType::Reinforcements);
+	return(ActionType::_REINFORCEMENTS);
 }
 
 

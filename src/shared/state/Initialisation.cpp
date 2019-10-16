@@ -22,7 +22,7 @@ void Initialisation::AttributeCountry(std::shared_ptr<Country> country, std::sha
 
 ActionType Initialisation::GetActionType()
 {
-	return(ActionType::Initialisation);
+	return(ActionType::_INITIALISATION);
 }
 
 
