@@ -40,13 +40,13 @@ BOOST_AUTO_TEST_CASE(TestGamestate)
    auto joueur2 = std::make_shared<Player>();
    //std::shared_ptr<Player> joueur2;
    joueur1->id = "joueur2";
-/*
+
    // Generation des pays
    std::shared_ptr<Country> pays1;
    pays1->owner = joueur1;
    std::shared_ptr<Unit> unit1;
    pays1->AddUnit(unit1);
-/*
+
    std::shared_ptr<Country> pays2;
    pays2->owner = joueur2;
    std::shared_ptr<Unit> unit2;
@@ -58,7 +58,7 @@ BOOST_AUTO_TEST_CASE(TestGamestate)
    // Ajout des pays à l'état de jeu
    etat.AddCountry(pays1);
    etat.AddCountry(pays2);
-*/
+
 }
 
 /* vim: set sw=2 sts=2 et : */

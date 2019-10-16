@@ -16,6 +16,7 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
+	/*
     GameState etat;
     std::shared_ptr<Country> argentina;
     Country east_asia;
@@ -36,7 +37,7 @@ int main(int argc,char* argv[])
     Country south_africa;
     Country usa;
     //etat.AddCountry
-
+*/
     cout << "It works !" << endl;
 
     return 0;
