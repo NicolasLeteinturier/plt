@@ -4,7 +4,6 @@ using namespace state;
 
 Reinforcements::Reinforcements()
 {
-	return;
 }
 
 void Reinforcements::PlaceUnit(std::shared_ptr<Unit> unit, std::shared_ptr<Country> country)

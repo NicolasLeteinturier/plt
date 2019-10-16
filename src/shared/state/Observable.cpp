@@ -4,5 +4,4 @@ using namespace state;
 
 Observable::Observable()
 {
-	return;
 }

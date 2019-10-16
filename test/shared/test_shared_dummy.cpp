@@ -219,17 +219,41 @@ BOOST_AUTO_TEST_CASE(TestMovement)
 
 BOOST_AUTO_TEST_CASE(TestPlayer)
 {
-   /*Player player;
+   const auto player = std::make_shared<Player>();
    std::shared_ptr<Country> pays1 = std::make_shared<Country>();
    std::shared_ptr<Country> pays2 = std::make_shared<Country>();
 
-   player.AddOwnedCountry(pays1);
-   player.AddOwnedCountry(pays2);
+   const auto player2 = std::make_shared<Player>();
+   pays1->owner = player2;
+   pays2->owner = player2;
 
-   BOOST_CHECK_EQUAL(player.listOwnedCountry.size(),2);*/
+   player->AddOwnedCountry(pays1);
+   player->AddOwnedCountry(pays2);
+
+   BOOST_CHECK_EQUAL(player->listOwnedCountry.size(),2);
+   BOOST_CHECK_EQUAL(player2->listOwnedCountry.size(),0);
+
+   /*player2->AddOwnedCountry(pays1);
+   player2->AddOwnedCountry(pays2);
+
+   BOOST_CHECK_EQUAL(player->listOwnedCountry.size(),0);
+   BOOST_CHECK_EQUAL(player2->listOwnedCountry.size(),2);*/
 
 }
 
+BOOST_AUTO_TEST_CASE(TestObserverPattern)
+{
+   // Test de creation de l'observable
+   Observable observable;
+   std::shared_ptr<Observer> observer = std::make_shared<Observer>();
+   observable.observers.push_back(observer);
+   BOOST_CHECK_EQUAL(observable.observers.size(),1);
 
+   // Test de creation des events
+   CountryOwnerChanged event1;
+   BOOST_CHECK_EQUAL(event1.GetEventType(),EventType::COUNTRY_OWNER_CHANGED);
+   CountryUnitChanged event2;
+   BOOST_CHECK_EQUAL(event2.GetEventType(),EventType::COUNTRY_UNIT_CHANGED);
+}
 
 /* vim: set sw=2 sts=2 et : */

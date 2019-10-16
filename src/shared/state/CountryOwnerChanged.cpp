@@ -4,5 +4,9 @@ using namespace state;
 
 CountryOwnerChanged::CountryOwnerChanged()
 {
-	return;
+}
+
+EventType CountryOwnerChanged::GetEventType()
+{
+	return(EventType::COUNTRY_OWNER_CHANGED);
 }

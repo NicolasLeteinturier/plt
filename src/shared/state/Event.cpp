@@ -4,5 +4,9 @@ using namespace state;
 
 Event::Event()
 {
-	return;
+}
+
+EventType Event::GetEventType()
+{
+	return(EventType::COUNTRY_UNIT_CHANGED);
 }

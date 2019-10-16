@@ -7,7 +7,6 @@ using namespace state;
 
 Player::Player()
 {
-	return;
 }
 
 
@@ -25,8 +24,8 @@ Player::Player()
 }*/
 
 
-int Player::ReinforcementNumber(){//est ce qu'il ne faudrait pas en entrée l'id du joueur ??
-   int nbrCountrys= Player::listOwnedCountry.size(); //je ne sais pas si j'ai le droit dappler comme ca une fonction de la meme classe
+int Player::ReinforcementNumber(){
+   int nbrCountrys= Player::listOwnedCountry.size();
    return floor(nbrCountrys/2);}
 
 
@@ -46,16 +45,15 @@ void Player::AddOwnedCountry(std::shared_ptr<Country> country){
             ennemy->listOwnedCountry.erase(ennemy->listOwnedCountry.begin()+i);
          }
       }
-      
       listOwnedCountry.push_back(country);
    } 
 
 return;}
 
 
-void DeleteOwnedCountry (std::shared_ptr<Country> country){
+/*void DeleteOwnedCountry (std::shared_ptr<Country> country){
    printf("fonction inutille");
-   return;}
+   return;}*/
 
 
 
