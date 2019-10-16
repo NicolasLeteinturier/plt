@@ -191,18 +191,22 @@ BOOST_AUTO_TEST_CASE(TestMovement)
    pays1->AddNeighboor(pays2);
    pays2->AddNeighboor(pays1);
 
+   // Creation de la classe movement du pays1 vers le pays2
    Movement movement;
    BOOST_CHECK_EQUAL(movement.GetActionType(),ActionType::_MOVEMENT);
    movement.origin = pays1;
    movement.destination = pays2;
 
+   // Ajout des unités à deplacer
    movement.AddUnitToMove(unit1b);
    movement.AddUnitToMove(unit1t);
    movement.AddUnitToMove(unit1q);
    movement.AddUnitToMove(unit1p);
+   // On vérifie que les unités on bien été supprimer du pays d'origine et sont bien stocké dans la classe mouvement
    BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
    BOOST_CHECK_EQUAL(movement.units.size(),4);
 
+   // On deplace une unité et on vérifie qu'elle est bien arrivé à destination
    movement.MoveUnit(unit1b);
    BOOST_CHECK_EQUAL(pays2->listUnit.size(),2);
    BOOST_CHECK_EQUAL(movement.units.size(),3);
@@ -212,6 +216,20 @@ BOOST_AUTO_TEST_CASE(TestMovement)
    BOOST_CHECK_EQUAL(movement.units.size(),0);*/
 
 }
+
+BOOST_AUTO_TEST_CASE(TestPlayer)
+{
+   /*Player player;
+   std::shared_ptr<Country> pays1 = std::make_shared<Country>();
+   std::shared_ptr<Country> pays2 = std::make_shared<Country>();
+
+   player.AddOwnedCountry(pays1);
+   player.AddOwnedCountry(pays2);
+
+   BOOST_CHECK_EQUAL(player.listOwnedCountry.size(),2);*/
+
+}
+
 
 
 /* vim: set sw=2 sts=2 et : */
