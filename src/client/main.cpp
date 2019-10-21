@@ -38,6 +38,7 @@ int main(int argc,char* argv[])
                 window->close();
         }
 	map->Draw(window);
+	window->display();
     }
     
    return 0;
