@@ -16,6 +16,8 @@ using namespace state;
 
 int main(int argc,char* argv[])
 {
-    cout << "It works !" << endl;
-    return 0;
+	printf("arriver ici");
+	std::shared_ptr<sf::RenderWindow> renderWindow = std::make_shared<sf::RenderWindow>(sf::VideoMode(1370,720), "menu test");
+	cout << "It works !" << endl;
+	return 0;
 }
