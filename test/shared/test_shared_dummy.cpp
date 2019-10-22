@@ -54,7 +54,7 @@ BOOST_AUTO_TEST_CASE(TestGamestate)
    // Test du nombre de joueur dans l'état de jeu
    BOOST_CHECK_EQUAL(etat.listPlayer.size(), 2);
    // Test du nombre de pays dans l'état de jeu
-   BOOST_CHECK_EQUAL(etat.listCountry.size(), 17);
+   BOOST_CHECK_EQUAL(etat.listCountry.size(), 18);
 }
 
 BOOST_AUTO_TEST_CASE(TestCountry)

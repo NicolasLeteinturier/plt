@@ -20,6 +20,17 @@ void Initialisation::AttributeCountry(std::shared_ptr<Country> country, std::sha
 	return;
 }
 
+void Initialisation::EndInitialisation()
+{
+	unsigned int compteur = 0;
+	while(unattributedCountry.size() != 0)
+	{
+		AttributeCountry(unattributedCountry[0], listPlayer[compteur%listPlayer.size()]);
+		compteur++;
+	}
+	return;
+}
+
 ActionType Initialisation::GetActionType()
 {
 	return(ActionType::_INITIALISATION);
