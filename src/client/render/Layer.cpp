@@ -9,7 +9,7 @@ Layer::Layer()
 {
 }
 
-void Layer::Update (){
+void Layer::Update (std::shared_ptr<sf::RenderWindow> renderWindow){
 }
 void Layer::Draw (std::shared_ptr<sf::RenderWindow> renderWindow){
 }

@@ -40,12 +40,13 @@ int main(int argc,char* argv[])
 	std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(gameState->currentAction);
         init->EndInitialisation();
 
+	worldMap->listCountry = gameState->listCountry;
+	unitRepresentation->listCountry = gameState->listCountry;
+
 	scene.worldMap = worldMap;
 	scene.unitRepresentation = unitRepresentation;
 	scene.renderWindow = window;
 	scene.gameState = gameState;
-
-	
 
 	// run the program as long as the window is open
 	while (window->isOpen())
@@ -60,7 +61,7 @@ int main(int argc,char* argv[])
         	}
 	
 	scene.Draw();
-        scene.Update();
+        //scene.Update();
 	window->display();
     }
     
