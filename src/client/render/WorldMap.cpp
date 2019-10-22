@@ -10,24 +10,8 @@ WorldMap::WorldMap()
 {
 	// Chargement des images	
 	sf::Image image;
-   	char table[NB_COUNTRY][40]={	"../res/Map_Argentina.png",
-					"../res/Map_Asia_Est.png",
-					"../res/Map_Asia_North.png",
-					"../res/Map_Asia_South.png",
-					"../res/Map_Asia_West.png",
-					"../res/Map_Brazil.png",
-					"../res/Map_Central_africa.png",
-					"../res/Map_Europe_Est.png",
-					"../res/Map_Europe_North.png",
-					"../res/Map_Europe_West.png",
-					"../res/Map_North_africa.png",
-					"../res/Map_North_America.png",
-					"../res/Map_Oceania_Est.png",
-					"../res/Map_Oceania_North.png",
-					"../res/Map_Oceania_West.png",
-					"../res/Map_Orient.png",
-					"../res/Map_South_africa.png",
-					"../res/Map_USA.png"};
+
+	char table[NB_COUNTRY][40] = {COUNTRY_SPRITE_RESSOURCES};
 	
    	for (int i = 0; i < NB_COUNTRY; i++) { 
       		if (!(image.loadFromFile(table[i])))
@@ -35,15 +19,18 @@ WorldMap::WorldMap()
 		images.push_back(image);//mise en memoire du vecteur d'image pour WorldMap
 
 		std::shared_ptr<GraphicElement> pays = std::make_shared<GraphicElement>();
+
 		sf::Texture texture;
-		texture.loadFromImage(image);	//creation des textures pour GraphicElement
+		pays->texture = texture;
+		pays->texture.loadFromImage(image);	//creation des textures pour GraphicElement
 
 		sf::Sprite sprite;
-		sprite.setTexture(texture);	//creation des sprites pour GraphicElement
 		pays->sprite = sprite;
-		pays->texture = texture;
+		pays->sprite.setTexture(pays->texture);	//creation des sprites pour GraphicElement
+		pays->SetElementColor(sf::Color::Red);
 
-		listGraphicElement.push_back(pays);	//ajouts a listGraphicElements dans laye
+		
+		listGraphicElement.push_back(pays);	//ajouts a listGraphicElements dans layer
 	}
 }
 

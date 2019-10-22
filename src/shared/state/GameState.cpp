@@ -1,16 +1,17 @@
 #include "GameState.h"
 #include "Initialisation.h"
+#include "../../define.h"
 
 using namespace state;
-
-unsigned int nbre_pays = 17;
 
 GameState::GameState()
 {
 	std::shared_ptr<Initialisation> init = std::make_shared<Initialisation>();
-	for(unsigned int i = 0; i < nbre_pays; i++)
+	char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
+	for(unsigned int i = 0; i < NB_COUNTRY; i++)
 	{
 		std::shared_ptr<Country> new_country = std::make_shared<Country>();
+		new_country->id = country_name[i];
 		AddCountry(new_country);
 		init->unattributedCountry.push_back(new_country);
 	}
