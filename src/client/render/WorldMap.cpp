@@ -36,7 +36,7 @@ WorldMap::WorldMap()
 
 void WorldMap::Draw(std::shared_ptr<sf::RenderWindow> renderWindow)
 {
-   sf::Image image;
+   //sf::Image image;
    int number_cntry=18;
    //char table[number_cntry][40]={"../res/Map_Argentina.png","../res/Map_Asia_Est.png","../res/Map_Asia_North.png","../res/Map_Asia_South.png","../res/Map_Asia_West.png","../res/Map_Brazil.png","../res/Map_Central_africa.png","../res/Map_Europe_Est.png","../res/Map_Europe_North.png","../res/Map_Europe_West.png","../res/Map_North_africa.png","../res/Map_North_America.png","../res/Map_Oceania_Est.png","../res/Map_Oceania_North.png","../res/Map_Oceania_West.png","../res/Map_Orient.png","../res/Map_South_africa.png","../res/Map_USA.png"};
    for (int i = 0; i < number_cntry; i++) { 
