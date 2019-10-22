@@ -25,6 +25,7 @@ int main(int argc,char* argv[])
 
    std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1350, 720), "My window");
     WorldMap * map = new WorldMap();
+    GraphicElement pays;
     
     // run the program as long as the window is open
     while (window->isOpen())
@@ -37,7 +38,12 @@ int main(int argc,char* argv[])
             if (event.type == sf::Event::Closed)
                 window->close();
         }
-	map->Draw(window);
+	
+	Layer layer;
+	sf::Texture pays=layer.listGraphicElement[0]->texture;
+	sf::Sprite sprite1;
+	sprite1.setTexture(pays);
+	window->draw(sprite1);
 	window->display();
     }
     
