@@ -40,7 +40,7 @@ void UnitRepresentation::Update (std::shared_ptr<sf::RenderWindow> renderWindow)
     for (int i = 0; i < NB_COUNTRY; i++) {
         std::shared_ptr<Country>  country = listCountry[i];
 
-/*definir le nombre de chaque type pour chaque territoire*/
+	//definir le nombre de chaque type pour chaque territoire
         int nbr_att = country->FindTypeNumber(Type::attaquant);
         int nbr_neutre = country->FindTypeNumber(Type::neutre);
         int nbr_def = country->FindTypeNumber(Type::defensif);
@@ -48,7 +48,7 @@ void UnitRepresentation::Update (std::shared_ptr<sf::RenderWindow> renderWindow)
         std::string str_neutre = std::to_string(nbr_neutre);
         std::string str_def = std::to_string(nbr_def);
 
-/*afficher le pays avec le nombre d'unités*/
+	//afficher le pays avec le nombre d'unités
         listGraphicElement[i]->DrawElement(renderWindow);
         sf::Text text;
         sf::Font font;

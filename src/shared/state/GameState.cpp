@@ -29,6 +29,7 @@ void GameState::AddPlayer(std::shared_ptr<Player> player)
 		listPlayer.push_back(player);
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(currentAction);
 		init->listPlayer.push_back(player);
+		currentPlayer = player;
 	}
 	else
 	{
@@ -70,11 +71,23 @@ void GameState::GoToNextAction()
 {
 	if(currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
+		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(currentAction);
+		init->EndInitialisation();
 		std::shared_ptr<Reinforcements> reinforcement = std::make_shared<Reinforcements>();
-		currentAction = reinforcement;
+		for(unsigned int i = 0; i < currentPlayer->ReinforcementNumber(); i++)
+		{
+			std::shared_ptr<Unit> unit = std::make_shared<Unit>();
+			unit->type = Type::neutre;
+			reinforcement->availableUnits.push_back(unit);
+		}
+		reinforcement->availableCountry = currentPlayer->listOwnedCountry;
+		//currentAction = reinforcement;
 	}
 	if(currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{
+		std::shared_ptr<Reinforcements> reinforcement = std::dynamic_pointer_cast<Reinforcements>(currentAction);
+		reinforcement->EndReinforcements();
+
 		std::shared_ptr<Attack> attack = std::make_shared<Attack>();
 		currentAction = attack;
 	}
@@ -86,14 +99,22 @@ void GameState::GoToNextAction()
 	if(currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
 		std::shared_ptr<Reinforcements> reinforcement = std::make_shared<Reinforcements>();
-		currentAction = reinforcement;
-		for (unsigned int i = 0; i < listPlayer.size(); i++)
+		for (int i = 0; i < listPlayer.size(); i++)
 		{
 			if(listPlayer[i] == currentPlayer)
 			{
 				currentPlayer = listPlayer[i+1];
 			}
 		}
+
+		for(int i = 0; i < currentPlayer->ReinforcementNumber(); i++)
+		{
+			std::shared_ptr<Unit> unit = std::make_shared<Unit>();
+			unit->type = Type::defensif;
+			reinforcement->availableUnits.push_back(unit);
+		}
+		reinforcement->availableCountry = currentPlayer->listOwnedCountry;
+		currentAction = reinforcement;
 	}
 	return;
 }

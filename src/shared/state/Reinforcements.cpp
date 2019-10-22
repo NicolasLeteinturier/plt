@@ -18,6 +18,17 @@ void Reinforcements::PlaceUnit(std::shared_ptr<Unit> unit, std::shared_ptr<Count
 	}
 }
 
+void Reinforcements::EndReinforcements()
+{
+	unsigned int compteur = 0;
+	while(availableUnits.size() != 0)
+	{
+		PlaceUnit(availableUnits[0], availableCountry[compteur%availableCountry.size()]);
+		compteur++;
+	}
+	return;
+}
+
 ActionType Reinforcements::GetActionType()
 {
 	return(ActionType::_REINFORCEMENTS);

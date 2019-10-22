@@ -70,7 +70,7 @@ int main(int argc,char* argv[])
         	}
 	window->draw(sprite);
 	scene.Draw();
-        //scene.Update();
+        scene.Update();
 	window->display();
     }
     
