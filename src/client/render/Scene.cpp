@@ -10,7 +10,7 @@ Scene::Scene()
 void Scene::Draw()
 {
 	worldMap->Draw(renderWindow);
-	//unitRepresentation.Draw(renderWindow);
+	unitRepresentation->Draw(renderWindow);
 	return;
 }
 

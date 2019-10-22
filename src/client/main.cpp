@@ -30,9 +30,7 @@ int main(int argc,char* argv[])
 	scene.renderWindow = window;
 	scene.gameState = gameState;
 
-	sf::Color color = scene.worldMap->images[1].getPixel(50,50);
-
-	if(color == sf::Color::White){printf("l'image est blanche");}
+	
 
 	// run the program as long as the window is open
 	while (window->isOpen())
