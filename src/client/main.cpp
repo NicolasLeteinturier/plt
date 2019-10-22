@@ -25,6 +25,21 @@ int main(int argc,char* argv[])
 	std::shared_ptr<WorldMap> worldMap = std::make_shared<WorldMap>();
 	std::shared_ptr<UnitRepresentation> unitRepresentation = std::make_shared<UnitRepresentation>();
 	std::shared_ptr<GameState> gameState = std::make_shared<GameState>();
+
+        //Initialisation des joueurs
+        std::shared_ptr<Player> Player1 = std::make_shared<Player>();
+        std::shared_ptr<Player> Player2 = std::make_shared<Player>();
+
+        Player1->id = "joueur 1";
+        Player2->id = "joueur 2";
+        gameState->AddPlayer(Player1);
+        gameState->AddPlayer(Player2);
+
+
+
+	std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(gameState->currentAction);
+        init->EndInitialisation();
+
 	scene.worldMap = worldMap;
 	scene.unitRepresentation = unitRepresentation;
 	scene.renderWindow = window;
@@ -45,6 +60,7 @@ int main(int argc,char* argv[])
         	}
 	
 	scene.Draw();
+        scene.Update();
 	window->display();
     }
     

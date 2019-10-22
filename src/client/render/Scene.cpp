@@ -16,8 +16,8 @@ void Scene::Draw()
 
 void Scene::Update()
 {
-	worldMap->Update();
-	//unitRepresentation.Update();
+	//worldMap->Update();
+	unitRepresentation->Update(renderWindow);
 	return;
 }
 
