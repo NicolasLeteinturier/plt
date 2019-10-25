@@ -27,6 +27,7 @@ int main(int argc,char* argv[])
 	std::shared_ptr<WorldMap> worldMap = std::make_shared<WorldMap>();
 	std::shared_ptr<UnitRepresentation> unitRepresentation = std::make_shared<UnitRepresentation>();
 	std::shared_ptr<GameState> gameState = std::make_shared<GameState>();
+        std::shared_ptr<UnitSelection> unitSelection = std::make_shared<UnitSelection>();
 
         //Initialisation des joueurs
         std::shared_ptr<Player> Player1 = std::make_shared<Player>();
@@ -119,11 +120,13 @@ int main(int argc,char* argv[])
 
 	worldMap->listCountry = gameState->listCountry;
 	unitRepresentation->listCountry = gameState->listCountry;
+        unitSelection->listCountry = gameState->listCountry;
 
 	scene.worldMap = worldMap;
 	scene.unitRepresentation = unitRepresentation;
 	scene.renderWindow = window;
 	scene.gameState = gameState;
+        scene.unitSelection = unitSelection;
 
 
 	sf::Image image;

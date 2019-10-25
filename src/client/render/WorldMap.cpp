@@ -52,5 +52,18 @@ void WorldMap::Draw(std::shared_ptr<sf::RenderWindow> renderWindow)
    
 
 void WorldMap::Update (std::shared_ptr<sf::RenderWindow> renderWindow){
+	for (int i = 0; i < NB_COUNTRY; i++) {
+		if(listCountry[i]->owner->id == "joueur 1")
+			listGraphicElement[i]->SetElementColor(sf::Color::Red);
+		if(listCountry[i]->owner->id == "joueur 2")
+			listGraphicElement[i]->SetElementColor(sf::Color::Blue);
+		listGraphicElement[i]->DrawElement(renderWindow);
+		if(listCountry[i]->owner->id == "joueur 3")
+			listGraphicElement[i]->SetElementColor(sf::Color(0,255,0,255));
+		listGraphicElement[i]->DrawElement(renderWindow);
+		if(listCountry[i]->owner->id == "joueur 4")
+			listGraphicElement[i]->SetElementColor(sf::Color(0,0,0,255));
+		listGraphicElement[i]->DrawElement(renderWindow);
+   }
 }
 
