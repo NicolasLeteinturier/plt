@@ -29,11 +29,17 @@ int main(int argc,char* argv[])
         //Initialisation des joueurs
         std::shared_ptr<Player> Player1 = std::make_shared<Player>();
         std::shared_ptr<Player> Player2 = std::make_shared<Player>();
+        std::shared_ptr<Player> Player3 = std::make_shared<Player>();
+        std::shared_ptr<Player> Player4 = std::make_shared<Player>();
 
         Player1->id = "joueur 1";
         Player2->id = "joueur 2";
+        Player3->id = "joueur 3";
+        Player4->id = "joueur 4";
         gameState->AddPlayer(Player1);
         gameState->AddPlayer(Player2);
+        gameState->AddPlayer(Player3);
+        gameState->AddPlayer(Player4);
 
 	gameState->GoToNextAction();
 	gameState->GoToNextAction();
