@@ -37,6 +37,9 @@ UnitRepresentation::UnitRepresentation()
 }
 
 void UnitRepresentation::Update (std::shared_ptr<sf::RenderWindow> renderWindow){
+    float tabX[NB_COUNTRY]={UNIT_POS_X};
+    float tabY[NB_COUNTRY]={UNIT_POS_Y};
+    float offset=10;
     for (int i = 0; i < NB_COUNTRY; i++) {
         std::shared_ptr<Country>  country = listCountry[i];
 
@@ -55,7 +58,8 @@ void UnitRepresentation::Update (std::shared_ptr<sf::RenderWindow> renderWindow)
         if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
             printf("font not found");
         text.setFont(font);
-        text.setString(str_def+str_neutre+str_att);
+        text.setString(str_def+" "+str_neutre+" "+str_att);
+	text.setPosition(tabX[i],tabY[i]+offset);
         renderWindow->draw(text);
         
     }
