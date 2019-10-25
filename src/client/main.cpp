@@ -16,6 +16,8 @@ using namespace std;
 using namespace state;
 using namespace render;
 
+int compteur = 0;
+
 int main(int argc,char* argv[])
 {
 	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1267, 628), "Risk");
@@ -56,9 +58,64 @@ int main(int argc,char* argv[])
 	gameState->GoToNextAction();
 	gameState->GoToNextAction();
 	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
 
-	/*std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(gameState->currentAction);
-        init->EndInitialisation();*/
 
 	worldMap->listCountry = gameState->listCountry;
 	unitRepresentation->listCountry = gameState->listCountry;

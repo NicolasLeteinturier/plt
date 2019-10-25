@@ -20,11 +20,10 @@ void Reinforcements::PlaceUnit(std::shared_ptr<Unit> unit, std::shared_ptr<Count
 
 void Reinforcements::EndReinforcements()
 {
-	unsigned int compteur = 0;
+	srand (time(NULL));
 	while(availableUnits.size() != 0)
 	{
-		PlaceUnit(availableUnits[0], availableCountry[compteur%availableCountry.size()]);
-		compteur++;
+		PlaceUnit(availableUnits[rand()%availableUnits.size()], availableCountry[availableUnits.size()%availableCountry.size()]);
 	}
 	return;
 }

@@ -4,6 +4,7 @@
 #include "Reinforcements.h"
 #include "Attack.h"
 #include "Movement.h"
+#include <iostream>
 
 using namespace state;
 
@@ -69,15 +70,20 @@ void GameState::ChangeCountryOwner(std::shared_ptr<Country> country, std::shared
 
 void GameState::GoToNextAction()
 {
+	std::cout << currentPlayer->id << std::endl;
 	if(currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
+		srand (time(NULL));
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(currentAction);
 		init->EndInitialisation();
 		std::shared_ptr<Reinforcements> reinforcement = std::make_shared<Reinforcements>();
 		for(unsigned int i = 0; i < currentPlayer->ReinforcementNumber(); i++)
 		{
 			std::shared_ptr<Unit> unit = std::make_shared<Unit>();
-			unit->type = Type::neutre;
+			int type = rand()%3;
+			if(type == 0){unit->type = Type::attaquant;}
+			else if(type == 1){unit->type = Type::neutre;}
+			else{unit->type = Type::defensif;}
 			reinforcement->availableUnits.push_back(unit);
 		}
 		reinforcement->availableCountry = currentPlayer->listOwnedCountry;
@@ -107,13 +113,17 @@ void GameState::GoToNextAction()
 			if(listPlayer[i] == currentPlayer)
 			{
 				currentPlayer = listPlayer[(i+1)%listPlayer.size()];
+				break;
 			}
 		}
 
 		for(int i = 0; i < currentPlayer->ReinforcementNumber(); i++)
 		{
 			std::shared_ptr<Unit> unit = std::make_shared<Unit>();
-			unit->type = Type::defensif;
+			int type = rand()%3;
+			if(type == 0){unit->type = Type::attaquant;}
+			else if(type == 1){unit->type = Type::neutre;}
+			else{unit->type = Type::defensif;}
 			reinforcement->availableUnits.push_back(unit);
 		}
 		reinforcement->availableCountry = currentPlayer->listOwnedCountry;

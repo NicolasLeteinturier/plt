@@ -22,10 +22,11 @@ void Initialisation::AttributeCountry(std::shared_ptr<Country> country, std::sha
 
 void Initialisation::EndInitialisation()
 {
+	srand (time(NULL));
 	unsigned int compteur = 0;
 	while(unattributedCountry.size() != 0)
 	{
-		AttributeCountry(unattributedCountry[0], listPlayer[compteur%listPlayer.size()]);
+		AttributeCountry(unattributedCountry[rand()%unattributedCountry.size()], listPlayer[compteur%listPlayer.size()]);
 		compteur++;
 	}
 	return;
