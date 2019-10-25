@@ -35,10 +35,24 @@ int main(int argc,char* argv[])
         gameState->AddPlayer(Player1);
         gameState->AddPlayer(Player2);
 
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
+	gameState->GoToNextAction();
 
-
-	std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(gameState->currentAction);
-        init->EndInitialisation();
+	/*std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(gameState->currentAction);
+        init->EndInitialisation();*/
 
 	worldMap->listCountry = gameState->listCountry;
 	unitRepresentation->listCountry = gameState->listCountry;

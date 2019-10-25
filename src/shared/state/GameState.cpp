@@ -81,7 +81,8 @@ void GameState::GoToNextAction()
 			reinforcement->availableUnits.push_back(unit);
 		}
 		reinforcement->availableCountry = currentPlayer->listOwnedCountry;
-		//currentAction = reinforcement;
+		currentAction = reinforcement;
+		return;
 	}
 	if(currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{
@@ -90,11 +91,13 @@ void GameState::GoToNextAction()
 
 		std::shared_ptr<Attack> attack = std::make_shared<Attack>();
 		currentAction = attack;
+		return;
 	}
 	if(currentAction->GetActionType() == ActionType::_ATTACK)
 	{
 		std::shared_ptr<Movement> movement = std::make_shared<Movement>();
 		currentAction = movement;
+		return;
 	}
 	if(currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
@@ -103,7 +106,7 @@ void GameState::GoToNextAction()
 		{
 			if(listPlayer[i] == currentPlayer)
 			{
-				currentPlayer = listPlayer[i+1];
+				currentPlayer = listPlayer[(i+1)%listPlayer.size()];
 			}
 		}
 
@@ -115,6 +118,7 @@ void GameState::GoToNextAction()
 		}
 		reinforcement->availableCountry = currentPlayer->listOwnedCountry;
 		currentAction = reinforcement;
+		return;
 	}
 	return;
 }
