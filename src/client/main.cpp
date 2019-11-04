@@ -11,10 +11,12 @@ void testSFML() {
 
 #include <state.h>
 #include "render.h"
+#include "engine.h"
 
 using namespace std;
 using namespace state;
 using namespace render;
+using namespace engine;
 
 int compteur = 0;
 
@@ -128,6 +130,12 @@ int main(int argc,char* argv[])
 	scene.gameState = gameState;
         scene.unitSelection = unitSelection;
 
+	std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();	
+
+	Controller controler;
+	controler.renderWindow = window;
+	controler.engine = gameEngine;
+
 
 	sf::Image image;
 	if (!(image.loadFromFile("../res/font.png")))
@@ -144,6 +152,7 @@ int main(int argc,char* argv[])
 	        sf::Event event;
 	        while (window->pollEvent(event))
 	        {
+			controler.CheckUserCommand(event);
         		// "close requested" event: we close the window
         		if (event.type == sf::Event::Closed)
                 	window->close();
