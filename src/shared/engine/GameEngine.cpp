@@ -39,6 +39,10 @@ namespace engine {
 #endif
 /////////////////////////////////////////////////////////////////////////////////////////////////
 
+#include "../../define.h"
+#include <iostream>
+#include <SFML/Graphics.hpp>
+
 using namespace engine;
 
 GameEngine::GameEngine()
@@ -52,9 +56,22 @@ void GameEngine::executeCommands()
 	{
 		std::shared_ptr<Command> command = commands[0];
 		commands.erase(commands.begin());
-		if(command->pressedKey == KeyPressed::LEFT_CLICK)
+		if(command->pressedKey == KeyPressed::SPACE_BARRE)
 		{
 			gameState->GoToNextAction();
+		}
+		if(command->pressedKey == KeyPressed::LEFT_CLICK || command->pressedKey == KeyPressed::RIGHT_CLICK)
+		{
+			sf::Image image;
+			char table[NB_COUNTRY][40] = {COUNTRY_SPRITE_RESSOURCES};
+			char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
+			for (int i = 0; i < NB_COUNTRY; i++) { 
+				if (!(image.loadFromFile(table[i])))
+          				printf("Cannot load image");
+				if(image.getPixel(command->mousePositionX,command->mousePositionY) != sf::Color::Transparent && image.getPixel(command->mousePositionX,command->mousePositionY) != sf::Color::White && image.getPixel(command->mousePositionX,command->mousePositionY) != sf::Color::Black)
+					std::cout << country_name[i] << std::endl;
+			}
+
 		}
 	}
 	return;
