@@ -130,7 +130,9 @@ int main(int argc,char* argv[])
 	scene.gameState = gameState;
         scene.unitSelection = unitSelection;
 
-	std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();	
+	std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
+
+	gameEngine->gameState = gameState;	
 
 	Controller controler;
 	controler.renderWindow = window;
@@ -157,6 +159,7 @@ int main(int argc,char* argv[])
         		if (event.type == sf::Event::Closed)
                 	window->close();
         	}
+	gameEngine->executeCommands();
 	window->draw(sprite);
 	scene.Draw();
         scene.Update();
