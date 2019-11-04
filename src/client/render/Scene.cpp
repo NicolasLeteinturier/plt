@@ -19,7 +19,8 @@ void Scene::Update()
 {
 	//worldMap->Update();
 	unitRepresentation->Update(renderWindow);
-        //unitSelection->Update(renderWindow);
+	unitSelection->currentAction = gameState->currentAction;
+        unitSelection->Update(renderWindow);
 	return;
 }
 
