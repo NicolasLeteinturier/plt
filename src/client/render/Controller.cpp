@@ -1,3 +1,4 @@
+#include <queue>
 #include "Controller.h"
 
 using namespace render;
@@ -17,7 +18,7 @@ void Controller::CheckUserCommand(sf::Event event)
 			newCommand->mousePositionX = sf::Mouse::getPosition(*(renderWindow)).x;
 			newCommand->mousePositionY = sf::Mouse::getPosition(*(renderWindow)).y;
 			newCommand->pressedKey = KeyPressed::SPACE_BARRE;
-			engine->commands.push_back(newCommand);
+			engine->commands.push(newCommand);
 			return;
 		}			
 	}
@@ -30,7 +31,7 @@ void Controller::CheckUserCommand(sf::Event event)
 			newCommand->mousePositionX = sf::Mouse::getPosition(*(renderWindow)).x;
 			newCommand->mousePositionY = sf::Mouse::getPosition(*(renderWindow)).y;
 			newCommand->pressedKey = KeyPressed::LEFT_CLICK;
-			engine->commands.push_back(newCommand);
+			engine->commands.push(newCommand);
 			return;
 		}
 		else if (event.mouseButton.button == sf::Mouse::Right)
@@ -39,7 +40,7 @@ void Controller::CheckUserCommand(sf::Event event)
 			newCommand->mousePositionX = sf::Mouse::getPosition(*(renderWindow)).x;
 			newCommand->mousePositionY = sf::Mouse::getPosition(*(renderWindow)).y;
 			newCommand->pressedKey = KeyPressed::LEFT_CLICK;
-			engine->commands.push_back(newCommand);
+			engine->commands.push(newCommand);
 			return;
 		}
 	}

@@ -9,6 +9,7 @@ void testSFML() {
 
 // Fin test SFML
 
+#include <queue>
 #include <state.h>
 #include "render.h"
 #include "engine.h"
@@ -160,7 +161,7 @@ int main(int argc,char* argv[])
                 	window->close();
         	}
 	window->clear();
-	gameEngine->executeCommands();
+	gameEngine->ExecuteCommands();
 	window->draw(sprite);
 	scene.Draw();
         scene.Update();
