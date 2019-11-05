@@ -11,11 +11,16 @@ using namespace render;
 
 UnitSelection::UnitSelection()
 {
+   //---------------------------------------//
+   // declaration des variables des textures//
+   //---------------------------------------//
+
+   float scale = 0.6;
    float posX = 220;
    float posY = 150;
-   float arrow_up_offsetY = -20;
-   float arrow_down_offsetY = 150;
-   float arrow_up_offsetX = 140;
+   float arrow_up_offsetY = 40;
+   float arrow_down_offsetY = 250;
+   float arrow_up_offsetX = 160;
    sf::Image image;
    if (!(image.loadFromFile("../res/unit_textures.png")))
       printf("Cannot load image");
@@ -51,8 +56,8 @@ UnitSelection::UnitSelection()
    sf::Sprite sprite_arrow_ld;
    arrow->sprite = sprite_arrow_ld;
    arrow->sprite.setTexture(arrow->texture);
-   arrow->sprite.setScale(0.5f,0.5f);
-   arrow->sprite.setPosition(sf::Vector2f(posX ,posY + arrow_down_offsetY));
+   arrow->sprite.setScale(scale,scale);
+   arrow->sprite.setPosition(sf::Vector2f(posX +25,posY + arrow_down_offsetY));
    listGraphicElement.push_back(arrow);
 
 
@@ -63,8 +68,8 @@ UnitSelection::UnitSelection()
    sf::Sprite sprite_arrow_md;
    arrow_md->sprite = sprite_arrow_md;
    arrow_md->sprite.setTexture(arrow->texture);
-   arrow_md->sprite.setScale(0.5f,0.5f);
-   arrow_md->sprite.setPosition(sf::Vector2f(posX + 250,posY + arrow_down_offsetY));
+   arrow_md->sprite.setScale(scale,scale);
+   arrow_md->sprite.setPosition(sf::Vector2f(posX + 300,posY + arrow_down_offsetY));
    listGraphicElement.push_back(arrow_md);
 
 
@@ -75,8 +80,8 @@ UnitSelection::UnitSelection()
    sf::Sprite sprite_arrow_rd;
    arrow_rd->sprite = sprite_arrow_rd;
    arrow_rd->sprite.setTexture(arrow->texture);
-   arrow_rd->sprite.setScale(0.5f,0.5f);
-   arrow_rd->sprite.setPosition(sf::Vector2f(posX + 500,posY + arrow_down_offsetY));
+   arrow_rd->sprite.setScale(scale,scale);
+   arrow_rd->sprite.setPosition(sf::Vector2f(posX + 550,posY + arrow_down_offsetY));
    listGraphicElement.push_back(arrow_rd);
 
 
@@ -89,9 +94,9 @@ UnitSelection::UnitSelection()
    sf::Sprite sprite_arrow_lu;
    arrow_lu->sprite = sprite_arrow_lu;
    arrow_lu->sprite.setTexture(arrow->texture);
-   arrow_lu->sprite.setScale(0.5f,0.5f);
+   arrow_lu->sprite.setScale(scale,scale);
    arrow_lu->sprite.setRotation(rot);
-   arrow_lu->sprite.setPosition(sf::Vector2f(posX + arrow_up_offsetX ,posY - arrow_up_offsetY));
+   arrow_lu->sprite.setPosition(sf::Vector2f(posX + arrow_up_offsetX + 25,posY + arrow_up_offsetY));
    listGraphicElement.push_back(arrow_lu);
 
    sf::Texture texture_mu;
@@ -102,8 +107,8 @@ UnitSelection::UnitSelection()
    arrow_mu->sprite = sprite_mu;
    arrow_mu->sprite.setTexture(arrow->texture);
    arrow_mu->sprite.setRotation(rot);
-   arrow_mu->sprite.setScale(0.5f,0.5f);
-   arrow_mu->sprite.setPosition(sf::Vector2f(posX + arrow_up_offsetX + 250, posY-arrow_up_offsetY));
+   arrow_mu->sprite.setScale(scale,scale);
+   arrow_mu->sprite.setPosition(sf::Vector2f(posX + arrow_up_offsetX + 300, posY + arrow_up_offsetY));
    listGraphicElement.push_back(arrow_mu); 
    
 
@@ -115,10 +120,66 @@ UnitSelection::UnitSelection()
    sf::Sprite sprite_arrow_ru;
    arrow_ru->sprite = sprite_arrow_ru;
    arrow_ru->sprite.setTexture(arrow->texture);
-   arrow_ru->sprite.setPosition(sf::Vector2f(posX + arrow_up_offsetX + 500,posY - arrow_up_offsetY));
+   arrow_ru->sprite.setPosition(sf::Vector2f(posX + arrow_up_offsetX + 550,posY + arrow_up_offsetY));
    arrow_ru->sprite.setRotation(rot);
-   arrow_ru->sprite.setScale(0.5f,0.5f);
+   arrow_ru->sprite.setScale(scale,scale);
    listGraphicElement.push_back(arrow_ru);
+
+
+
+
+   //importation des fonds 
+   if (!(image.loadFromFile("../res/reinforcement.png")))
+      printf("Cannot load image");
+
+   std::shared_ptr<GraphicElement> reinforcement_graph = std::make_shared<GraphicElement>();
+
+   sf::Texture texture_rein;
+   reinforcement_graph->texture = texture_rein;
+   reinforcement_graph->texture.loadFromImage(image);
+
+   sf::Sprite sprite_rein;
+   reinforcement_graph->sprite = sprite_rein;
+   reinforcement_graph->sprite.setTexture(reinforcement_graph->texture);
+   reinforcement_graph->sprite.setPosition(sf::Vector2f(150,0));
+   //reinforcement_graph->sprite.setRotation(rot);
+   reinforcement_graph->sprite.setScale(1,1);
+   listGraphicElement.push_back(reinforcement_graph);
+
+if (!(image.loadFromFile("../res/attaque.png")))
+      printf("Cannot load image");
+
+   std::shared_ptr<GraphicElement> attaque_graph = std::make_shared<GraphicElement>();
+
+   sf::Texture texture_att;
+   attaque_graph->texture = texture_att;
+   attaque_graph->texture.loadFromImage(image);
+
+   sf::Sprite sprite_att;
+   attaque_graph->sprite = sprite_att;
+   attaque_graph->sprite.setTexture(attaque_graph->texture);
+   attaque_graph->sprite.setPosition(sf::Vector2f(150,0));
+   //reinforcement_graph->sprite.setRotation(rot);
+   attaque_graph->sprite.setScale(1,1);
+   listGraphicElement.push_back(attaque_graph);
+
+
+if (!(image.loadFromFile("../res/movement.png")))
+      printf("Cannot load image");
+
+   std::shared_ptr<GraphicElement> movement_graph = std::make_shared<GraphicElement>();
+
+   sf::Texture texture_mov;
+   movement_graph->texture = texture_mov;
+   movement_graph->texture.loadFromImage(image);
+
+   sf::Sprite sprite_mov;
+   movement_graph->sprite = sprite_mov;
+   movement_graph->sprite.setTexture(movement_graph->texture);
+   movement_graph->sprite.setPosition(sf::Vector2f(150,0));
+   //reinforcement_graph->sprite.setRotation(rot);
+   movement_graph->sprite.setScale(1,1);
+   listGraphicElement.push_back(movement_graph);
    
 }
 
@@ -129,6 +190,7 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
        std::shared_ptr<Reinforcements> rein = std::dynamic_pointer_cast<Reinforcements>(currentAction);
        if (rein->unitSelected == true)
 	{
+       listGraphicElement[7]->DrawElement(renderWindow);
        for (int i = 0; i < 7; i++) {
        listGraphicElement[i]->DrawElement(renderWindow);//load reinforcement sprite and arrows 
        }       
@@ -139,6 +201,7 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         std::shared_ptr<Attack> att = std::dynamic_pointer_cast<Attack>(currentAction);
         if (att->unitSelected == true)
 	{
+       listGraphicElement[8]->DrawElement(renderWindow);
        for (int i = 0; i < 7; i++) {
        listGraphicElement[i]->DrawElement(renderWindow);//load reinforcement sprite and arrows 
        }    
@@ -149,6 +212,7 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         std::shared_ptr<Movement> mov = std::dynamic_pointer_cast<Movement>(currentAction);
         if (mov->unitSelected == true)
 	{
+       listGraphicElement[9]->DrawElement(renderWindow);
        for (int i = 0; i < 7; i++) {
        listGraphicElement[i]->DrawElement(renderWindow);//load reinforcement sprite and arrows 
        }    
