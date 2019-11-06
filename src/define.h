@@ -7,10 +7,9 @@
 
 #define COUNTRY_NAME	"Argentine","Asie de l'Est","Asie du Nord","Asie du Sud","Asie de l'Ouest","Bresil","Afrique Central","Europe de l'Est","Europe du Nord","Europe de l'Ouest","Afrique du Nord","Amerique du Nord","Est de l'Oceanie","Nord de l'Oceanie","Ouest de l'Oceanie","Orient","Afrique du Sud","USA"
 
-
-
-
 #define UNIT_POS_X 270,766,878,875,916,300,640,665,428,567,523,135,1022,1029,1080,707,610,118
 
 #define UNIT_POS_Y 466,141,74,216,147,385,335,104,37,141,254,80,480,360,450,202,439,180
+
 #endif
+
