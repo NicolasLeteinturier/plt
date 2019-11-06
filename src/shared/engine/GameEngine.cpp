@@ -48,6 +48,12 @@ namespace engine {
 #include "../../define.h"
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "../state/Movement.h"
+#include "../state/Attack.h"
+#include "../state/Initialisation.h"
+#include "../state/Reinforcements.h"
+
+unsigned int etat = 0;
 
 using namespace engine;
 using namespace state;
@@ -88,7 +94,7 @@ void GameEngine::ExecuteCommands()
 
 	unsigned int n = commands.size();
 
-	for(unsigned int i = 0; i < n-1; i++)
+	for(unsigned int i = 0; i < n; i++)
 	{
 		if(gameState->currentAction->GetActionType() == ActionType::_INITIALISATION)
 		{
@@ -121,7 +127,6 @@ void GameEngine::ExecuteCommands()
 void GameEngine::ExecuteAttackCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
-	std::cout << "Attack execution" << std::endl;
 	gameState->GoToNextAction();
 }
 
@@ -129,23 +134,118 @@ void GameEngine::ExecuteAttackCommand()
 void GameEngine::ExecuteMovementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
-	std::cout << "Movement execution" << std::endl;
-	gameState->GoToNextAction();
+	
+	if(command->pressedKey == KeyPressed::SPACE_BARRE)
+	{
+		gameState->GoToNextAction();
+		etat = 0;
+	}
+
+	if(command->pressedKey == KeyPressed::ESCAPE)
+	{
+		etat = 0;
+	}
+
+	// etat vaut 0 : selection du pays d'origine
+	if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
+		if(country_index == -1){return;}
+		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		if(selected_country->owner != gameState->currentPlayer)
+		{
+			printf("ce pays ne vous appartient pas\n");
+			return;
+		}
+		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
+		movement->origin = selected_country;
+		etat = 1;
+		return;
+	}
+
+	// etat vaut 1 : selection du pays de destination
+
+	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
+		if(country_index == -1){return;}
+		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		if(selected_country->owner != gameState->currentPlayer)
+		{
+			printf("ce pays ne vous appartient pas\n");
+			return;
+		}
+		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
+		movement->destination = selected_country;
+		movement->unitSelected = true;
+		etat = 2;
+		return;
+	}
+
+	// etat vaut 2 : selection des unités
+
+	if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
+		//if(mousePositionX <= )
+		if(movement->origin->listUnit.size() != 0)
+		{
+			movement->AddUnitToMove(movement->origin->listUnit[0]);
+		}
+	}
+
+	// touche entrée appuyer : deplacement des unités sélectionnés et fin du tour
+
+	if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
+	{
+		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
+		movement->unitSelected = false;
+		movement->MoveAllUnit();
+		gameState->GoToNextAction();
+		etat = 0;
+	}
 }
 
 
 void GameEngine::ExecuteReinforcementCommand()
 {
-	std::shared_ptr<Command> command = commands.front();
-	std::cout << "Reinforcement execution" << std::endl;
-	gameState->GoToNextAction();
+	/*std::shared_ptr<Command> command = commands.front();
+
+	std::shared_ptr<Reinforcements> reinforcement = std::dynamic_pointer_cast<Reinforcements>(gameState->currentAction);
+	
+	if(reinforcement->availableUnits.size() == 0 || command->pressedKey == KeyPressed::SPACE_BARRE)
+	{
+		reinforcement->unitSelected = false;*/
+		gameState->GoToNextAction();
+		etat = 0;
+	/*}
+
+	if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
+		if(country_index == -1){return;}
+		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		if(selected_country->owner != gameState->currentPlayer)
+		{
+			printf("ce pays ne vous appartient pas");
+			return;
+		}
+		reinforcement->unitSelected = true;
+		etat = 1;
+		return;
+	}
+
+	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		//reinforcement->PlaceUnit(reinforcement->availableUnits[0],)
+	}*/
+
 }
 
 
 void GameEngine::ExecuteInitialisationCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
-	std::cout << "Initialisation execution" << std::endl;
 	gameState->GoToNextAction();
 }
 
@@ -154,13 +254,13 @@ int GameEngine::GetCountryClicked(int mousePositionX, int mousePositionY)
 {
 	sf::Image image;
 	char table[NB_COUNTRY][40] = {COUNTRY_SPRITE_RESSOURCES};
-	//char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
+	char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
 	for (int i = 0; i < NB_COUNTRY; i++) { 
 		if (!(image.loadFromFile(table[i])))
           		printf("Cannot load image");
 		if(image.getPixel(mousePositionX,mousePositionY) != sf::Color::Transparent)
 		{
-			//std::cout << country_name[i] << std::endl;
+			std::cout << country_name[i] << std::endl;
 			return(i);
 		}
 	}
