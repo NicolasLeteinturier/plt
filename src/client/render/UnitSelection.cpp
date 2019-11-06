@@ -303,7 +303,8 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
     //afficher le nombre de troupe.
 	text.setFont(font);
         text.setString(str_def+" "+str_neutre+" "+str_att);
-	text.setPosition(posX,posY);
+	text.setPosition(posX+55,posY+50);
+        text.setScale(5,5);
         renderWindow->draw(text);     
     }
     }
@@ -352,8 +353,10 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
        } 
 //afficher le nombre de troupe.
 	text.setFont(font);
-        text.setString(str_def+" "+str_neutre+" "+str_att);
-	text.setPosition(posX,posY);
+        text.setString(str_def+"    "+str_neutre+"    "+str_att);
+	text.setPosition(posX+55,posY+50);
+        text.setScale(5,5);
+        text.setFillColor(sf::Color::Black);
         renderWindow->draw(text);      
     }
     }
