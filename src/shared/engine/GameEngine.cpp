@@ -187,11 +187,107 @@ void GameEngine::ExecuteMovementCommand()
 	if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
-		//if(mousePositionX <= )
-		if(movement->origin->listUnit.size() != 0)
+
+		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
+				{
+					if(movement->origin->listUnit[i]->type == Type::defensif)
+					{
+						movement->AddUnitToMove(movement->origin->listUnit[i]);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < movement->units.size(); i++)
+				{
+					if(movement->units[i]->type == Type::defensif)
+					{
+						movement->origin->AddUnit(movement->units[i]);
+						movement->units.erase(movement->units.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+
+		else if(command->mousePositionX <= 680 && command->mousePositionX >= 520)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
+				{
+					if(movement->origin->listUnit[i]->type == Type::neutre)
+					{
+						movement->AddUnitToMove(movement->origin->listUnit[i]);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < movement->units.size(); i++)
+				{
+					if(movement->units[i]->type == Type::neutre)
+					{
+						movement->origin->AddUnit(movement->units[i]);
+						movement->units.erase(movement->units.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+
+		else if(command->mousePositionX <= 930 && command->mousePositionX >= 770)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
+				{
+					if(movement->origin->listUnit[i]->type == Type::attaquant)
+					{
+						movement->AddUnitToMove(movement->origin->listUnit[i]);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < movement->units.size(); i++)
+				{
+					if(movement->units[i]->type == Type::attaquant)
+					{
+						movement->origin->AddUnit(movement->units[i]);
+						movement->units.erase(movement->units.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+
+		/*if(movement->origin->listUnit.size() != 0)
 		{
 			movement->AddUnitToMove(movement->origin->listUnit[0]);
-		}
+		}*/
 	}
 
 	// touche entrée appuyer : deplacement des unités sélectionnés et fin du tour
