@@ -256,16 +256,34 @@ void GameEngine::ExecuteAttackCommand()
 		{
 			attack->AddUnit(attack->defencerCountry->listUnit[i]);
 		}
-		//attack->displayAttack = true;
+		attack->displayAttack = true;
 		etat = 3;
 	}
 
 	if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
-		srand (time(NULL));
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
-		if(attack->attackerUnits.size() >= 3)
+		if(attack->attackerUnits.size() == 0)
+		{
+			etat = 0;
+			attack->displayAttack = false;
+			attack->AttackIsOver();
+			gameState->GoToNextAction();
+		}
+
+		if(attack->defencerUnits.size() == 0)
+		{
+			etat = 0;
+			attack->displayAttack = false;
+			gameState->ChangeCountryOwner(attack->defencerCountry, attack->attackerCountry->owner);
+			attack->AttackIsOver();
+			gameState->GoToNextAction();
+		}
+
+		srand (time(NULL));
+
+		/*if(attack->attackerUnits.size() >= 2)
 		{
 			int attacker_de_1 = rand()%6;
 			if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de_1++;}
@@ -275,15 +293,10 @@ void GameEngine::ExecuteAttackCommand()
 			if(attack->attackerUnits[1]->type == Type::attaquant){attacker_de_1++;}
 			if(attack->attackerUnits[1]->type == Type::defensif){attacker_de_1--;}
 
-			int attacker_de_3 = rand()%6;
-			if(attack->attackerUnits[2]->type == Type::attaquant){attacker_de_1++;}
-			if(attack->attackerUnits[2]->type == Type::defensif){attacker_de_1--;}
-
-			int attacker_max = std::max(std::max(attacker_de_1,attacker_de_2),attacker_de_3);
-			int attacker_int = std::min(std::max(std::max(attacker_de_1,attacker_de_2),std::max(attacker_de_1,attacker_de_3)),std::max(attacker_de_2,attacker_de_3));
+			int attacker_max = std::max(attacker_de_1,attacker_de_2);
 			int attacker_min = std::min(std::min(attacker_de_1,attacker_de_2),attacker_de_3);
 			
-			if(attack->defencerUnits.size() >= 2)
+			if(attack->defencerUnits.size() >= 2) 
 			{
 				int defencer_de_1 = rand()%6;
 				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
@@ -297,15 +310,104 @@ void GameEngine::ExecuteAttackCommand()
 				int defencer_min = std::min(defencer_de_1,defencer_de_2);
 
 				// Comparaison entre les dés
-				/*if(attacker_max >= attacker_max)
+				if(attacker_max >= defencer_max && attacker_min >= defencer_min)
 				{
+					attack->KillUnit(attack->defencerUnit[0]);
+					attack->KillUnit(attack->defencerUnit[0]);	
+				}
 
-				}*/
+				if(attacker_max >= defencer_max && attacker_min <= defencer_min)
+				{
+					attack->KillUnit(attack->defencerUnit[0]);
+					attack->KillUnit(attack->attackerUnit[1]);
+				}
 
+				if(attacker_max <= defencer_max && attacker_min >= defencer_min)
+				{
+					attack->KillUnit(attack->attackerUnit[0]);
+					attack->KillUnit(attack->defencerUnit[1]);	
+				}
+
+				if(attacker_max <= defencer_max && attacker_min <= defencer_min)
+				{
+					attack->KillUnit(attack->attackerUnit[0]);
+					attack->KillUnit(attack->attackerUnit[0]);
+				}
+			}
+
+			if(attack->defencerUnits.size() == 1) 
+			{
+				int defencer_de = rand()%6;
+				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
+				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
+
+				// Comparaison entre les dés
+				if(attacker_max >= defencer_de){attack->KillUnit(attack->defencerUnit[0]);}
+				else
+				{
+					attack->KillUnit(attack->attackerUnit[0]);
+					attack->KillUnit(attack->attackerUnit[0]);
+				}
 			}
 		}
 
+		else
+		{
+			int attacker_de = rand()%6;
+			if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de_1++;}
+			if(attack->attackerUnits[0]->type == Type::defensif){attacker_de_1--;}
+
+			if(attack->defencerUnits.size() >= 2) 
+			{
+				int defencer_de_1 = rand()%6;
+				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
+				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
+
+				int defencer_de_2 = rand()%6;
+				if(attack->defencerUnits[1]->type == Type::attaquant){attacker_de_1--;}
+				if(attack->defencerUnits[1]->type == Type::defensif){attacker_de_1++;}
+
+				int defencer_max = std::max(defencer_de_1,defencer_de_2);
+				int defencer_min = std::min(defencer_de_1,defencer_de_2);
+
+				// Comparaison entre les dés
+
+				if(defencer_max >= attacker_de){attack->KillUnit(attack->attackerUnit[0]);}
+				else
+				{
+					attack->KillUnit(attack->defencerUnit[0]);
+					attack->KillUnit(attack->defencerUnit[0]);
+				}
+
+			}
+			else
+			{
+				int defencer_de = rand()%6;
+				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
+				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
+
+				//Comparaison entre les dés
+
+			}
+			
+		}*/
+
+		int attacker_de;
+		int defencer_de;
+
+		if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de = rand()%8;}
+		else if(attack->attackerUnits[0]->type == Type::defensif){attacker_de = rand()%4;}
+		else if(attack->attackerUnits[0]->type == Type::neutre){attacker_de = rand()%6;}
+		if(attack->defencerUnits[0]->type == Type::attaquant){defencer_de = rand()%8;}
+		else if(attack->defencerUnits[0]->type == Type::defensif){defencer_de = rand()%4;}
+		else if(attack->defencerUnits[0]->type == Type::neutre){defencer_de = rand()%6;}
+
+		if(attacker_de > defencer_de){attack->KillUnit(attack->defencerUnits[0]);}
+		else if(attacker_de < defencer_de){attack->KillUnit(attack->attackerUnits[0]);}
+
 	}
+
+	return;
 
 }
 

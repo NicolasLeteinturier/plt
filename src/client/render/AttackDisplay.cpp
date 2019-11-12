@@ -86,7 +86,7 @@ if (!(image.loadFromFile("../res/unit_textures.png")))
 
 void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 
-	if (attack->displayAtack=true){
+	if (attack->displayAttack=true){
    //---------------------------------------//
    // declaration des variables des textures//
    //---------------------------------------//
