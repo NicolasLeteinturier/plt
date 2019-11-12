@@ -11,6 +11,7 @@ void testSFML() {
 
 #include <queue>
 #include <state.h>
+#include "../define.h"
 #include "render.h"
 #include "engine.h"
 
@@ -42,6 +43,19 @@ int main(int argc,char* argv[])
         Player2->id = "joueur 2";
         Player3->id = "joueur 3";
         Player4->id = "joueur 4";
+        
+	Player1->color = 0;
+	Player2->color = 1;
+	Player3->color = 2;
+	Player4->color = 3;
+
+	Player1->isAnIA = false;
+	Player2->isAnIA = false;
+	Player3->isAnIA = false;
+	Player4->isAnIA = false;
+
+	
+
         gameState->AddPlayer(Player1);
         gameState->AddPlayer(Player2);
         gameState->AddPlayer(Player3);
@@ -139,6 +153,8 @@ int main(int argc,char* argv[])
 	controler.renderWindow = window;
 	controler.engine = gameEngine;
 
+	sf::Text textMov;
+	sf::Font font;
 
 	sf::Image image;
 	if (!(image.loadFromFile("../res/font.png")))
@@ -148,6 +164,10 @@ int main(int argc,char* argv[])
 	sf::Sprite sprite;
 	sprite.setTexture(texture);
 	// run the program as long as the window is open
+
+	sf::Color colorTable[4] = {COLOR_TABLE};
+
+
 	while (window->isOpen())
 	{
 	        // check all the window's events that were triggered since the last iteration of the loop
@@ -160,12 +180,36 @@ int main(int argc,char* argv[])
         		if (event.type == sf::Event::Closed)
                 	window->close();
         	}
+	
+
+
 	window->clear();
 	gameEngine->ExecuteCommands();
 	window->draw(sprite);
 	scene.Draw();
         scene.Update();
+
+
+	std::string curact;
+if(gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
+		curact = "Movement" + gameState->currentPlayer->id;
+	if(gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
+		curact = "Reinforcement" + gameState->currentPlayer->id;
+	if(gameState->currentAction->GetActionType() == ActionType::_ATTACK)
+		curact = "Attack" + gameState->currentPlayer->id;
+
+
+
+	if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
+		    printf("font not found");
+	textMov.setFont(font);
+	textMov.setString(curact);
+	textMov.setPosition(10,10);
+	textMov.setFillColor(colorTable[gameState->currentPlayer->color]);
+	window->draw(textMov);
 	window->display();
+
+
     }
     
    return 0;

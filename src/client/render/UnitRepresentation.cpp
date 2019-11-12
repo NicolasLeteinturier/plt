@@ -37,9 +37,52 @@ UnitRepresentation::UnitRepresentation()
 }
 
 void UnitRepresentation::Update (std::shared_ptr<sf::RenderWindow> renderWindow){
+
+    /*if(currentAction->GetActionType() == ActionType::_MOVEMENT)
+	{
+	std::string curact = "Movement" + currentPlayer->id;
+	sf::Text textMov;
+        sf::Font font;
+        if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
+            printf("font not found");
+        textMov.setFont(font);
+        textMov.setString(curact);
+	textMov.setPosition(10,10);
+        renderWindow->draw(textMov);}
+
+    if(currentAction->GetActionType() == ActionType::_REINFORCEMENT)
+	{
+	std::string curact = "Reinforcement" + currentPlayer->id;
+	sf::Text textMov;
+        sf::Font font;
+        if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
+            printf("font not found");
+        textMov.setFont(font);
+        textMov.setString(curact);
+	textMov.setPosition(10,10);
+        renderWindow->draw(textMov);}
+
+    if(currentAction->GetActionType() == ActionType::_ATTACK)
+	{
+	std::string curact = "Attack" + currentPlayer->id;
+	sf::Text textMov;
+        sf::Font font;
+        if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
+            printf("font not found");
+        textMov.setFont(font);
+        textMov.setString(curact);
+	textMov.setPosition(10,10);
+        renderWindow->draw(textMov);}*/
+
+
+
+
+
+
     float tabX[NB_COUNTRY]={UNIT_POS_X};
     float tabY[NB_COUNTRY]={UNIT_POS_Y};
     float offset=10;
+
     for (int i = 0; i < NB_COUNTRY; i++) {
         std::shared_ptr<Country>  country = listCountry[i];
 

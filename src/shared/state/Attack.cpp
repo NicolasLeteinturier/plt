@@ -84,5 +84,36 @@ ActionType Attack::GetActionType()
 
 
 
+int Attack::FindTypeNumber(Type type,int fromAttackerOrDefencer){
+   /*0 for Attacker
+     1 for defender*/
+   int output=0;
+   if (fromAttackerOrDefencer=0){
+	   unsigned int n = attackerUnits.size();
+	   if (n == 0){
+	      printf("there must be at least one unit on this country");
+	      return 0;}
+	   unsigned int output = 0;
+	   for (unsigned int i = 0; i < n; i++){
+	      if(attackerUnits[i]->type == type){
+		output++;
+	      }
+	   }
+	}
+   if (fromAttackerOrDefencer=1){
+	   unsigned int n = defencerUnits.size();
+	   if (n == 0){
+	      printf("there must be at least one unit on this country");
+	      return 0;}
+	   unsigned int output = 0;
+	   for (unsigned int i = 0; i < n; i++){
+	      if(defencerUnits[i]->type == type){
+		output++;
+	      }
+	   }
+	}
+   return output;}
+
+
 
 

@@ -15,5 +15,7 @@
 
 #define UNIT_POS_Y 466,141,74,216,147,385,335,104,37,141,254,80,480,360,450,202,439,180
 
+#define COLOR_TABLE sf::Color::Red,sf::Color::Green,sf::Color::Blue,sf::Color::Black,
+
 #endif
 
