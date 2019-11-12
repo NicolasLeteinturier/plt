@@ -52,6 +52,7 @@ namespace engine {
 #include "../state/Attack.h"
 #include "../state/Initialisation.h"
 #include "../state/Reinforcements.h"
+#include <algorithm>
 
 unsigned int etat = 0;
 
@@ -65,28 +66,6 @@ GameEngine::GameEngine()
 
 void GameEngine::ExecuteCommands()
 {
-	/*if(commands.size()!=0)
-	{
-		std::shared_ptr<Command> command = commands[0];
-		commands.erase(commands.begin());
-		if(command->pressedKey == KeyPressed::SPACE_BARRE)
-		{
-			gameState->GoToNextAction();
-		}
-		if(command->pressedKey == KeyPressed::LEFT_CLICK || command->pressedKey == KeyPressed::RIGHT_CLICK)
-		{
-			sf::Image image;
-			char table[NB_COUNTRY][40] = {COUNTRY_SPRITE_RESSOURCES};
-			char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
-			for (int i = 0; i < NB_COUNTRY; i++) { 
-				if (!(image.loadFromFile(table[i])))
-          				printf("Cannot load image");
-				if(image.getPixel(command->mousePositionX,command->mousePositionY) != sf::Color::Transparent && image.getPixel(command->mousePositionX,command->mousePositionY) != sf::Color::White && image.getPixel(command->mousePositionX,command->mousePositionY) != sf::Color::Black)
-					std::cout << country_name[i] << std::endl;
-			}
-
-		}
-	}*/
 	if(commands.empty())
 	{
 		return;
@@ -127,22 +106,217 @@ void GameEngine::ExecuteCommands()
 void GameEngine::ExecuteAttackCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
-	gameState->GoToNextAction();
+
+	if(command->pressedKey == KeyPressed::ESCAPE)
+	{
+		gameState->GoToNextAction();
+		etat = 0;
+	}
+
+	// etat vaut 0 : selection du pays attaquant
+	if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
+		if(country_index == -1){return;}
+		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		if(selected_country->owner != gameState->currentPlayer)
+		{
+			printf("ce pays ne vous appartient pas\n");
+			return;
+		}
+		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
+		attack->attackerCountry = selected_country;
+		etat = 1;
+		return;
+	}
+
+	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
+		if(country_index == -1){return;}
+		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		if(selected_country->owner == gameState->currentPlayer)
+		{
+			printf("vous ne pouvez pas vous attaquer vous même !!!\n");
+			return;
+		}
+		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
+		attack->defencerCountry = selected_country;
+		attack->unitSelected = true;
+		etat = 2;
+		return;
+	}
+
+	if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	{
+		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
+
+		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
+				{
+					if(attack->attackerCountry->listUnit[i]->type == Type::defensif)
+					{
+						attack->AddUnit(attack->attackerCountry->listUnit[i]);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
+				{
+					if(attack->attackerUnits[i]->type == Type::defensif)
+					{
+						attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
+						attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+
+		else if(command->mousePositionX <= 680 && command->mousePositionX >= 520)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
+				{
+					if(attack->attackerCountry->listUnit[i]->type == Type::neutre)
+					{
+						attack->AddUnit(attack->attackerCountry->listUnit[i]);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
+				{
+					if(attack->attackerUnits[i]->type == Type::neutre)
+					{
+						attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
+						attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+
+		else if(command->mousePositionX <= 930 && command->mousePositionX >= 770)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
+				{
+					if(attack->attackerCountry->listUnit[i]->type == Type::attaquant)
+					{
+						attack->AddUnit(attack->attackerCountry->listUnit[i]);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
+				{
+					if(attack->attackerUnits[i]->type == Type::attaquant)
+					{
+						attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
+						attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+	}
+
+	if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
+	{
+		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
+		attack->unitSelected = false;
+		for(unsigned int i = 0; i < attack->defencerCountry->listUnit.size(); i++)
+		{
+			attack->AddUnit(attack->defencerCountry->listUnit[i]);
+		}
+		//attack->displayAttack = true;
+		etat = 3;
+	}
+
+	if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
+	{
+		srand (time(NULL));
+		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
+
+		if(attack->attackerUnits.size() >= 3)
+		{
+			int attacker_de_1 = rand()%6;
+			if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de_1++;}
+			if(attack->attackerUnits[0]->type == Type::defensif){attacker_de_1--;}
+
+			int attacker_de_2 = rand()%6;
+			if(attack->attackerUnits[1]->type == Type::attaquant){attacker_de_1++;}
+			if(attack->attackerUnits[1]->type == Type::defensif){attacker_de_1--;}
+
+			int attacker_de_3 = rand()%6;
+			if(attack->attackerUnits[2]->type == Type::attaquant){attacker_de_1++;}
+			if(attack->attackerUnits[2]->type == Type::defensif){attacker_de_1--;}
+
+			int attacker_max = std::max(std::max(attacker_de_1,attacker_de_2),attacker_de_3);
+			int attacker_int = std::min(std::max(std::max(attacker_de_1,attacker_de_2),std::max(attacker_de_1,attacker_de_3)),std::max(attacker_de_2,attacker_de_3));
+			int attacker_min = std::min(std::min(attacker_de_1,attacker_de_2),attacker_de_3);
+			
+			if(attack->defencerUnits.size() >= 2)
+			{
+				int defencer_de_1 = rand()%6;
+				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
+				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
+
+				int defencer_de_2 = rand()%6;
+				if(attack->defencerUnits[1]->type == Type::attaquant){attacker_de_1--;}
+				if(attack->defencerUnits[1]->type == Type::defensif){attacker_de_1++;}
+
+				int defencer_max = std::max(defencer_de_1,defencer_de_2);
+				int defencer_min = std::min(defencer_de_1,defencer_de_2);
+
+				// Comparaison entre les dés
+				/*if(attacker_max >= attacker_max)
+				{
+
+				}*/
+
+			}
+		}
+
+	}
+
 }
 
 
 void GameEngine::ExecuteMovementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
-	
-	if(command->pressedKey == KeyPressed::SPACE_BARRE)
-	{
-		gameState->GoToNextAction();
-		etat = 0;
-	}
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
 	{
+		gameState->GoToNextAction();
 		etat = 0;
 	}
 
