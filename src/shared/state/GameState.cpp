@@ -12,13 +12,28 @@ GameState::GameState()
 {
 	std::shared_ptr<Initialisation> init = std::make_shared<Initialisation>();
 	char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
+	int country_neighboor[NB_OF_NEIGHBOOR] = {COUNTRY_NEIGHBOOR};
+	int country_nb_neighboor[NB_COUNTRY] = {COUNTRY_NB_OF_NEIGHBOOR};
+
 	for(unsigned int i = 0; i < NB_COUNTRY; i++)
 	{
 		std::shared_ptr<Country> new_country = std::make_shared<Country>();
 		new_country->id = country_name[i];
 		listCountry.push_back(new_country);
-		init->unattributedCountry.push_back(new_country);
 	}
+
+	unsigned int compteur_neighboor = 0;
+
+	for(unsigned int i = 0; i < NB_COUNTRY; i++)
+	{
+		for(unsigned int j = 0; j < country_nb_neighboor[i]; j++)
+		{
+			listCountry[i]->AddNeighboor(listCountry[country_neighboor[compteur_neighboor]]);
+			compteur_neighboor++;
+		}
+		init->unattributedCountry.push_back(listCountry[i]);
+	}
+
 	currentAction = init;
 	return;
 }

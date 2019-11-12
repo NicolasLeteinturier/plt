@@ -7,7 +7,9 @@
 
 #define COUNTRY_NAME	"Argentine","Asie de l'Est","Asie du Nord","Asie du Sud","Asie de l'Ouest","Bresil","Afrique Central","Europe de l'Est","Europe du Nord","Europe de l'Ouest","Afrique du Nord","Amerique du Nord","Est de l'Oceanie","Nord de l'Oceanie","Ouest de l'Oceanie","Orient","Afrique du Sud","USA"
 
-#define COUNTRY_NEIGHBOOR	{{5},{2,3,4},{1,3,4},{}
+#define COUNTRY_NB_OF_NEIGHBOOR	1,3,3,5,4,3,2,4,3,3,3,3,2,3,2,4,1,2
+#define NB_OF_NEIGHBOOR	51
+#define COUNTRY_NEIGHBOOR	5,2,3,11,1,3,4,1,2,4,13,15,2,3,15,7,0,17,10,10,16,4,15,8,9,7,9,11,7,8,10,9,6,15,8,1,17,13,14,3,12,14,12,13,10,7,3,4,6,11,5
 
 #define UNIT_POS_X 270,766,878,875,916,300,640,665,428,567,523,135,1022,1029,1080,707,610,118
 

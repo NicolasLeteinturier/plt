@@ -1,3 +1,4 @@
+#include <SFML/Graphics.hpp>
 #include "Player.h"
 #include <math.h>
 #include "../../define.h"
