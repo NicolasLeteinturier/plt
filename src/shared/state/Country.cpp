@@ -8,9 +8,9 @@ Country::Country()
 
 int Country::FindTypeNumber(Type type){
    unsigned int n = listUnit.size();
-   if (n == 0){
+   /*if (n == 0){
       printf("there must be at least one unit on this country");
-      return 0;}
+      return 0;}*/
    unsigned int output = 0;
    for (unsigned int i = 0; i < n; i++){
       if(listUnit[i]->type == type){
@@ -28,9 +28,9 @@ void Country::AddUnit (std::shared_ptr<Unit> unit){
 
 void Country::DeleteUnit (std::shared_ptr<Unit> unit){
    unsigned int n= listUnit.size();
-   if (n==1){ 
+   /*if (n==1){ 
       printf("there must be at least one unit on this country you can't delete");
-      return;}
+      return;}*/
    for (unsigned int i = 0; i < n; i++){
       if(listUnit[i] == unit){
           listUnit.erase(listUnit.begin()+i);
