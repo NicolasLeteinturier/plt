@@ -61,7 +61,7 @@ void Attack::KillUnit(std::shared_ptr<Unit> unit)
 
 void Attack::AttackIsOver()
 {
-	if(attackerCountry->listUnit.size() == 0)
+	if(attackerUnits.size() == 0)
 	{
 		unsigned int n = defencerUnits.size();
 		for(unsigned int i = 0; i < n; i++)
@@ -75,7 +75,7 @@ void Attack::AttackIsOver()
 		return;
 	}
 
-	else if(defencerCountry->listUnit.size() == 0)
+	else if(defencerUnits.size() == 0)
 	{
 		unsigned int n = attackerUnits.size();
 		for(unsigned int i = 0; i < n; i++)

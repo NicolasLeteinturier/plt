@@ -165,17 +165,17 @@ void GameEngine::ExecuteAttackCommand()
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
-		// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
-		if(attack->attackerCountry->listUnit.size() <= 1)
-		{
-			printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-			return;
-		}
-
 		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
 		{
 			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
 			{
+				// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
+				if(attack->attackerCountry->listUnit.size() <= 1)
+				{
+					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+					return;
+				}
+
 				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
 				{
 					if(attack->attackerCountry->listUnit[i]->type == Type::defensif)
@@ -208,8 +208,16 @@ void GameEngine::ExecuteAttackCommand()
 		{
 			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
 			{
+				// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
+				if(attack->attackerCountry->listUnit.size() <= 1)
+				{
+					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+					return;
+				}
+
 				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
 				{
+
 					if(attack->attackerCountry->listUnit[i]->type == Type::neutre)
 					{
 						attack->AddUnit(attack->attackerCountry->listUnit[i]);
@@ -240,6 +248,13 @@ void GameEngine::ExecuteAttackCommand()
 		{
 			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
 			{
+				// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
+				if(attack->attackerCountry->listUnit.size() <= 1)
+				{
+					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+					return;
+				}
+
 				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
 				{
 					if(attack->attackerCountry->listUnit[i]->type == Type::attaquant)
@@ -500,18 +515,17 @@ void GameEngine::ExecuteMovementCommand()
 	{
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 
-		// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
-		if(movement->origin->listUnit.size() <= 1)
-		{
-			printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-			return;
-		}
-
-
 		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
 		{
 			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
 			{
+				// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
+				if(movement->origin->listUnit.size() <= 1)
+				{
+					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+					return;
+				}
+
 				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
 				{
 					if(movement->origin->listUnit[i]->type == Type::defensif)
@@ -544,6 +558,13 @@ void GameEngine::ExecuteMovementCommand()
 		{
 			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
 			{
+				// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
+				if(movement->origin->listUnit.size() <= 1)
+				{
+					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+					return;
+				}
+
 				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
 				{
 					if(movement->origin->listUnit[i]->type == Type::neutre)
@@ -576,6 +597,13 @@ void GameEngine::ExecuteMovementCommand()
 		{
 			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
 			{
+				// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
+				if(movement->origin->listUnit.size() <= 1)
+				{
+					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+					return;
+				}
+
 				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
 				{
 					if(movement->origin->listUnit[i]->type == Type::attaquant)
@@ -604,10 +632,6 @@ void GameEngine::ExecuteMovementCommand()
 			else {return;}
 		}
 
-		/*if(movement->origin->listUnit.size() != 0)
-		{
-			movement->AddUnitToMove(movement->origin->listUnit[0]);
-		}*/
 	}
 
 	// touche entrée appuyer : deplacement des unités sélectionnés et fin du tour
