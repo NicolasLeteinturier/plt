@@ -122,7 +122,7 @@ void GameEngine::ExecuteAttackCommand()
 		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
 		if(selected_country->owner != gameState->currentPlayer)
 		{
-			printf("ce pays ne vous appartient pas\n");
+			printf("Ce pays ne vous appartient pas\n");
 			return;
 		}
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
@@ -131,6 +131,7 @@ void GameEngine::ExecuteAttackCommand()
 		return;
 	}
 
+	// etat vaut 1 : selection du pays à attaquer
 	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
@@ -138,19 +139,38 @@ void GameEngine::ExecuteAttackCommand()
 		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
 		if(selected_country->owner == gameState->currentPlayer)
 		{
-			printf("vous ne pouvez pas vous attaquer vous même !!!\n");
+			printf("Vous ne pouvez pas vous attaquer vous même !!!\n");
 			return;
 		}
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
-		attack->defencerCountry = selected_country;
-		attack->unitSelected = true;
-		etat = 2;
-		return;
+
+
+		// On verifie que le pays selectionné est bien voisin du pays de l'attaquant
+		for(unsigned int i = 0; i < attack->attackerCountry->neighboor.size(); i++)
+		{
+			if(attack->attackerCountry->neighboor[i] == selected_country)
+			{
+				attack->defencerCountry = selected_country;
+				attack->unitSelected = true;
+				etat = 2;
+				return;
+			}
+		}
+
+		printf("Ce pays n'est pas voisin du vôtre\n");
 	}
 
+	// etat vaut 2 : l'attaquant selectionne les unités avec lesquelles il souhaite attaquer
 	if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
+
+		// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
+		if(attack->attackerCountry->listUnit.size() <= 1)
+		{
+			printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+			return;
+		}
 
 		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
 		{
@@ -249,6 +269,7 @@ void GameEngine::ExecuteAttackCommand()
 		}
 	}
 
+	// Si le joueur presse la touche entrée on passe à l'état suivant et on ajoute les unités du pays defenseur aux unités défensives
 	if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
@@ -266,6 +287,7 @@ void GameEngine::ExecuteAttackCommand()
 		etat = 3;
 	}
 
+	// etat vaut 3 : on lance l'attaque ...
 	if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
