@@ -443,8 +443,8 @@ void GameEngine::ExecuteAttackCommand()
 		if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de = rand()%8;}
 		else if(attack->attackerUnits[0]->type == Type::defensif){attacker_de = rand()%4;}
 		else if(attack->attackerUnits[0]->type == Type::neutre){attacker_de = rand()%6;}
-		if(attack->defencerUnits[0]->type == Type::attaquant){defencer_de = rand()%8;}
-		else if(attack->defencerUnits[0]->type == Type::defensif){defencer_de = rand()%4;}
+		if(attack->defencerUnits[0]->type == Type::attaquant){defencer_de = rand()%4;}
+		else if(attack->defencerUnits[0]->type == Type::defensif){defencer_de = rand()%8;}
 		else if(attack->defencerUnits[0]->type == Type::neutre){defencer_de = rand()%6;}
 
 		if(attacker_de > defencer_de){attack->KillUnit(attack->defencerUnits[0]);}
