@@ -12,8 +12,8 @@ void Attack::AddUnit(std::shared_ptr<Unit> unit)
 	{
 		if(attackerCountry->listUnit[i] == unit)
 		{
-			attackerUnits.push_back(unit);		//On rajoute l'unité à la liste des unités de l'attaquant
-			attackerCountry->listUnit.erase(attackerCountry->listUnit.begin() + i);			//On efface cette même unité des unités disponible dans le pays (elle sera remise à la fin si elle a survecu)
+			attackerUnits.push_back(unit);
+			attackerCountry->listUnit.erase(attackerCountry->listUnit.begin() + i);
 			return;
 		}
 	}
@@ -22,13 +22,13 @@ void Attack::AddUnit(std::shared_ptr<Unit> unit)
 	{
 		if(defencerCountry->listUnit[i] == unit)
 		{
-			defencerUnits.push_back(unit);		//On rajoute l'unité à la liste des unités du defenseur
+			defencerUnits.push_back(unit);
 			defencerCountry->listUnit.erase(defencerCountry->listUnit.begin() + i);
 			return;
 		}
 	}
 
-	printf("Cette unité n'appartient ni au pays attaquant, ni au pays attaqué, elle n'a pas été ajouté");
+	printf("Cette unité n'appartient ni au pays attaquant, ni au pays attaqué, elle n'a pas été ajouté\n");
 	return;
 
 }
@@ -53,7 +53,7 @@ void Attack::KillUnit(std::shared_ptr<Unit> unit)
 		}
 	}
 
-	printf("Cette unité n'a pas été trouvé dans la bataille, peut-être est-elle déjà morte ?");
+	printf("Cette unité n'a pas été trouvé dans la bataille, peut-être est-elle déjà morte ?\n");
 
 	return;
 

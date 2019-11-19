@@ -18,33 +18,35 @@ void Movement::MoveUnit(std::shared_ptr<Unit> unit)
 		}
 	}
 
-	printf("Cette unité ne fait pas partie des unités à deplacer");
+	printf("Cette unité ne fait pas partie des unités à deplacer\n");
 
 	return;
 }
 
 void Movement::MoveAllUnit()
 {
-	for(unsigned int i = 0; i < units.size(); i++)
+	unsigned int n = units.size();
+	for(unsigned int i = 0; i < n; i++)
 	{
-		destination->listUnit.push_back(units[i]);
-		units.erase(units.begin() + i);
+		destination->listUnit.push_back(units[0]);
+		units.erase(units.begin());
 	}
 
-	printf("Les mouvements sont finis, toutes les unités ont atteint leurs destinations");
+	printf("Les mouvements sont finis, toutes les unités ont atteint leurs destinations\n");
 
 	return;
 }
 
 void Movement::StopMovement()
 {
-	for(unsigned int i = 0; i < units.size(); i++)
+	unsigned int n = units.size();
+	for(unsigned int i = 0; i < n; i++)
 	{
-		origin->listUnit.push_back(units[i]);
-		units.erase(units.begin() + i);
+		origin->listUnit.push_back(units[0]);
+		units.erase(units.begin());
 	}
 
-	printf("Les mouvements sont arrêté, toutes les unités non déplacé sont revenu à leur pays d'origine");
+	printf("Les mouvements sont arrêté, toutes les unités non déplacé sont revenu à leur pays d'origine\n");
 
 	return;
 }
@@ -55,13 +57,12 @@ void Movement::AddUnitToMove(std::shared_ptr<Unit> unit)
 	{
 		if(origin->listUnit[i] == unit)
 		{
-			units.push_back(unit);		//On rajoute l'unité à la liste des unités de l'attaquant
-			origin->listUnit.erase(origin->listUnit.begin() + i);			//On efface cette même unité des unités disponible dans le pays (elle sera remise à la fin si elle a survecu)
+			units.push_back(unit);
+			origin->listUnit.erase(origin->listUnit.begin() + i);
 			return;
 		}
 	}
 
-	printf("Cette unité n'appartient ni au pays attaquant, ni au pays attaqué, elle n'a pas été ajouté");
 	return;
 }
 

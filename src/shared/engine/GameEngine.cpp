@@ -305,8 +305,8 @@ void GameEngine::ExecuteAttackCommand()
 		{
 			etat = 0;
 			attack->displayAttack = false;
-			gameState->ChangeCountryOwner(attack->defencerCountry, attack->attackerCountry->owner);
 			attack->AttackIsOver();
+			gameState->ChangeCountryOwner(attack->defencerCountry, attack->attackerCountry->owner);
 			gameState->GoToNextAction();
 			return;
 		}
@@ -494,11 +494,19 @@ void GameEngine::ExecuteMovementCommand()
 		return;
 	}
 
-	// etat vaut 2 : selection des unités
+	// etat vaut 2 : selection des unités à deplacer
 
 	if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
+
+		// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
+		if(movement->origin->listUnit.size() <= 1)
+		{
+			printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+			return;
+		}
+
 
 		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
 		{
