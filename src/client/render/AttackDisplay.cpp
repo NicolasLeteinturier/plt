@@ -15,7 +15,7 @@ AttackDisplay::AttackDisplay()
    // declaration des variables des textures//
    //---------------------------------------//
 
-int sizeX = 1227;
+//int sizeX = 1227;
 int sizeY = 628;
 
 int unitOffsetX =220;
@@ -42,7 +42,6 @@ if (!(image.loadFromFile("../res/attaque.png")))
    attaque_graph->sprite = sprite_att;
    attaque_graph->sprite.setTexture(attaque_graph->texture);
    attaque_graph->sprite.setPosition(sf::Vector2f(winPosX,0));
-   //reinforcement_graph->sprite.setRotation(rot);
    attaque_graph->sprite.setScale(1,1);
    listGraphicElement.push_back(attaque_graph);
 
@@ -59,6 +58,7 @@ if (!(image.loadFromFile("../res/unit_textures.png")))
    unit1->sprite = sprite1;
    unit1->sprite.setTexture(unit1->texture);
    unit1->sprite.setPosition(sf::Vector2f(unitOffsetX,unitTopOffsetY));
+   unit1->sprite.setScale(0.5,0.5);
 
    listGraphicElement.push_back(unit1);
 
@@ -75,6 +75,7 @@ if (!(image.loadFromFile("../res/unit_textures.png")))
    unit2->sprite = sprite2;
    unit2->sprite.setTexture(unit2->texture);
    unit2->sprite.setPosition(sf::Vector2f(unitOffsetX,unitBotOffsetY));
+   unit2->sprite.setScale(0.5,0.5);
 
    listGraphicElement.push_back(unit2);
 
@@ -86,20 +87,20 @@ if (!(image.loadFromFile("../res/unit_textures.png")))
 
 void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 
-	if (attack->displayAttack=true){
+	if (attack->displayAttack){
    //---------------------------------------//
    // declaration des variables des textures//
    //---------------------------------------//
 
 	int sizeX = 1227;
-	int sizeY = 628;
+	unsigned int sizeY = 628;
 
-	int unitOffsetX =220;
-	int unitTopOffsetY =20;
+	unsigned int unitOffsetX =220;
+	unsigned int unitTopOffsetY =20;
 
-	int unitBotOffsetY =500;
+	unsigned int unitBotOffsetY =500;
 
-	int winPosX =150;
+	unsigned int winPosX =150;
 
 	//---------//
 	//graphique//
@@ -144,7 +145,7 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         text.setFont(font);
         text.setString(str_def+" "+str_neutre+" "+str_att);
 	text.setPosition(unitOffsetX+55,unitTopOffsetY+50);
-        text.setScale(5,5);
+        text.setScale(3,3);
         renderWindow->draw(text); 
 
 
@@ -180,7 +181,7 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         text2.setFont(font);
         text2.setString(str_def2+" "+str_neutre2+" "+str_att2);
 	text2.setPosition(unitOffsetX+55,unitBotOffsetY+50);
-        text2.setScale(5,5);
+        text2.setScale(3,3);
         renderWindow->draw(text2);
 
 
@@ -192,21 +193,27 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 	int Yoffset = 300;
 	float rectPosX = (sizeX/2)-(width/2);
 
-	float sizeAtt= attCmpt*(sizeY-Yoffset)/(attCmpt + defCmpt);
+	float sizeAtt= attCmpt*(667-Yoffset)/(attCmpt + defCmpt);
 
 
         sf::RectangleShape rectangleTop;
 	rectangleTop.setSize(sf::Vector2f(width, sizeAtt));
 	rectangleTop.setOutlineColor(sf::Color::Red);
+	rectangleTop.setFillColor(sf::Color::Red);
 	rectangleTop.setPosition(rectPosX, Yoffset/2);//////////////////////////////
 
-	float sizeDef= defCmpt*(sizeY-Yoffset)/(attCmpt + defCmpt);
+	float sizeDef= defCmpt*(667-Yoffset)/(attCmpt + defCmpt);
 
         sf::RectangleShape rectangleBot;
 	rectangleBot.setSize(sf::Vector2f(width, sizeDef));
 	rectangleBot.setOutlineColor(sf::Color::Green);
+	rectangleBot.setFillColor(sf::Color::Green);
 	rectangleBot.setPosition(rectPosX, Yoffset/2+sizeAtt+5);//////////////////////////////
+	renderWindow->draw(rectangleTop);
+	renderWindow->draw(rectangleBot);
 }
+
+	return;
 
 }
 
