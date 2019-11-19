@@ -298,6 +298,7 @@ void GameEngine::ExecuteAttackCommand()
 			attack->displayAttack = false;
 			attack->AttackIsOver();
 			gameState->GoToNextAction();
+			return;
 		}
 
 		if(attack->defencerUnits.size() == 0)
@@ -307,6 +308,7 @@ void GameEngine::ExecuteAttackCommand()
 			gameState->ChangeCountryOwner(attack->defencerCountry, attack->attackerCountry->owner);
 			attack->AttackIsOver();
 			gameState->GoToNextAction();
+			return;
 		}
 
 		srand (time(NULL));
