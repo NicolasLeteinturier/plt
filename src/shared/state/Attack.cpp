@@ -61,6 +61,34 @@ void Attack::KillUnit(std::shared_ptr<Unit> unit)
 
 void Attack::AttackIsOver()
 {
+	if(attackerCountry->listUnit.size() == 0)
+	{
+		unsigned int n = defencerUnits.size();
+		for(unsigned int i = 0; i < n; i++)
+		{
+			defencerCountry->listUnit.push_back(defencerUnits[0]);
+			defencerUnits.erase(defencerUnits.begin());
+		}
+
+		printf("L'attaquant à perdu, les unités du defenseur restante ont été remises dans leur pays d'origine\n");
+
+		return;
+	}
+
+	else if(defencerCountry->listUnit.size() == 0)
+	{
+		unsigned int n = attackerUnits.size();
+		for(unsigned int i = 0; i < n; i++)
+		{
+			defencerCountry->listUnit.push_back(attackerUnits[0]);
+			attackerUnits.erase(attackerUnits.begin());
+		}
+
+		printf("Le defenseur à perdu, les unités de l'attaquant ont été mises dans le pays du defenseur\n");
+
+		return;
+	}
+
 	for(unsigned int i = 0; i < defencerUnits.size(); i++)
 	{
 		defencerCountry->listUnit.push_back(defencerUnits[i]);
@@ -73,7 +101,7 @@ void Attack::AttackIsOver()
 		attackerUnits.erase(attackerUnits.begin() + i);
 	}
 
-	printf("'attaque est fini, toutes les unités survivantes on été remise dans leur pays d'origine");
+	printf("L'attaque est fini, toutes les unités survivantes on été remise dans leur pays d'origine\n");
 
 	return;
 }
