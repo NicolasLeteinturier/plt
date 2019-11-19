@@ -86,18 +86,18 @@ BOOST_AUTO_TEST_CASE(TestCountry)
    // Test de la fonction DeleteUnit, elle doit supprimer une unité
    pays1->DeleteUnit(unit1p);
 
-   //BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
-   //BOOST_CHECK_EQUAL(pays2->listUnit.size(),2);
+   BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
+   BOOST_CHECK_EQUAL(pays2->listUnit.size(),2);
 
    // pays1 n'ayant qu'une dernière unité, cette dernière ne peut normalement pas être supprimer
    pays1->DeleteUnit(unit1);
 
-   //BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
+   BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
 
    // Test de GetEnemiesCountry()
-   //BOOST_CHECK_EQUAL(pays1->GetEnemiesCountry().size(),1);
+   BOOST_CHECK_EQUAL(pays1->GetEnemiesCountry().size(),1);
    // Test de FindTypeNumber()
-   //BOOST_CHECK_EQUAL(pays2->FindTypeNumber(type),1);
+   BOOST_CHECK_EQUAL(pays2->FindTypeNumber(type),1);
 
 }
 
@@ -144,20 +144,20 @@ BOOST_AUTO_TEST_CASE(TestAttack)
   // Cette unité n'appartient à aucun des pays impliqué elle ne peut pas être ajouté à l'attaque
   attack.AddUnit(unit3);
 
-  //BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
-  //BOOST_CHECK_EQUAL(pays2->listUnit.size(),1);
-  //BOOST_CHECK_EQUAL(attack.attackerUnits.size(),1);
-  //BOOST_CHECK_EQUAL(attack.defencerUnits.size(),1);
+  BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
+  BOOST_CHECK_EQUAL(pays2->listUnit.size(),1);
+  BOOST_CHECK_EQUAL(attack.attackerUnits.size(),1);
+  BOOST_CHECK_EQUAL(attack.defencerUnits.size(),1);
 
   attack.KillUnit(unit1);
-  //BOOST_CHECK_EQUAL(attack.attackerUnits.size(),0);
+  BOOST_CHECK_EQUAL(attack.attackerUnits.size(),0);
   
   attack.AttackIsOver();
-  //BOOST_CHECK_EQUAL(attack.attackerUnits.size(),0);
-  //BOOST_CHECK_EQUAL(attack.defencerUnits.size(),0);
+  BOOST_CHECK_EQUAL(attack.attackerUnits.size(),0);
+  BOOST_CHECK_EQUAL(attack.defencerUnits.size(),0);
 
-  //BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
-  //BOOST_CHECK_EQUAL(pays2->listUnit.size(),2);
+  BOOST_CHECK_EQUAL(pays1->listUnit.size(),1);
+  BOOST_CHECK_EQUAL(pays2->listUnit.size(),2);
 
 }
 
