@@ -211,18 +211,18 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 
 
    	//definir le nombre de chaque type pour chaque territoire
-	/*Attack attack=Attack();
-   	unsigned int n = attack.attackerUnits.size();
+	//Attack attack=Attack();
+   	unsigned int n = rein->selectedUnits.size();
 
 	unsigned int attunits = 0;
 	unsigned int neuunits = 0;
 	unsigned int defunits = 0;
 	   for (unsigned int i = 0; i < n; i++){
-	      if(attack.attackerUnits[i]->type == Type::attaquant)
+	      if(rein->selectedUnits[i]->type == Type::attaquant)
 		attunits++;
-	      if(attack.attackerUnits[i]->type == Type::neutre)
+	      if(rein->selectedUnits[i]->type == Type::neutre)
 		neuunits++;
-	      if(attack.attackerUnits[i]->type == Type::defensif)
+	      if(rein->selectedUnits[i]->type == Type::defensif)
 		defunits++;     
 	   }
       	std::string str_att = std::to_string(attunits);
@@ -236,7 +236,7 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 	sf::Text text;
         sf::Font font;
         if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
-            printf("font not found");*/
+            printf("font not found");
 
 
 
@@ -250,10 +250,10 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 
 
 	//afficher le nombre de troupe.
-	/*text.setFont(font);
+	text.setFont(font);
         text.setString(str_def+" "+str_neutre+" "+str_att);
 	text.setPosition(posX,posY);
-        renderWindow->draw(text); */    
+        renderWindow->draw(text);    
     }
     }
 

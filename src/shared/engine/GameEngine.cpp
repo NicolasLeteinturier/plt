@@ -649,22 +649,23 @@ void GameEngine::ExecuteMovementCommand()
 
 void GameEngine::ExecuteReinforcementCommand()
 {
-	/*std::shared_ptr<Command> command = commands.front();
+	std::shared_ptr<Command> command = commands.front();
 
 	std::shared_ptr<Reinforcements> reinforcement = std::dynamic_pointer_cast<Reinforcements>(gameState->currentAction);
+	static std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 	
-	if(reinforcement->availableUnits.size() == 0 || command->pressedKey == KeyPressed::SPACE_BARRE)
+	if((reinforcement->availableUnits.size() == 0 && reinforcement->selectedUnits.size() == 0) || command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
-		reinforcement->unitSelected = false;*/
+		reinforcement->unitSelected = false;
 		gameState->GoToNextAction();
 		etat = 0;
-	/*}
+	}
 
 	if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
-		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		selected_country = gameState->listCountry[country_index];
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("ce pays ne vous appartient pas");
@@ -677,8 +678,116 @@ void GameEngine::ExecuteReinforcementCommand()
 
 	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		//reinforcement->PlaceUnit(reinforcement->availableUnits[0],)
-	}*/
+		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				{
+					if(reinforcement->availableUnits[i]->type == Type::defensif)
+					{
+						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
+						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
+				{
+					if(reinforcement->selectedUnits[i]->type == Type::defensif)
+					{
+						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
+						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+
+		else if(command->mousePositionX <= 680 && command->mousePositionX >= 520)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				{
+					if(reinforcement->availableUnits[i]->type == Type::neutre)
+					{
+						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
+						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				{
+					if(reinforcement->selectedUnits[i]->type == Type::neutre)
+					{
+						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
+						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+
+		else if(command->mousePositionX <= 930 && command->mousePositionX >= 770)
+		{
+			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			{
+				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				{
+					if(reinforcement->availableUnits[i]->type == Type::attaquant)
+					{
+						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
+						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			{
+				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				{
+					if(reinforcement->selectedUnits[i]->type == Type::attaquant)
+					{
+						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
+						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
+						break;
+					}
+				}
+				return;
+			}
+
+			else {return;}
+		}
+	}
+
+	if(etat == 1 && command->pressedKey == KeyPressed::ENTER)
+	{	
+		unsigned int n = reinforcement->selectedUnits.size();
+		for(unsigned int i = 0; i < n; i++)
+		{
+			reinforcement->PlaceUnit(reinforcement->selectedUnits[0],selected_country);
+		}
+		reinforcement->unitSelected = false;
+		etat = 0;
+	}
 
 }
 

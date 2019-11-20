@@ -8,12 +8,13 @@ Reinforcements::Reinforcements()
 
 void Reinforcements::PlaceUnit(std::shared_ptr<Unit> unit, std::shared_ptr<Country> country)
 {
-	country->listUnit.push_back(unit);
-	for(unsigned int i = 0; i < availableUnits.size(); i++)
+	for(unsigned int i = 0; i < selectedUnits.size(); i++)
 	{
-		if(availableUnits[i] == unit)
+		if(selectedUnits[i] == unit)
 		{
-			availableUnits.erase(availableUnits.begin() + i);
+			country->AddUnit(unit);
+			selectedUnits.erase(selectedUnits.begin() + i);
+			return;
 		}
 	}
 }
@@ -21,9 +22,15 @@ void Reinforcements::PlaceUnit(std::shared_ptr<Unit> unit, std::shared_ptr<Count
 void Reinforcements::EndReinforcements()
 {
 	srand (time(NULL));
-	while(availableUnits.size() != 0)
+	unsigned int n = availableUnits.size();
+	for(unsigned int i = 0; i < n; i++)
 	{
-		PlaceUnit(availableUnits[rand()%availableUnits.size()], availableCountry[availableUnits.size()%availableCountry.size()]);
+		selectedUnits.push_back(availableUnits[0]);
+		availableUnits.erase(availableUnits.begin());
+	}
+	while(selectedUnits.size() != 0)
+	{
+		PlaceUnit(selectedUnits[rand()%selectedUnits.size()], availableCountry[rand()%availableCountry.size()]);
 	}
 	return;
 }
