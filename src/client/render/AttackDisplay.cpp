@@ -15,7 +15,7 @@ AttackDisplay::AttackDisplay()
    // declaration des variables des textures//
    //---------------------------------------//
 
-//int sizeX = 1227;
+int sizeX = 1227;
 int sizeY = 628;
 
 int unitOffsetX =220;
@@ -57,7 +57,7 @@ if (!(image.loadFromFile("../res/unit_textures.png")))
    sf::Sprite sprite1;
    unit1->sprite = sprite1;
    unit1->sprite.setTexture(unit1->texture);
-   unit1->sprite.setPosition(sf::Vector2f(unitOffsetX,unitTopOffsetY));
+   unit1->sprite.setPosition(sf::Vector2f(sizeX/2-300,unitTopOffsetY));
    unit1->sprite.setScale(0.5,0.5);
 
    listGraphicElement.push_back(unit1);
@@ -74,7 +74,7 @@ if (!(image.loadFromFile("../res/unit_textures.png")))
    sf::Sprite sprite2;
    unit2->sprite = sprite2;
    unit2->sprite.setTexture(unit2->texture);
-   unit2->sprite.setPosition(sf::Vector2f(unitOffsetX,unitBotOffsetY));
+   unit2->sprite.setPosition(sf::Vector2f(sizeX/2-300,unitBotOffsetY));
    unit2->sprite.setScale(0.5,0.5);
 
    listGraphicElement.push_back(unit2);
@@ -98,7 +98,7 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 	unsigned int unitOffsetX =220;
 	unsigned int unitTopOffsetY =20;
 
-	unsigned int unitBotOffsetY =500;
+	unsigned int unitBotOffsetY =450;
 
 	unsigned int winPosX =150;
 
@@ -143,8 +143,9 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
             printf("font not found");
         text.setFont(font);
-        text.setString(str_def+" "+str_neutre+" "+str_att);
-	text.setPosition(unitOffsetX+55,unitTopOffsetY+50);
+        text.setString(str_def+"  "+str_neutre+"  "+str_att);
+	text.setPosition(sizeX/2-300,unitTopOffsetY+50);
+	text.setFillColor(sf::Color::Black);
         text.setScale(3,3);
         renderWindow->draw(text); 
 
@@ -179,8 +180,9 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         if (!font.loadFromFile("../res/FFF_Tusj.ttf"))
             printf("font not found");
         text2.setFont(font);
-        text2.setString(str_def2+" "+str_neutre2+" "+str_att2);
-	text2.setPosition(unitOffsetX+55,unitBotOffsetY+50);
+        text2.setString(str_def2+"  "+str_neutre2+"  "+str_att2);
+	text2.setPosition(sizeX/2-300,unitBotOffsetY+50);
+	text2.setFillColor(sf::Color::Black);
         text2.setScale(3,3);
         renderWindow->draw(text2);
 

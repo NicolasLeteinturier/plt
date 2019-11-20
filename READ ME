@@ -1,0 +1,40 @@
+
+Pour construir le projet à partir de root:
+
+$cd build
+$cmake..
+$make
+
+--------------------------------------------
+
+Pour executer le programme à partir du root:
+
+$cd bin
+$./client
+
+--------------------------------------------
+
+Une fois dans le jeu, le terminal indique la phase précédente du jeu.
+Les phases de jeu se succèdent de la manière suivante :
+	-Renforcement
+	-Attaquer
+	-Mouvement
+
+La phase de renforcement est actuellement automatique
+
+Pour attaquer, vous devez sélectionner le pays du joueur en question, pour savoir où l'attaque doit commencer. Ensuite, le joueur doit choisir le pays à attaquer. Ensuite, l'attaquant doit choisir le nombre d'unités qu'il souhaite utiliser pour attaquer. En cas de victoire, toutes les unités survivantes iront dans le pays envahi. (on ne peut pas seulement attaquer un pays considéré comme un voisin)
+
+Pour le mouvement, le joueur doit d'abord choisir le pays de départ, puis le pays d'arrivée. Enfin, il doit choisir le nombre d'unités à déplacer.
+
+
+---------------------------------------------
+
+Les Commandes :
+
+pour sélectionner un pays, vous devez cliquer dessus.
+
+Pour changer le nombre d'unités sélectionnées, cliquez sur les flèches au-dessus de chaque type d'unité.
+
+Pour confirmer le choix des unités, appuyez sur Entrée.
+
+Pour passer à la phase suivante de l'attaque, vous devez appuyer sur la barre d'espace.
