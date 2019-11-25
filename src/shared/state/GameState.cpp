@@ -38,10 +38,14 @@ GameState::GameState()
 	return;
 }
 
-void GameState::AddPlayer(std::shared_ptr<Player> player)
+void GameState::AddPlayer(bool isAnIA, std::string id)
 {
 	if(currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
+		std::shared_ptr<Player> player = std::make_shared<Player>();
+		player->isAnIA = isAnIA;
+		player->id = id;
+		player->color = listPlayer.size();
 		listPlayer.push_back(player);
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(currentAction);
 		init->listPlayer.push_back(player);

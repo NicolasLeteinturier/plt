@@ -270,7 +270,7 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         if (attack->unitSelected == true)
 	{
 	//definir le nombre de chaque type impliqué dans l'attaque 
-	//Attack attack=Attack();
+
    	unsigned int n = attack->attackerUnits.size();
 
 	unsigned int attunits = 0;
@@ -282,7 +282,7 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 	      if(attack->attackerUnits[i]->type == Type::neutre)
 		neuunits++;
 	      if(attack->attackerUnits[i]->type == Type::defensif)
-		defunits++;     
+		defunits++;
 	   }
       	std::string str_att = std::to_string(attunits);
         std::string str_neutre = std::to_string(neuunits);

@@ -31,7 +31,7 @@ BOOST_AUTO_TEST_CASE(TestStaticAssert)
   }
 }*/
 
-BOOST_AUTO_TEST_CASE(TestGamestate)
+/*BOOST_AUTO_TEST_CASE(TestGamestate)
 {
    GameState etat;
 
@@ -211,9 +211,9 @@ BOOST_AUTO_TEST_CASE(TestMovement)
    //BOOST_CHECK_EQUAL(pays2->listUnit.size(),2);
    //BOOST_CHECK_EQUAL(movement.units.size(),3);
 
-   /*movement.MoveAllUnit();
+   movement.MoveAllUnit();
    BOOST_CHECK_EQUAL(pays2->listUnit.size(),5);
-   BOOST_CHECK_EQUAL(movement.units.size(),0);*/
+   BOOST_CHECK_EQUAL(movement.units.size(),0);
 
 }
 
@@ -233,13 +233,13 @@ BOOST_AUTO_TEST_CASE(TestPlayer)
    BOOST_CHECK_EQUAL(player->listOwnedCountry.size(),2);
    BOOST_CHECK_EQUAL(player2->listOwnedCountry.size(),0);
 
-   /*player2->AddOwnedCountry(pays1);
+   player2->AddOwnedCountry(pays1);
    player2->AddOwnedCountry(pays2);
 
    BOOST_CHECK_EQUAL(player->listOwnedCountry.size(),0);
-   BOOST_CHECK_EQUAL(player2->listOwnedCountry.size(),2);*/
+   BOOST_CHECK_EQUAL(player2->listOwnedCountry.size(),2);
 
-}
+}*/
 
 BOOST_AUTO_TEST_CASE(TestObserverPattern)
 {

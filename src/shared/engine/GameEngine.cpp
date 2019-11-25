@@ -144,9 +144,12 @@ void GameEngine::ExecuteAttackCommand()
 		}
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
+		printf("attack->attackerCountry->neighboor.size() = %d",attack->attackerCountry->neighboor.size());
+
+		unsigned int test = attack->attackerCountry->neighboor.size();
 
 		// On verifie que le pays selectionné est bien voisin du pays de l'attaquant
-		for(unsigned int i = 0; i < attack->attackerCountry->neighboor.size(); i++)
+		for(unsigned int i = 0; i < test; i++)
 		{
 			if(attack->attackerCountry->neighboor[i] == selected_country)
 			{
