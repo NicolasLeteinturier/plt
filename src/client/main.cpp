@@ -45,7 +45,7 @@ int main(int argc,char* argv[])
 
 	ai.engine = gameEngine;
 
-        gameState->AddPlayer(false,"Joueur 1");
+        gameState->AddPlayer(true,"Joueur 1");
         gameState->AddPlayer(true, "IA 1");
         gameState->AddPlayer(true, "IA 2");
         gameState->AddPlayer(true, "IA 3");
@@ -67,7 +67,7 @@ int main(int argc,char* argv[])
 
 	sf::Color colorTable[4] = {COLOR_TABLE};
 
-	std::thread engine_thread([gameEngine](){
+	/*std::thread engine_thread([gameEngine](){
 		while(1)
 		{
 			gameEngine->ExecuteCommands();
@@ -79,7 +79,7 @@ int main(int argc,char* argv[])
 		{
 			ai.play();
 		}
-	});
+	});*/
 
 	while (window->isOpen())
 	{
@@ -98,6 +98,9 @@ int main(int argc,char* argv[])
 		window->draw(sprite);
 		scene.Draw();
         	scene.Update();
+
+		ai.play();
+		gameEngine->ExecuteCommands();
 
 		std::string curact;
 		if(gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
@@ -122,8 +125,8 @@ int main(int argc,char* argv[])
 
 	}
 
-	engine_thread.join();
-	ai_thread.join();
+	/*engine_thread.join();
+	ai_thread.join();*/
 
 	return 0;
    
