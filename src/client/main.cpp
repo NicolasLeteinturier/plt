@@ -45,7 +45,7 @@ int main(int argc,char* argv[])
 
 	ai.engine = gameEngine;
 
-        gameState->AddPlayer(true,"Joueur 1");
+        gameState->AddPlayer(false,"Joueur 1");
         gameState->AddPlayer(true, "IA 1");
         gameState->AddPlayer(true, "IA 2");
         gameState->AddPlayer(true, "IA 3");

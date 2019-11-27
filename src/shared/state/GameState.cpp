@@ -13,7 +13,7 @@ GameState::GameState()
 	std::shared_ptr<Initialisation> init = std::make_shared<Initialisation>();
 	char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
 	int country_neighboor[NB_OF_NEIGHBOOR] = {COUNTRY_NEIGHBOOR};
-	int country_nb_neighboor[NB_COUNTRY] = {COUNTRY_NB_OF_NEIGHBOOR};
+	unsigned int country_nb_neighboor[NB_COUNTRY] = {COUNTRY_NB_OF_NEIGHBOOR};
 
 	for(unsigned int i = 0; i < NB_COUNTRY; i++)
 	{
@@ -97,7 +97,7 @@ void GameState::GoToNextAction()
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(currentAction);
 		init->EndInitialisation();
 		std::shared_ptr<Reinforcements> reinforcement = std::make_shared<Reinforcements>();
-		for(unsigned int i = 0; i < currentPlayer->ReinforcementNumber(); i++)
+		for(int i = 0; i < currentPlayer->ReinforcementNumber(); i++)
 		{
 			std::shared_ptr<Unit> unit = std::make_shared<Unit>();
 			int type = rand()%3;
@@ -131,7 +131,7 @@ void GameState::GoToNextAction()
 	{
 		std::cout << " en phase de mouvement" << std::endl;
 		std::shared_ptr<Reinforcements> reinforcement = std::make_shared<Reinforcements>();
-		for (int i = 0; i < listPlayer.size(); i++)
+		for (unsigned int i = 0; i < listPlayer.size(); i++)
 		{
 			if(listPlayer[i] == currentPlayer)
 			{

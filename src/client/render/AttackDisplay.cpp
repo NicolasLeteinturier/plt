@@ -16,9 +16,9 @@ AttackDisplay::AttackDisplay()
    //---------------------------------------//
 
 int sizeX = 1227;
-int sizeY = 628;
+//int sizeY = 628;
 
-int unitOffsetX =220;
+//int unitOffsetX =220;
 int unitTopOffsetY =20;
 
 int unitBotOffsetY =500;
@@ -93,14 +93,14 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
    //---------------------------------------//
 
 	int sizeX = 1227;
-	unsigned int sizeY = 628;
+	//unsigned int sizeY = 628;
 
-	unsigned int unitOffsetX =220;
+	//unsigned int unitOffsetX =220;
 	unsigned int unitTopOffsetY =20;
 
 	unsigned int unitBotOffsetY =450;
 
-	unsigned int winPosX =150;
+	//unsigned int winPosX =150;
 
 	//---------//
 	//graphique//

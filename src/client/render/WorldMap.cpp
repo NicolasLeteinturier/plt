@@ -12,7 +12,7 @@ WorldMap::WorldMap()
 	sf::Image image;
 
 	char table[NB_COUNTRY][40] = {COUNTRY_SPRITE_RESSOURCES};
-	char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
+	//char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
 	
    	for (int i = 0; i < NB_COUNTRY; i++) { 
       		if (!(image.loadFromFile(table[i])))

@@ -145,8 +145,6 @@ void GameEngine::ExecuteAttackCommand()
 		}
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
-		printf("attack->attackerCountry->neighboor.size() = %d",attack->attackerCountry->neighboor.size());
-
 		unsigned int test = attack->attackerCountry->neighboor.size();
 
 		// On verifie que le pays selectionné est bien voisin du pays de l'attaquant
@@ -668,9 +666,10 @@ void GameEngine::ExecuteReinforcementCommand()
 		reinforcement->unitSelected = false;
 		gameState->GoToNextAction();
 		etat = 0;
+		return;
 	}
 
-	if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
@@ -685,7 +684,7 @@ void GameEngine::ExecuteReinforcementCommand()
 		return;
 	}
 
-	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
 		{
@@ -781,15 +780,22 @@ void GameEngine::ExecuteReinforcementCommand()
 		}
 	}
 
-	if(etat == 1 && command->pressedKey == KeyPressed::ENTER)
+	else if(etat == 1 && command->pressedKey == KeyPressed::ENTER)
 	{	
-		unsigned int n = reinforcement->selectedUnits.size();
-		for(unsigned int i = 0; i < n; i++)
+		while(reinforcement->selectedUnits.size() != 0)
 		{
 			reinforcement->PlaceUnit(reinforcement->selectedUnits[0],selected_country);
 		}
 		reinforcement->unitSelected = false;
 		etat = 0;
+		if(reinforcement->availableUnits.size() == 0)
+		{
+			reinforcement->unitSelected = false;
+			gameState->GoToNextAction();
+			return;
+		}
+
+		return;
 	}
 
 }
