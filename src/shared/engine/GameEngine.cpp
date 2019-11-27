@@ -325,7 +325,12 @@ void GameEngine::ExecuteAttackCommand()
 			etat = 0;
 			attack->displayAttack = false;
 			attack->AttackIsOver();
+			std::shared_ptr<Player> defencer = attack->defencerCountry->owner; 
 			gameState->ChangeCountryOwner(attack->defencerCountry, attack->attackerCountry->owner);
+			if(defencer->listOwnedCountry.size() == 0)
+			{
+				gameState->DeletePlayer(defencer);
+			}
 			gameState->GoToNextAction();
 			return;
 		}

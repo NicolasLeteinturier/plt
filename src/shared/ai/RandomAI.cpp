@@ -2,6 +2,7 @@
 #include "RandomAI.h"
 #include <stdlib.h>
 #include "../../define.h"
+#include "../state/Attack.h"
 
 using namespace ai;
 using namespace state;
@@ -66,15 +67,24 @@ void RandomAI::play()
 //choix du pays à attaquer
 		for(i=0;i<engine->gameState->listCountry.size();i++){
 
-			if (engine->gameState->listCountry[i] == player->listOwnedCountry[destCountry]->neighboor[destCountry]){
-				commanddest->mousePositionX = tabX[i];	
-				commanddest->mousePositionY = tabY[i];
-				commanddest->pressedKey = KeyPressed::LEFT_CLICK;
-				engine->commands.push(commanddest);
+			if (engine->gameState->listCountry[i] == player->listOwnedCountry[originCountry]->neighboor[destCountry]){
+				if(engine->gameState->listCountry[i]->owner != player)
+				{
+					commanddest->mousePositionX = tabX[i];	
+					commanddest->mousePositionY = tabY[i];
+					commanddest->pressedKey = KeyPressed::LEFT_CLICK;
+					engine->commands.push(commanddest);
+				}
+				else
+				{
+					commandfin->pressedKey = KeyPressed::ESCAPE;
+					engine->commands.push(commandfin);
+					return;
+				}
 			}
 		}
 
-//choix des unités à deplacer	
+	//choix des unités à deplacer	
 	int selector1 = rand() % 3;
 	int selector2 = rand() % 3;
 	int selector3 = rand() % 3;
@@ -143,6 +153,18 @@ void RandomAI::play()
 		commandu4->mousePositionY =  130;
 		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
 		engine->commands.push(commandu4);}
+
+	commandfin->pressedKey = KeyPressed::ENTER;
+	engine->commands.push(commandfin);
+
+	std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(engine->gameState->currentAction);
+
+	/*while(attack->defencerUnits.size() != 0 && attack->attackerUnits.size() != 0)
+	{*/
+		std::shared_ptr<Command> commandspace = std::make_shared<Command>();
+		commandspace->pressedKey = KeyPressed::SPACE_BARRE;
+		engine->commands.push(commandspace);
+	/*}*/
 
 	}
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
