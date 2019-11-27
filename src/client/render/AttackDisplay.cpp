@@ -194,14 +194,17 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 	int width = 400;
 	int Yoffset = 300;
 	float rectPosX = (sizeX/2)-(width/2);
-
+	sf::Color colorTable[4] = {COLOR_TABLE};
 	float sizeAtt= attCmpt*(667-Yoffset)/(attCmpt + defCmpt);
+
+
+
 
 
         sf::RectangleShape rectangleTop;
 	rectangleTop.setSize(sf::Vector2f(width, sizeAtt));
 	rectangleTop.setOutlineColor(sf::Color::Red);
-	rectangleTop.setFillColor(sf::Color::Red);
+	rectangleTop.setFillColor(colorTable[attack->attackerCountry->owner->color]);
 	rectangleTop.setPosition(rectPosX, Yoffset/2);//////////////////////////////
 
 	float sizeDef= defCmpt*(667-Yoffset)/(attCmpt + defCmpt);
@@ -209,7 +212,7 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
         sf::RectangleShape rectangleBot;
 	rectangleBot.setSize(sf::Vector2f(width, sizeDef));
 	rectangleBot.setOutlineColor(sf::Color::Green);
-	rectangleBot.setFillColor(sf::Color::Green);
+	rectangleBot.setFillColor(colorTable[attack->defencerCountry->owner->color]);
 	rectangleBot.setPosition(rectPosX, Yoffset/2+sizeAtt+5);//////////////////////////////
 	renderWindow->draw(rectangleTop);
 	renderWindow->draw(rectangleBot);
