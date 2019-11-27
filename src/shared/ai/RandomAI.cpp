@@ -28,7 +28,6 @@ void RandomAI::play()
 	}
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{
-
 		engine->gameState->GoToNextAction();
 	}
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_ATTACK)
@@ -46,6 +45,7 @@ void RandomAI::play()
 		std::shared_ptr<Command> commandu2 = std::make_shared<Command>();
 		std::shared_ptr<Command> commandu3 = std::make_shared<Command>();
 		std::shared_ptr<Command> commandu4 = std::make_shared<Command>();
+		std::shared_ptr<Command> commandfin = std::make_shared<Command>();
 
 		unsigned int n = player->listOwnedCountry.size();
 		int originCountry = rand() % n;
@@ -143,7 +143,9 @@ void RandomAI::play()
 		commandu4->mousePositionY =  130;
 		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
 		engine->commands.push(commandu4);}
-	engine->gameState->GoToNextAction();
+
+	commandfin->pressedKey = KeyPressed::ENTER;
+	engine->commands.push(commandfin);
 	return;
 
 		

@@ -55,10 +55,11 @@ namespace engine {
 #include <algorithm>
 #include <string>
 
-unsigned int etat = 0;
-
 using namespace engine;
 using namespace state;
+
+unsigned int etat = 0;
+std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 
 GameEngine::GameEngine()
 {
@@ -105,7 +106,7 @@ void GameEngine::ExecuteCommands()
 }
 
 void GameEngine::ExecuteAttackCommand()
-{
+{	
 	std::shared_ptr<Command> command = commands.front();
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
@@ -119,7 +120,7 @@ void GameEngine::ExecuteAttackCommand()
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
-		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		/*std::shared_ptr<Country> */selected_country = gameState->listCountry[country_index];
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("Ce pays ne vous appartient pas\n");
@@ -136,7 +137,7 @@ void GameEngine::ExecuteAttackCommand()
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
-		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		/*std::shared_ptr<Country> */selected_country = gameState->listCountry[country_index];
 		if(selected_country->owner == gameState->currentPlayer)
 		{
 			printf("Vous ne pouvez pas vous attaquer vous même !!!\n");
@@ -655,7 +656,7 @@ void GameEngine::ExecuteReinforcementCommand()
 	std::shared_ptr<Command> command = commands.front();
 
 	std::shared_ptr<Reinforcements> reinforcement = std::dynamic_pointer_cast<Reinforcements>(gameState->currentAction);
-	static std::shared_ptr<Country> selected_country = std::make_shared<Country>();
+	//static std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 	
 	if((reinforcement->availableUnits.size() == 0 && reinforcement->selectedUnits.size() == 0) || command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
@@ -691,10 +692,9 @@ void GameEngine::ExecuteReinforcementCommand()
 					{
 						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
 						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
-						break;
+						return;
 					}
 				}
-				return;
 			}
 
 			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
@@ -705,10 +705,9 @@ void GameEngine::ExecuteReinforcementCommand()
 					{
 						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
 						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
-						break;
+						return;
 					}
 				}
-				return;
 			}
 
 			else {return;}
@@ -724,24 +723,22 @@ void GameEngine::ExecuteReinforcementCommand()
 					{
 						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
 						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
-						break;
+						return;
 					}
 				}
-				return;
 			}
 
 			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
 			{
-				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
 				{
 					if(reinforcement->selectedUnits[i]->type == Type::neutre)
 					{
 						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
 						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
-						break;
+						return;
 					}
 				}
-				return;
 			}
 
 			else {return;}
@@ -757,24 +754,22 @@ void GameEngine::ExecuteReinforcementCommand()
 					{
 						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
 						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
-						break;
+						return;
 					}
 				}
-				return;
 			}
 
 			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
 			{
-				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
 				{
 					if(reinforcement->selectedUnits[i]->type == Type::attaquant)
 					{
 						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
 						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
-						break;
+						return;
 					}
 				}
-				return;
 			}
 
 			else {return;}
