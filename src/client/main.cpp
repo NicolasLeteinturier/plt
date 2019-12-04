@@ -32,7 +32,7 @@ int main(int argc,char* argv[])
 	std::shared_ptr<GameState> gameState = std::make_shared<GameState>();
 	Scene scene(gameState);
 	Controller controler;
-	RandomAI ai;
+	HeuristicAI ai;
 
 	//Creation et initialisation d'une scene
 	
@@ -45,7 +45,7 @@ int main(int argc,char* argv[])
 
 	ai.engine = gameEngine;
 
-        gameState->AddPlayer(false,"Joueur 1");
+        gameState->AddPlayer(true,"Joueur 1");
         gameState->AddPlayer(true, "IA 1");
         gameState->AddPlayer(true, "IA 2");
         gameState->AddPlayer(true, "IA 3");
