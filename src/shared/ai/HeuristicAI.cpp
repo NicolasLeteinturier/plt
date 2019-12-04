@@ -17,8 +17,8 @@ HeuristicAI::HeuristicAI()
 void HeuristicAI::play()
 {
 	/*variables Globales*/
-        float tabX[NB_COUNTRY]={UNIT_POS_X};
-        float tabY[NB_COUNTRY]={UNIT_POS_Y};		
+	unsigned int tabX[NB_COUNTRY]={UNIT_POS_X};
+	unsigned int tabY[NB_COUNTRY]={UNIT_POS_Y};		
 	
 	if(engine->gameState->currentPlayer->isAnIA == false)
 	{
@@ -43,6 +43,7 @@ void HeuristicAI::play()
 
 		//chercher le pays ayant le moins de voisin enemie
 		int max,min;
+		max = 0;
 		
 		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
@@ -50,13 +51,10 @@ void HeuristicAI::play()
 			if(nbUnitAtt>max){
 				max = nbUnitAtt;
 				originCountry = engine->gameState->currentPlayer->listOwnedCountry[i];}//choix du pays d'origine avec le plus d'unité offencives
-				//printf("\n\n\n\n ce pays est a moi\n\n\n\n "); 			
-
 		}
 
 		//chercher le pays avec le moins d'enemie
 		int compteur = 0;
-		max=0;
 		min=9999999;
 
 			for(unsigned int j = 0; j < originCountry->neighboor.size(); j++)
@@ -71,7 +69,9 @@ void HeuristicAI::play()
 			}
 			if(compteur==0)
 			{
-				engine->gameState->GoToNextAction();
+				std::shared_ptr<Command> commandspace = std::make_shared<Command>();
+				commandspace->pressedKey = KeyPressed::ESCAPE;
+				engine->commands.push(commandspace);
 				return;
 			}
 		}
@@ -117,6 +117,17 @@ void HeuristicAI::play()
 			engine->commands.push(commandunitdef);
 		}
 
+	commandfin->pressedKey = KeyPressed::ENTER;
+	engine->commands.push(commandfin);
+
+	std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(engine->gameState->currentAction);
+
+	/*while(attack->defencerUnits.size() != 0 && attack->attackerUnits.size() != 0)
+	{*/
+		std::shared_ptr<Command> commandspace = std::make_shared<Command>();
+		commandspace->pressedKey = KeyPressed::SPACE_BARRE;
+		engine->commands.push(commandspace);
+	/*}*/
 
 	printf("\nIA fin phase attaque\n");
 	}
@@ -135,10 +146,12 @@ void HeuristicAI::play()
 		std::shared_ptr<Country> destinationCountry = std::make_shared<Country>();
 
 		//chercher le pays ayant le moins de voisin enemie
+
+		unsigned int min = 18;
+
 		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
 			unsigned int compteur = 0;
-			unsigned int min = 18;
 			for(unsigned int j = 0; j < engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor.size(); j++)
 			{
 				if(engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->owner != engine->gameState->currentPlayer)
@@ -153,11 +166,12 @@ void HeuristicAI::play()
 			}
 		}
 
+		unsigned int max = 0;
+
 		//chercher le pays avec le plus d'enemie
 		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
 			unsigned int compteur = 0;
-			unsigned int max = 0;
 			for(unsigned int j = 0; j < engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor.size(); j++)
 			{
 				if(engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->owner != engine->gameState->currentPlayer)
@@ -172,7 +186,7 @@ void HeuristicAI::play()
 			}
 		}
 
-		unsigned int nbUnitAtt = originCountry->FindTypeNumber(Type::attaquant)/2;//float
+		unsigned int nbUnitAtt = originCountry->FindTypeNumber(Type::attaquant)/2;
 		unsigned int nbUnitDef = originCountry->FindTypeNumber(Type::defensif)/2;
 		unsigned int nbUnitNeu = originCountry->FindTypeNumber(Type::neutre)/2;
 
@@ -184,11 +198,15 @@ void HeuristicAI::play()
 			if (engine->gameState->listCountry[i] == originCountry){
 				commandor->mousePositionX = tabX[i];	
 				commandor->mousePositionY = tabY[i];
+				printf("%d\n",tabX[i]);
+				printf("%d\n",tabY[i]);
 				commandor->pressedKey = KeyPressed::LEFT_CLICK;
 			}
 			else if (engine->gameState->listCountry[i] == destinationCountry){
 				commanddest->mousePositionX = tabX[i];	
 				commanddest->mousePositionY = tabY[i];
+				printf("%d\n",tabX[i]);
+				printf("%d\n",tabY[i]);
 				commanddest->pressedKey = KeyPressed::LEFT_CLICK;
 			}
 		}
@@ -226,8 +244,8 @@ void HeuristicAI::play()
 		}
 }
 		printf("\nIA fin phase Mouvement\n");
-		/*commandfin->pressedKey = KeyPressed::ENTER;
-		engine->commands.push(commandfin);*/
+		commandfin->pressedKey = KeyPressed::ENTER;
+		engine->commands.push(commandfin);
 
 		return;
 		
