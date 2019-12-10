@@ -48,8 +48,8 @@ int main(int argc,char* argv[])
 	ai2.engine = gameEngine;
 
         gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
-        gameState->AddPlayer(IAType::RANDOM, "IA 1");
-        gameState->AddPlayer(IAType::RANDOM, "IA 2");
+        gameState->AddPlayer(IAType::HEURISTIC, "IA 1");
+        gameState->AddPlayer(IAType::HEURISTIC, "IA 2");
         gameState->AddPlayer(IAType::RANDOM, "IA 3");
 
 	for(unsigned int i = 0; i < 100; i++)

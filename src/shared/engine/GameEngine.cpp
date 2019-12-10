@@ -116,7 +116,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// etat vaut 0 : selection du pays attaquant
-	if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
@@ -133,7 +133,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// etat vaut 1 : selection du pays à attaquer
-	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
@@ -163,7 +163,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// etat vaut 2 : l'attaquant selectionne les unités avec lesquelles il souhaite attaquer
-	if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
@@ -287,7 +287,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// Si le joueur presse la touche entrée on passe à l'état suivant et on ajoute les unités du pays defenseur aux unités défensives
-	if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
+	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 		attack->unitSelected = false;
@@ -305,7 +305,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// etat vaut 3 : on lance l'attaque ...
-	if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
+	else if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
@@ -481,7 +481,7 @@ void GameEngine::ExecuteMovementCommand()
 	}
 
 	// etat vaut 0 : selection du pays d'origine
-	if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
