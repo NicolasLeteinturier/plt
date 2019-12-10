@@ -107,6 +107,7 @@ void GameEngine::ExecuteCommands()
 
 void GameEngine::ExecuteAttackCommand()
 {	
+	printf("avant seg fault dans attack 1\n");
 	std::shared_ptr<Command> command = commands.front();
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
@@ -118,16 +119,21 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 0 : selection du pays attaquant
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
+		printf("avant seg fault dans attack 2\n");
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
+		printf("avant seg fault dans attack 2.1\n");
 		if(country_index == -1){return;}
 		/*std::shared_ptr<Country> */selected_country = gameState->listCountry[country_index];
+		printf("avant seg fault dans attack 2.2\n");
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("Ce pays ne vous appartient pas\n");
 			return;
 		}
+		printf("avant seg fault dans attack 2.3\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 		attack->attackerCountry = selected_country;
+		printf("avant seg fault dans attack 2.4\n");
 		etat = 1;
 		return;
 	}
@@ -135,6 +141,7 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 1 : selection du pays à attaquer
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
+		printf("avant seg fault dans attack 3\n");
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
 		/*std::shared_ptr<Country> */selected_country = gameState->listCountry[country_index];
@@ -165,6 +172,7 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 2 : l'attaquant selectionne les unités avec lesquelles il souhaite attaquer
 	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
+		printf("avant seg fault dans attack 4\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
 		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
@@ -289,6 +297,7 @@ void GameEngine::ExecuteAttackCommand()
 	// Si le joueur presse la touche entrée on passe à l'état suivant et on ajoute les unités du pays defenseur aux unités défensives
 	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
+		printf("avant seg fault dans attack 5\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 		attack->unitSelected = false;
 
@@ -307,6 +316,7 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 3 : on lance l'attaque ...
 	else if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
+		printf("avant seg fault dans attack 6\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
 		if(attack->attackerUnits.size() == 0)
@@ -474,6 +484,8 @@ void GameEngine::ExecuteMovementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
 
+	printf("avant seg fault dans movement 1\n");
+
 	if(command->pressedKey == KeyPressed::ESCAPE)
 	{
 		gameState->GoToNextAction();
@@ -483,6 +495,7 @@ void GameEngine::ExecuteMovementCommand()
 	// etat vaut 0 : selection du pays d'origine
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
+		printf("avant seg fault dans movement 2\n");
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
 		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
@@ -501,15 +514,21 @@ void GameEngine::ExecuteMovementCommand()
 
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
+		printf("avant seg fault dans movement 3\n");
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
+		printf("avant seg fault dans movement 3.1\n");
 		if(country_index == -1){return;}
+		printf("avant seg fault dans movement 3.2\n");
 		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		printf("avant seg fault dans movement 3.3\n");
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("ce pays ne vous appartient pas\n");
 			return;
 		}
+		printf("avant seg fault dans movement 3.4\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
+		printf("avant seg fault dans movement 3.5\n");
 		movement->destination = selected_country;
 		movement->unitSelected = true;
 		etat = 2;
@@ -520,6 +539,7 @@ void GameEngine::ExecuteMovementCommand()
 
 	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
+		printf("avant seg fault dans movement 4\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 
 		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
@@ -645,6 +665,7 @@ void GameEngine::ExecuteMovementCommand()
 
 	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
+		printf("avant seg fault dans movement 5\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 		movement->unitSelected = false;
 		movement->MoveAllUnit();

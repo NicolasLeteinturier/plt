@@ -25,6 +25,8 @@ void HeuristicAI::play()
 		return;
 	}
 
+	printf("Heuristic IA playing\n");
+
 	if(engine->gameState->currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
 		return;
@@ -75,6 +77,32 @@ void HeuristicAI::play()
 				return;
 			}
 		}
+
+		/*int max_difference = -99999;
+		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
+		{
+			for(unsigned int j = 0; j < engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor.size(); j++)
+			{
+				if(engine->gameState->currentPlayer->listOwnedCountry[i]->owner != engine->gameState->currentPlayer)
+				{				
+					int diff = (engine->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant) - engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->FindTypeNumber(Type::defensif))/((engine->gameState->currentPlayer->listOwnedCountry[i]->listUnit.size() + engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->listUnit.size())/2);
+					if(diff > max_difference)
+					{
+						originCountry = engine->gameState->currentPlayer->listOwnedCountry[i];
+						destinationCountry = engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j];
+						max_difference = diff;
+					}
+				}
+			}
+		}
+
+		if(max_difference <= 30)
+		{
+			std::shared_ptr<Command> commandspace = std::make_shared<Command>();
+			commandspace->pressedKey = KeyPressed::ESCAPE;
+			engine->commands.push(commandspace);
+			return;
+		}*/
 
 		unsigned int nbUnitAtt = originCountry->FindTypeNumber(Type::attaquant);
 		unsigned int nbUnitNeu = originCountry->FindTypeNumber(Type::neutre)/3;
@@ -148,6 +176,7 @@ void HeuristicAI::play()
 		//chercher le pays ayant le moins de voisin enemie
 
 		unsigned int min = 18;
+		unsigned int max_unit = 0;
 
 		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
@@ -156,17 +185,19 @@ void HeuristicAI::play()
 			{
 				if(engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->owner != engine->gameState->currentPlayer)
 				{
-					compteur++;//determine le nombre de voisin énemie 
+					compteur++;//determine le nombre de voisin enemi
 				}	
 			}
-			if(compteur < min)
+			if(compteur < min || (compteur == min && engine->gameState->currentPlayer->listOwnedCountry[i]->listUnit.size() > max_unit))
 			{
 				min = compteur;
+				max_unit = engine->gameState->currentPlayer->listOwnedCountry[i]->listUnit.size();
 				originCountry = engine->gameState->currentPlayer->listOwnedCountry[i];//choix du pays d'origine avec le moiins de voisins 
 			}
 		}
 
 		unsigned int max = 0;
+		unsigned int min_unit = 1000;
 
 		//chercher le pays avec le plus d'enemie
 		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
@@ -179,7 +210,7 @@ void HeuristicAI::play()
 					compteur++;
 				}	
 			}
-			if(max < compteur)
+			if(max < compteur || (compteur == max && engine->gameState->currentPlayer->listOwnedCountry[i]->listUnit.size() < min_unit))
 			{
 				max = compteur;
 				destinationCountry = engine->gameState->currentPlayer->listOwnedCountry[i];//choix du pays de déstination avec le plus de voisins 

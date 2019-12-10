@@ -89,13 +89,15 @@ void Attack::AttackIsOver()
 		return;
 	}
 
-	for(unsigned int i = 0; i < defencerUnits.size(); i++)
+	unsigned int n = defencerUnits.size();
+	for(unsigned int i = 0; i < n; i++)
 	{
 		defencerCountry->listUnit.push_back(defencerUnits[i]);
 		defencerUnits.erase(defencerUnits.begin() + i);
 	}
 
-	for(unsigned int i = 0; i < attackerUnits.size(); i++)
+	n = attackerUnits.size();
+	for(unsigned int i = 0; i < n; i++)
 	{
 		attackerCountry->listUnit.push_back(attackerUnits[i]);
 		attackerUnits.erase(attackerUnits.begin() + i);
