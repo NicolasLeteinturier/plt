@@ -201,7 +201,9 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
    float posX = 220;
    float posY = 150;
 
-
+	//--------------//
+	// Reinforcement//
+	//--------------//
 
 
     if(currentAction->GetActionType() == ActionType::_REINFORCEMENTS){
@@ -251,9 +253,11 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 
 	//afficher le nombre de troupe.
 	text.setFont(font);
-        text.setString(str_def+" "+str_neutre+" "+str_att);
-	text.setPosition(posX,posY);
-        renderWindow->draw(text);    
+        text.setString(str_def+"    "+str_neutre+"    "+str_att);
+	text.setPosition(posX+55,posY+50);
+        text.setScale(5,5);
+        text.setFillColor(sf::Color::Black);
+        renderWindow->draw(text);     
     }
     }
 
@@ -302,10 +306,11 @@ void UnitSelection::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
        }  
     //afficher le nombre de troupe.
 	text.setFont(font);
-        text.setString(str_def+" "+str_neutre+" "+str_att);
+        text.setString(str_def+"    "+str_neutre+"    "+str_att);
 	text.setPosition(posX+55,posY+50);
         text.setScale(5,5);
-        renderWindow->draw(text);     
+	text.setFillColor(sf::Color::Black);
+        renderWindow->draw(text);       
     }
     }
 
