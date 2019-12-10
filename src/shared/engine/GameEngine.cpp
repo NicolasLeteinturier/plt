@@ -499,7 +499,7 @@ void GameEngine::ExecuteMovementCommand()
 
 	// etat vaut 1 : selection du pays de destination
 
-	if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
 		if(country_index == -1){return;}
@@ -518,7 +518,7 @@ void GameEngine::ExecuteMovementCommand()
 
 	// etat vaut 2 : selection des unités à deplacer
 
-	if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 
@@ -643,7 +643,7 @@ void GameEngine::ExecuteMovementCommand()
 
 	// touche entrée appuyer : deplacement des unités sélectionnés et fin du tour
 
-	if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
+	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 		movement->unitSelected = false;

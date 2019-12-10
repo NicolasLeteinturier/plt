@@ -33,6 +33,7 @@ int main(int argc,char* argv[])
 	Scene scene(gameState);
 	Controller controler;
 	HeuristicAI ai;
+	RandomAI ai2;
 
 	//Creation et initialisation d'une scene
 	
@@ -44,11 +45,12 @@ int main(int argc,char* argv[])
 	controler.engine = gameEngine;
 
 	ai.engine = gameEngine;
+	ai2.engine = gameEngine;
 
-        gameState->AddPlayer(true,"Joueur 1");
-        gameState->AddPlayer(true, "IA 1");
-        gameState->AddPlayer(true, "IA 2");
-        gameState->AddPlayer(true, "IA 3");
+        gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
+        gameState->AddPlayer(IAType::RANDOM, "IA 1");
+        gameState->AddPlayer(IAType::RANDOM, "IA 2");
+        gameState->AddPlayer(IAType::RANDOM, "IA 3");
 
 	for(unsigned int i = 0; i < 100; i++)
 		gameState->GoToNextAction();
@@ -100,6 +102,7 @@ int main(int argc,char* argv[])
         	scene.Update();
 
 		ai.play();
+		ai2.play();
 		gameEngine->ExecuteCommands();
 
 		std::string curact;

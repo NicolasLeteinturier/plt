@@ -19,7 +19,7 @@ void RandomAI::play()
         float tabX[NB_COUNTRY]={UNIT_POS_X};
         float tabY[NB_COUNTRY]={UNIT_POS_Y};		
 	
-	if(engine->gameState->currentPlayer->isAnIA == false)
+	if(engine->gameState->currentPlayer->isAnIA == IAType::RANDOM)
 	{
 		return;
 	}	

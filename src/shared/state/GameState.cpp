@@ -38,7 +38,7 @@ GameState::GameState()
 	return;
 }
 
-void GameState::AddPlayer(bool isAnIA, std::string id)
+void GameState::AddPlayer(IAType isAnIA, std::string id)
 {
 	if(currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
