@@ -292,11 +292,9 @@ void GameEngine::ExecuteAttackCommand()
 	else if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
-		printf("%d\n",attack->attackerUnits.size());
 
 		if(attack->attackerUnits.size() == 0)
 		{
-			printf("avant seg fault dans attack 6.1\n");
 			etat = 0;
 			attack->displayAttack = false;
 			attack->AttackIsOver();
@@ -506,7 +504,6 @@ void GameEngine::ExecuteMovementCommand()
 	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
-		printf("%d\n",movement->units.size());
 		movement->unitSelected = false;
 		movement->MoveAllUnit();
 		gameState->GoToNextAction();
@@ -535,7 +532,6 @@ void GameEngine::ExecuteReinforcementCommand()
 		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
-			printf("ce pays ne vous appartient pas");
 			return;
 		}
 		reinforcement->unitSelected = true;

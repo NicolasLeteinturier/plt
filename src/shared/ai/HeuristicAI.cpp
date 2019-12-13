@@ -16,10 +16,6 @@ HeuristicAI::HeuristicAI()
 
 void HeuristicAI::play()
 {
-	/*variables Globales*/
-	unsigned int tabX[NB_COUNTRY]={UNIT_POS_X};
-	unsigned int tabY[NB_COUNTRY]={UNIT_POS_Y};		
-	
 	if(engine->gameState->currentPlayer->isAnIA != IAType::HEURISTIC)
 	{
 		return;
