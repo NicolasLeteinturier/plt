@@ -47,7 +47,7 @@ void HeuristicAI::play()
 		int max,min;
 		max = 0;
 		
-		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
+		/*for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
 			unsigned int nbUnitAtt = engine->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant);
 			if(nbUnitAtt>max){
@@ -76,16 +76,16 @@ void HeuristicAI::play()
 				engine->commands.push(commandspace);
 				return;
 			}
-		}
+		}*/
 
-		/*int max_difference = -99999;
+		int max_difference = -30;
 		for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
 			for(unsigned int j = 0; j < engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor.size(); j++)
 			{
-				if(engine->gameState->currentPlayer->listOwnedCountry[i]->owner != engine->gameState->currentPlayer)
+				if(engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->owner != engine->gameState->currentPlayer)
 				{				
-					int diff = (engine->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant) - engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->FindTypeNumber(Type::defensif))/((engine->gameState->currentPlayer->listOwnedCountry[i]->listUnit.size() + engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->listUnit.size())/2);
+					int diff = (engine->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant) - engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->FindTypeNumber(Type::defensif))/*/((engine->gameState->currentPlayer->listOwnedCountry[i]->listUnit.size() + engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->listUnit.size())/2)*/;
 					if(diff > max_difference)
 					{
 						originCountry = engine->gameState->currentPlayer->listOwnedCountry[i];
@@ -96,13 +96,13 @@ void HeuristicAI::play()
 			}
 		}
 
-		if(max_difference <= 30)
+		if(max_difference == -30)
 		{
 			std::shared_ptr<Command> commandspace = std::make_shared<Command>();
 			commandspace->pressedKey = KeyPressed::ESCAPE;
 			engine->commands.push(commandspace);
 			return;
-		}*/
+		}
 
 		unsigned int nbUnitAtt = originCountry->FindTypeNumber(Type::attaquant);
 		unsigned int nbUnitNeu = originCountry->FindTypeNumber(Type::neutre)/3;
@@ -111,18 +111,13 @@ void HeuristicAI::play()
 		std::shared_ptr<Command> commanddest = std::make_shared<Command>();
 		std::shared_ptr<Command> commandfin = std::make_shared<Command>();
 
-		for(unsigned int i = 0; i < engine->gameState->listCountry.size(); i++){
-			if (engine->gameState->listCountry[i] == originCountry){
-				commandor->mousePositionX = tabX[i];	
-				commandor->mousePositionY = tabY[i];
-				commandor->pressedKey = KeyPressed::LEFT_CLICK;
-			}
-			else if (engine->gameState->listCountry[i] == destinationCountry){
-				commanddest->mousePositionX = tabX[i];	
-				commanddest->mousePositionY = tabY[i];
-				commanddest->pressedKey = KeyPressed::LEFT_CLICK;
-			}
-		}
+		commandor->countryClicked = originCountry;
+		commandor->unitClicked = UnitClickedType::NONE;
+		commandor->pressedKey = KeyPressed::LEFT_CLICK;
+
+		commanddest->countryClicked = destinationCountry;
+		commanddest->unitClicked = UnitClickedType::NONE;
+		commanddest->pressedKey = KeyPressed::LEFT_CLICK;
 
 		engine->commands.push(commandor);
 		engine->commands.push(commanddest);
@@ -130,8 +125,7 @@ void HeuristicAI::play()
 		for(unsigned int i = 0; i < nbUnitAtt; i++)
 		{
 			std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
-			commandunitatt->mousePositionX = 800;	
-			commandunitatt->mousePositionY = 130;
+			commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
 			commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
 			engine->commands.push(commandunitatt);
 		}
@@ -139,8 +133,7 @@ void HeuristicAI::play()
 		for(unsigned int i = 0; i < nbUnitNeu; i++)
 		{
 			std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
-			commandunitdef->mousePositionX = 300;	
-			commandunitdef->mousePositionY = 130;
+			commandunitdef->unitClicked = UnitClickedType::NEU_PLUS;
 			commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
 			engine->commands.push(commandunitdef);
 		}
@@ -150,12 +143,12 @@ void HeuristicAI::play()
 
 	std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(engine->gameState->currentAction);
 
-	/*while(attack->defencerUnits.size() != 0 && attack->attackerUnits.size() != 0)
-	{*/
+	for(unsigned int i = 0; i < attack->defencerUnits.size() + attack->attackerUnits.size(); i++)
+	{
 		std::shared_ptr<Command> commandspace = std::make_shared<Command>();
 		commandspace->pressedKey = KeyPressed::SPACE_BARRE;
 		engine->commands.push(commandspace);
-	/*}*/
+	}
 
 	printf("\nIA fin phase attaque\n");
 	}
@@ -227,17 +220,11 @@ void HeuristicAI::play()
 
 		for(unsigned int i = 0; i < engine->gameState->listCountry.size(); i++){
 			if (engine->gameState->listCountry[i] == originCountry){
-				commandor->mousePositionX = tabX[i];	
-				commandor->mousePositionY = tabY[i];
-				printf("%d\n",tabX[i]);
-				printf("%d\n",tabY[i]);
+				commandor->countryClicked = originCountry;
 				commandor->pressedKey = KeyPressed::LEFT_CLICK;
 			}
 			else if (engine->gameState->listCountry[i] == destinationCountry){
-				commanddest->mousePositionX = tabX[i];	
-				commanddest->mousePositionY = tabY[i];
-				printf("%d\n",tabX[i]);
-				printf("%d\n",tabY[i]);
+				commanddest->countryClicked = destinationCountry;
 				commanddest->pressedKey = KeyPressed::LEFT_CLICK;
 			}
 		}
@@ -248,8 +235,7 @@ void HeuristicAI::play()
 		for(unsigned int i = 0; i < nbUnitAtt; i++)
 		{
 			std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
-			commandunitatt->mousePositionX = 800;	
-			commandunitatt->mousePositionY = 130;
+			commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
 			commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
 			engine->commands.push(commandunitatt);
 		}
@@ -258,8 +244,7 @@ void HeuristicAI::play()
 		for(unsigned int i = 0; i < nbUnitDef; i++)
 		{
 			std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
-			commandunitdef->mousePositionX = 300;	
-			commandunitdef->mousePositionY = 130;
+			commandunitdef->unitClicked = UnitClickedType::DEF_PLUS;
 			commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
 			engine->commands.push(commandunitdef);
 		}
@@ -268,8 +253,7 @@ void HeuristicAI::play()
 		for(unsigned int i = 0; i < nbUnitNeu; i++)
 		{
 			std::shared_ptr<Command> commandunitneu = std::make_shared<Command>();
-			commandunitneu->mousePositionX = 600;	
-			commandunitneu->mousePositionY = 130;
+			commandunitneu->unitClicked = UnitClickedType::NEU_PLUS;
 			commandunitneu->pressedKey = KeyPressed::LEFT_CLICK;
 			engine->commands.push(commandunitneu);
 		}

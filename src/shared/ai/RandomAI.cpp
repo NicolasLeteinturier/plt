@@ -51,15 +51,11 @@ void RandomAI::play()
 		//générer les clicks de l'IA
 	
 //choix pays attaquant
-		unsigned int i=0;
-		for(i=0;i<engine->gameState->listCountry.size();i++){
-			if (engine->gameState->listCountry[i] == player->listOwnedCountry[originCountry]){
-				commandor->mousePositionX = tabX[i];	
-				commandor->mousePositionY = tabY[i];
-				commandor->pressedKey = KeyPressed::LEFT_CLICK;
-				engine->commands.push(commandor);
-			}
-		}
+
+		commandor->countryClicked = player->listOwnedCountry[originCountry];
+		commandor->unitClicked = UnitClickedType::NONE;
+		commandor->pressedKey = KeyPressed::LEFT_CLICK;
+		engine->commands.push(commandor);
 
 		//choix du pays à attaquer
 
@@ -68,107 +64,87 @@ void RandomAI::play()
 
 
 //choix du pays à attaquer
-		for(i=0;i<engine->gameState->listCountry.size();i++){
-
-			if (engine->gameState->listCountry[i] == player->listOwnedCountry[originCountry]->neighboor[destCountry]){
-				if(engine->gameState->listCountry[i]->owner != player)
-				{
-					commanddest->mousePositionX = tabX[i];	
-					commanddest->mousePositionY = tabY[i];
-					commanddest->pressedKey = KeyPressed::LEFT_CLICK;
-					engine->commands.push(commanddest);
-				}
-				else
-				{
-					commandfin->pressedKey = KeyPressed::ESCAPE;
-					engine->commands.push(commandfin);
-					return;
-				}
-			}
+		if(player->listOwnedCountry[originCountry]->neighboor[destCountry]->owner != player)
+		{
+			commanddest->countryClicked = player->listOwnedCountry[originCountry]->neighboor[destCountry];	
+			commanddest->unitClicked = UnitClickedType::NONE;
+			commanddest->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commanddest);
+		}
+		else
+		{
+			commandfin->pressedKey = KeyPressed::ESCAPE;
+			commandfin->unitClicked = UnitClickedType::NONE;
+			engine->commands.push(commandfin);
+			return;
 		}
 
-	//choix des unités à deplacer	
-	int selector1 = rand() % 3;
-	int selector2 = rand() % 3;
-	int selector3 = rand() % 3;
-	int selector4 = rand() % 3;
+		//choix des unités à deplacer	
+		int selector1 = rand() % 3;
+		int selector2 = rand() % 3;
+		int selector3 = rand() % 3;
+		int selector4 = rand() % 3;
 
-	if (selector1 == 0){
-		commandu1->mousePositionX = 300;	
-		commandu1->mousePositionY = 130;
-		commandu1->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu1);}
-	if (selector1 == 1){
-		commandu1->mousePositionX =  600;	
-		commandu1->mousePositionY =  130;
-		commandu1->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu1);}
-	if (selector1 == 2){
-		commandu1->mousePositionX =  800;	
-		commandu1->mousePositionY =  130;
-		commandu1->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu1);}
+		if (selector1 == 0){
+			commandu1->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu1->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu1);}
+		if (selector1 == 1){
+			commandu1->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu1->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu1);}
+		if (selector1 == 2){
+			commandu1->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu1->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu1);}
 //-----------------------------------------------------//
-	if (selector2 == 0){
-		commandu2->mousePositionX =  300;	
-		commandu2->mousePositionY =  130;
-		commandu2->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu2);}
-	if (selector2 == 1){
-		commandu2->mousePositionX =  600;	
-		commandu2->mousePositionY =  130;
-		commandu2->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu2);}
-	if (selector2 == 2){
-		commandu2->mousePositionX =  800;	
-		commandu2->mousePositionY =  130;
-		commandu2->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu2);}
+		if (selector2 == 0){
+			commandu2->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu2->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu2);}
+		if (selector2 == 1){
+			commandu2->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu2->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu2);}
+		if (selector2 == 2){
+			commandu2->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu2->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu2);}
 //---------------------------------------------------//
-	if (selector3 == 0){
-		commandu3->mousePositionX =  300;	
-		commandu3->mousePositionY =  130;
-		commandu3->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu3);}
-	if (selector3 == 1){
-		commandu3->mousePositionX =  600;	
-		commandu3->mousePositionY =  130;
-		commandu3->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu3);}
-	if (selector3 == 2){
-		commandu3->mousePositionX =  800;	
-		commandu3->mousePositionY =  130;
-		commandu3->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu3);}
+		if (selector3 == 0){
+			commandu3->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu3->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu3);}
+		if (selector3 == 1){
+			commandu3->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu3->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu3);}
+		if (selector3 == 2){
+			commandu3->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu3->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu3);}
 //---------------------------------------------------//
-	if (selector4 == 0){
-		commandu4->mousePositionX =  300;	
-		commandu4->mousePositionY =  130;
-		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu4);}
-	if (selector4 == 1){
-		commandu4->mousePositionX =  600;	
-		commandu4->mousePositionY =  130;
-		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu4);}
-	if (selector4 == 2){
-		commandu4->mousePositionX =  800;	
-		commandu4->mousePositionY =  130;
-		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu4);}
+		if (selector4 == 0){
+			commandu4->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu4->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu4);}
+		if (selector4 == 1){
+			commandu4->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu4->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu4);}
+		if (selector4 == 2){
+			commandu4->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu4->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu4);}
 
-	commandfin->pressedKey = KeyPressed::ENTER;
-	engine->commands.push(commandfin);
+		commandfin->pressedKey = KeyPressed::ENTER;
+		engine->commands.push(commandfin);
 
-	std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(engine->gameState->currentAction);
+		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(engine->gameState->currentAction);
 
-	/*while(attack->defencerUnits.size() != 0 && attack->attackerUnits.size() != 0)
-	{*/
 		std::shared_ptr<Command> commandspace = std::make_shared<Command>();
 		commandspace->pressedKey = KeyPressed::SPACE_BARRE;
 		engine->commands.push(commandspace);
-	/*}*/
-
 	}
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
@@ -191,26 +167,16 @@ void RandomAI::play()
 		//générer les clicks de l'IA
 	
 //choix pays origine
-		unsigned int i=0;
-		for(i=0;i<engine->gameState->listCountry.size();i++){
-			if (engine->gameState->listCountry[i] == player->listOwnedCountry[originCountry]){
-				commandor->mousePositionX = tabX[i];	
-				commandor->mousePositionY = tabY[i];
-				commandor->pressedKey = KeyPressed::LEFT_CLICK;
-				engine->commands.push(commandor);
-			}
-		}
+		commandor->countryClicked = player->listOwnedCountry[originCountry];
+		commandor->unitClicked = UnitClickedType::NONE;
+		commandor->pressedKey = KeyPressed::LEFT_CLICK;
+		engine->commands.push(commandor);
 
 //choix pays destination
-		for(i=0;i<engine->gameState->listCountry.size();i++){
-
-			if (engine->gameState->listCountry[i] == player->listOwnedCountry[destCountry]){
-				commanddest->mousePositionX = tabX[i];	
-				commanddest->mousePositionY = tabY[i];
-				commanddest->pressedKey = KeyPressed::LEFT_CLICK;
-				engine->commands.push(commanddest);
-			}
-		}
+		commanddest->countryClicked = player->listOwnedCountry[destCountry];
+		commanddest->unitClicked = UnitClickedType::NONE;
+		commanddest->pressedKey = KeyPressed::LEFT_CLICK;
+		engine->commands.push(commanddest);
 //choix des unités à deplacer	
 	int selector1 = rand() % 3;
 	int selector2 = rand() % 3;
@@ -218,68 +184,56 @@ void RandomAI::play()
 	int selector4 = rand() % 3;
 
 	if (selector1 == 0){
-		commandu1->mousePositionX = 300;	
-		commandu1->mousePositionY = 130;
-		commandu1->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu1);}
-	if (selector1 == 1){
-		commandu1->mousePositionX =  600;	
-		commandu1->mousePositionY =  130;
-		commandu1->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu1);}
-	if (selector1 == 2){
-		commandu1->mousePositionX =  800;	
-		commandu1->mousePositionY =  130;
-		commandu1->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu1);}
+			commandu1->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu1->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu1);}
+		if (selector1 == 1){
+			commandu1->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu1->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu1);}
+		if (selector1 == 2){
+			commandu1->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu1->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu1);}
 //-----------------------------------------------------//
-	if (selector2 == 0){
-		commandu2->mousePositionX =  300;	
-		commandu2->mousePositionY =  130;
-		commandu2->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu2);}
-	if (selector2 == 1){
-		commandu2->mousePositionX =  600;	
-		commandu2->mousePositionY =  130;
-		commandu2->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu2);}
-	if (selector2 == 2){
-		commandu2->mousePositionX =  800;	
-		commandu2->mousePositionY =  130;
-		commandu2->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu2);}
+		if (selector2 == 0){
+			commandu2->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu2->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu2);}
+		if (selector2 == 1){
+			commandu2->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu2->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu2);}
+		if (selector2 == 2){
+			commandu2->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu2->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu2);}
 //---------------------------------------------------//
-	if (selector3 == 0){
-		commandu3->mousePositionX =  300;	
-		commandu3->mousePositionY =  130;
-		commandu3->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu3);}
-	if (selector3 == 1){
-		commandu3->mousePositionX =  600;	
-		commandu3->mousePositionY =  130;
-		commandu3->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu3);}
-	if (selector3 == 2){
-		commandu3->mousePositionX =  800;	
-		commandu3->mousePositionY =  130;
-		commandu3->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu3);}
+		if (selector3 == 0){
+			commandu3->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu3->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu3);}
+		if (selector3 == 1){
+			commandu3->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu3->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu3);}
+		if (selector3 == 2){
+			commandu3->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu3->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu3);}
 //---------------------------------------------------//
-	if (selector4 == 0){
-		commandu4->mousePositionX =  300;	
-		commandu4->mousePositionY =  130;
-		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu4);}
-	if (selector4 == 1){
-		commandu4->mousePositionX =  600;	
-		commandu4->mousePositionY =  130;
-		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu4);}
-	if (selector4 == 2){
-		commandu4->mousePositionX =  800;	
-		commandu4->mousePositionY =  130;
-		commandu4->pressedKey = KeyPressed::LEFT_CLICK;
-		engine->commands.push(commandu4);}
+		if (selector4 == 0){
+			commandu4->unitClicked = UnitClickedType::DEF_PLUS;
+			commandu4->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu4);}
+		if (selector4 == 1){
+			commandu4->unitClicked = UnitClickedType::NEU_PLUS;
+			commandu4->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu4);}
+		if (selector4 == 2){
+			commandu4->unitClicked = UnitClickedType::ATT_PLUS;
+			commandu4->pressedKey = KeyPressed::LEFT_CLICK;
+			engine->commands.push(commandu4);}
 
 	commandfin->pressedKey = KeyPressed::ENTER;
 	engine->commands.push(commandfin);

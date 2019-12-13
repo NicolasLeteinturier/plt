@@ -106,8 +106,7 @@ void GameEngine::ExecuteCommands()
 }
 
 void GameEngine::ExecuteAttackCommand()
-{	
-	printf("avant seg fault dans attack 1\n");
+{
 	std::shared_ptr<Command> command = commands.front();
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
@@ -119,21 +118,14 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 0 : selection du pays attaquant
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		printf("avant seg fault dans attack 2\n");
-		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
-		printf("avant seg fault dans attack 2.1\n");
-		if(country_index == -1){return;}
-		/*std::shared_ptr<Country> */selected_country = gameState->listCountry[country_index];
-		printf("avant seg fault dans attack 2.2\n");
+		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("Ce pays ne vous appartient pas\n");
 			return;
 		}
-		printf("avant seg fault dans attack 2.3\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 		attack->attackerCountry = selected_country;
-		printf("avant seg fault dans attack 2.4\n");
 		etat = 1;
 		return;
 	}
@@ -141,10 +133,7 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 1 : selection du pays à attaquer
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		printf("avant seg fault dans attack 3\n");
-		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
-		if(country_index == -1){return;}
-		/*std::shared_ptr<Country> */selected_country = gameState->listCountry[country_index];
+		selected_country = command->countryClicked;
 		if(selected_country->owner == gameState->currentPlayer)
 		{
 			printf("Vous ne pouvez pas vous attaquer vous même !!!\n");
@@ -172,132 +161,118 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 2 : l'attaquant selectionne les unités avec lesquelles il souhaite attaquer
 	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		printf("avant seg fault dans attack 4\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
-		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
+		if(command->unitClicked == UnitClickedType::DEF_PLUS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
+			if(attack->attackerCountry->listUnit.size() <= 1)
 			{
-				// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
-				if(attack->attackerCountry->listUnit.size() <= 1)
-				{
-					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-					return;
-				}
-
-				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
-				{
-					if(attack->attackerCountry->listUnit[i]->type == Type::defensif)
-					{
-						attack->AddUnit(attack->attackerCountry->listUnit[i]);
-						break;
-					}
-				}
+				printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
 				return;
 			}
 
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
 			{
-				for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
+				if(attack->attackerCountry->listUnit[i]->type == Type::defensif)
 				{
-					if(attack->attackerUnits[i]->type == Type::defensif)
-					{
-						attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
-						attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
-						break;
-					}
+					attack->AddUnit(attack->attackerCountry->listUnit[i]);
+					break;
 				}
-				return;
 			}
-
-			else {return;}
+			return;
 		}
 
-		else if(command->mousePositionX <= 680 && command->mousePositionX >= 520)
+		else if(command->unitClicked == UnitClickedType::DEF_MOINS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
 			{
-				// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
-				if(attack->attackerCountry->listUnit.size() <= 1)
+				if(attack->attackerUnits[i]->type == Type::defensif)
 				{
-					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-					return;
+					attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
+					attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
+					break;
 				}
-
-				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
-				{
-
-					if(attack->attackerCountry->listUnit[i]->type == Type::neutre)
-					{
-						attack->AddUnit(attack->attackerCountry->listUnit[i]);
-						break;
-					}
-				}
-				return;
 			}
-
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
-			{
-				for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
-				{
-					if(attack->attackerUnits[i]->type == Type::neutre)
-					{
-						attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
-						attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
-						break;
-					}
-				}
-				return;
-			}
-
-			else {return;}
+			return;
 		}
 
-		else if(command->mousePositionX <= 930 && command->mousePositionX >= 770)
+		else if(command->unitClicked == UnitClickedType::NEU_PLUS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
+			if(attack->attackerCountry->listUnit.size() <= 1)
 			{
-				// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
-				if(attack->attackerCountry->listUnit.size() <= 1)
-				{
-					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-					return;
-				}
-
-				for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
-				{
-					if(attack->attackerCountry->listUnit[i]->type == Type::attaquant)
-					{
-						attack->AddUnit(attack->attackerCountry->listUnit[i]);
-						break;
-					}
-				}
+				printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
 				return;
 			}
 
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
 			{
-				for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
-				{
-					if(attack->attackerUnits[i]->type == Type::attaquant)
-					{
-						attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
-						attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
-						break;
-					}
-				}
-				return;
-			}
 
-			else {return;}
+				if(attack->attackerCountry->listUnit[i]->type == Type::neutre)
+				{
+					attack->AddUnit(attack->attackerCountry->listUnit[i]);
+					break;
+				}
+			}
+			return;
 		}
+
+		else if(command->unitClicked == UnitClickedType::NEU_MOINS)
+		{
+			for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
+			{
+				if(attack->attackerUnits[i]->type == Type::neutre)
+				{
+					attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
+					attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
+					break;
+				}
+			}
+			return;
+		}
+
+		else if(command->unitClicked == UnitClickedType::ATT_PLUS)
+		{
+			// Si il ne reste qu'une unité dans le pays attaquant on ne l'ajoute pas aux unités attaquantes
+			if(attack->attackerCountry->listUnit.size() <= 1)
+			{
+				printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+				return;
+			}
+
+			for(unsigned int i = 0; i < attack->attackerCountry->listUnit.size(); i++)
+			{
+				if(attack->attackerCountry->listUnit[i]->type == Type::attaquant)
+				{
+					attack->AddUnit(attack->attackerCountry->listUnit[i]);
+					break;
+				}
+			}
+			return;
+		}
+
+		else if(command->unitClicked == UnitClickedType::ATT_MOINS)
+		{
+			for(unsigned int i = 0; i < attack->attackerUnits.size(); i++)
+			{
+				if(attack->attackerUnits[i]->type == Type::attaquant)
+				{
+					attack->attackerCountry->AddUnit(attack->attackerUnits[i]);
+					attack->attackerUnits.erase(attack->attackerUnits.begin() + i);
+					break;
+				}
+			}
+			return;
+		}
+
+		else {return;}
+		
 	}
 
 	// Si le joueur presse la touche entrée on passe à l'état suivant et on ajoute les unités du pays defenseur aux unités défensives
 	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
-		printf("avant seg fault dans attack 5\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 		attack->unitSelected = false;
 
@@ -316,11 +291,12 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 3 : on lance l'attaque ...
 	else if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
-		printf("avant seg fault dans attack 6\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
+		printf("%d\n",attack->attackerUnits.size());
 
 		if(attack->attackerUnits.size() == 0)
 		{
+			printf("avant seg fault dans attack 6.1\n");
 			etat = 0;
 			attack->displayAttack = false;
 			attack->AttackIsOver();
@@ -344,115 +320,6 @@ void GameEngine::ExecuteAttackCommand()
 		}
 
 		srand (time(NULL));
-
-		/*if(attack->attackerUnits.size() >= 2)
-		{
-			int attacker_de_1 = rand()%6;
-			if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de_1++;}
-			if(attack->attackerUnits[0]->type == Type::defensif){attacker_de_1--;}
-
-			int attacker_de_2 = rand()%6;
-			if(attack->attackerUnits[1]->type == Type::attaquant){attacker_de_1++;}
-			if(attack->attackerUnits[1]->type == Type::defensif){attacker_de_1--;}
-
-			int attacker_max = std::max(attacker_de_1,attacker_de_2);
-			int attacker_min = std::min(std::min(attacker_de_1,attacker_de_2),attacker_de_3);
-			
-			if(attack->defencerUnits.size() >= 2) 
-			{
-				int defencer_de_1 = rand()%6;
-				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
-				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
-
-				int defencer_de_2 = rand()%6;
-				if(attack->defencerUnits[1]->type == Type::attaquant){attacker_de_1--;}
-				if(attack->defencerUnits[1]->type == Type::defensif){attacker_de_1++;}
-
-				int defencer_max = std::max(defencer_de_1,defencer_de_2);
-				int defencer_min = std::min(defencer_de_1,defencer_de_2);
-
-				// Comparaison entre les dés
-				if(attacker_max >= defencer_max && attacker_min >= defencer_min)
-				{
-					attack->KillUnit(attack->defencerUnit[0]);
-					attack->KillUnit(attack->defencerUnit[0]);	
-				}
-
-				if(attacker_max >= defencer_max && attacker_min <= defencer_min)
-				{
-					attack->KillUnit(attack->defencerUnit[0]);
-					attack->KillUnit(attack->attackerUnit[1]);
-				}
-
-				if(attacker_max <= defencer_max && attacker_min >= defencer_min)
-				{
-					attack->KillUnit(attack->attackerUnit[0]);
-					attack->KillUnit(attack->defencerUnit[1]);	
-				}
-
-				if(attacker_max <= defencer_max && attacker_min <= defencer_min)
-				{
-					attack->KillUnit(attack->attackerUnit[0]);
-					attack->KillUnit(attack->attackerUnit[0]);
-				}
-			}
-
-			if(attack->defencerUnits.size() == 1) 
-			{
-				int defencer_de = rand()%6;
-				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
-				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
-
-				// Comparaison entre les dés
-				if(attacker_max >= defencer_de){attack->KillUnit(attack->defencerUnit[0]);}
-				else
-				{
-					attack->KillUnit(attack->attackerUnit[0]);
-					attack->KillUnit(attack->attackerUnit[0]);
-				}
-			}
-		}
-
-		else
-		{
-			int attacker_de = rand()%6;
-			if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de_1++;}
-			if(attack->attackerUnits[0]->type == Type::defensif){attacker_de_1--;}
-
-			if(attack->defencerUnits.size() >= 2) 
-			{
-				int defencer_de_1 = rand()%6;
-				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
-				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
-
-				int defencer_de_2 = rand()%6;
-				if(attack->defencerUnits[1]->type == Type::attaquant){attacker_de_1--;}
-				if(attack->defencerUnits[1]->type == Type::defensif){attacker_de_1++;}
-
-				int defencer_max = std::max(defencer_de_1,defencer_de_2);
-				int defencer_min = std::min(defencer_de_1,defencer_de_2);
-
-				// Comparaison entre les dés
-
-				if(defencer_max >= attacker_de){attack->KillUnit(attack->attackerUnit[0]);}
-				else
-				{
-					attack->KillUnit(attack->defencerUnit[0]);
-					attack->KillUnit(attack->defencerUnit[0]);
-				}
-
-			}
-			else
-			{
-				int defencer_de = rand()%6;
-				if(attack->defencerUnits[0]->type == Type::attaquant){attacker_de_1--;}
-				if(attack->defencerUnits[0]->type == Type::defensif){attacker_de_1++;}
-
-				//Comparaison entre les dés
-
-			}
-			
-		}*/
 
 		int attacker_de;
 		int defencer_de;
@@ -484,8 +351,6 @@ void GameEngine::ExecuteMovementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
 
-	printf("avant seg fault dans movement 1\n");
-
 	if(command->pressedKey == KeyPressed::ESCAPE)
 	{
 		gameState->GoToNextAction();
@@ -495,10 +360,7 @@ void GameEngine::ExecuteMovementCommand()
 	// etat vaut 0 : selection du pays d'origine
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		printf("avant seg fault dans movement 2\n");
-		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
-		if(country_index == -1){return;}
-		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
+		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("ce pays ne vous appartient pas\n");
@@ -514,21 +376,13 @@ void GameEngine::ExecuteMovementCommand()
 
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		printf("avant seg fault dans movement 3\n");
-		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
-		printf("avant seg fault dans movement 3.1\n");
-		if(country_index == -1){return;}
-		printf("avant seg fault dans movement 3.2\n");
-		std::shared_ptr<Country> selected_country = gameState->listCountry[country_index];
-		printf("avant seg fault dans movement 3.3\n");
+		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("ce pays ne vous appartient pas\n");
 			return;
 		}
-		printf("avant seg fault dans movement 3.4\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
-		printf("avant seg fault dans movement 3.5\n");
 		movement->destination = selected_country;
 		movement->unitSelected = true;
 		etat = 2;
@@ -539,125 +393,111 @@ void GameEngine::ExecuteMovementCommand()
 
 	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		printf("avant seg fault dans movement 4\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 
-		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
+		if(command->unitClicked == UnitClickedType::DEF_PLUS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
+			if(movement->origin->listUnit.size() <= 1)
 			{
-				// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
-				if(movement->origin->listUnit.size() <= 1)
-				{
-					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-					return;
-				}
-
-				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
-				{
-					if(movement->origin->listUnit[i]->type == Type::defensif)
-					{
-						movement->AddUnitToMove(movement->origin->listUnit[i]);
-						break;
-					}
-				}
+				printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
 				return;
 			}
 
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
 			{
-				for(unsigned int i = 0; i < movement->units.size(); i++)
+				if(movement->origin->listUnit[i]->type == Type::defensif)
 				{
-					if(movement->units[i]->type == Type::defensif)
-					{
-						movement->origin->AddUnit(movement->units[i]);
-						movement->units.erase(movement->units.begin() + i);
-						break;
-					}
+					movement->AddUnitToMove(movement->origin->listUnit[i]);
+					break;
 				}
-				return;
 			}
-
-			else {return;}
+			return;
 		}
 
-		else if(command->mousePositionX <= 680 && command->mousePositionX >= 520)
+		else if(command->unitClicked == UnitClickedType::DEF_MOINS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			for(unsigned int i = 0; i < movement->units.size(); i++)
 			{
-				// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
-				if(movement->origin->listUnit.size() <= 1)
+				if(movement->units[i]->type == Type::defensif)
 				{
-					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-					return;
+					movement->origin->AddUnit(movement->units[i]);
+					movement->units.erase(movement->units.begin() + i);
+					break;
 				}
-
-				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
-				{
-					if(movement->origin->listUnit[i]->type == Type::neutre)
-					{
-						movement->AddUnitToMove(movement->origin->listUnit[i]);
-						break;
-					}
-				}
-				return;
 			}
-
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
-			{
-				for(unsigned int i = 0; i < movement->units.size(); i++)
-				{
-					if(movement->units[i]->type == Type::neutre)
-					{
-						movement->origin->AddUnit(movement->units[i]);
-						movement->units.erase(movement->units.begin() + i);
-						break;
-					}
-				}
-				return;
-			}
-
-			else {return;}
+			return;
 		}
 
-		else if(command->mousePositionX <= 930 && command->mousePositionX >= 770)
+		else if(command->unitClicked == UnitClickedType::NEU_PLUS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
+			if(movement->origin->listUnit.size() <= 1)
 			{
-				// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
-				if(movement->origin->listUnit.size() <= 1)
-				{
-					printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
-					return;
-				}
-
-				for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
-				{
-					if(movement->origin->listUnit[i]->type == Type::attaquant)
-					{
-						movement->AddUnitToMove(movement->origin->listUnit[i]);
-						break;
-					}
-				}
+				printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
 				return;
 			}
 
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
+			for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
 			{
-				for(unsigned int i = 0; i < movement->units.size(); i++)
+				if(movement->origin->listUnit[i]->type == Type::neutre)
 				{
-					if(movement->units[i]->type == Type::attaquant)
-					{
-						movement->origin->AddUnit(movement->units[i]);
-						movement->units.erase(movement->units.begin() + i);
-						break;
-					}
+					movement->AddUnitToMove(movement->origin->listUnit[i]);
+					break;
 				}
-				return;
 			}
-
-			else {return;}
+			return;
 		}
+
+		else if(command->unitClicked == UnitClickedType::NEU_MOINS)
+		{
+			for(unsigned int i = 0; i < movement->units.size(); i++)
+			{
+				if(movement->units[i]->type == Type::neutre)
+				{
+					movement->origin->AddUnit(movement->units[i]);
+					movement->units.erase(movement->units.begin() + i);
+					break;
+				}
+			}
+			return;
+		}
+		
+		else if(command->unitClicked == UnitClickedType::ATT_PLUS)
+		{
+			// Si il ne reste qu'une unité dans le pays d'origine on ne peut plus deplacer d'unité
+			if(movement->origin->listUnit.size() <= 1)
+			{
+				printf("Vous ne pouvez pas vider entièrement vôtre pays\n");
+				return;
+			}
+
+			for(unsigned int i = 0; i < movement->origin->listUnit.size(); i++)
+			{
+				if(movement->origin->listUnit[i]->type == Type::attaquant)
+				{
+					movement->AddUnitToMove(movement->origin->listUnit[i]);
+					break;
+				}
+			}
+			return;
+		}
+
+		else if(command->unitClicked == UnitClickedType::ATT_MOINS)
+		{
+			for(unsigned int i = 0; i < movement->units.size(); i++)
+			{
+				if(movement->units[i]->type == Type::attaquant)
+				{
+					movement->origin->AddUnit(movement->units[i]);
+					movement->units.erase(movement->units.begin() + i);
+					break;
+				}
+			}
+			return;
+		}
+
+		else {return;}
 
 	}
 
@@ -665,8 +505,8 @@ void GameEngine::ExecuteMovementCommand()
 
 	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
-		printf("avant seg fault dans movement 5\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
+		printf("%d\n",movement->units.size());
 		movement->unitSelected = false;
 		movement->MoveAllUnit();
 		gameState->GoToNextAction();
@@ -692,9 +532,7 @@ void GameEngine::ExecuteReinforcementCommand()
 
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		int country_index = GetCountryClicked(command->mousePositionX,command->mousePositionY);
-		if(country_index == -1){return;}
-		selected_country = gameState->listCountry[country_index];
+		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("ce pays ne vous appartient pas");
@@ -707,98 +545,86 @@ void GameEngine::ExecuteReinforcementCommand()
 
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-		if(command->mousePositionX <= 405 && command->mousePositionX >= 245)
+
+		if(command->unitClicked == UnitClickedType::DEF_PLUS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
 			{
-				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				if(reinforcement->availableUnits[i]->type == Type::defensif)
 				{
-					if(reinforcement->availableUnits[i]->type == Type::defensif)
-					{
-						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
-						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
-						return;
-					}
+					reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
+					reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
+					return;
 				}
 			}
-
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
-			{
-				for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
-				{
-					if(reinforcement->selectedUnits[i]->type == Type::defensif)
-					{
-						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
-						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
-						return;
-					}
-				}
-			}
-
-			else {return;}
 		}
 
-		else if(command->mousePositionX <= 680 && command->mousePositionX >= 520)
+		else if(command->unitClicked == UnitClickedType::DEF_MOINS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
 			{
-				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				if(reinforcement->selectedUnits[i]->type == Type::defensif)
 				{
-					if(reinforcement->availableUnits[i]->type == Type::neutre)
-					{
-						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
-						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
-						return;
-					}
+					reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
+					reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
+					return;
 				}
 			}
-
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
-			{
-				for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
-				{
-					if(reinforcement->selectedUnits[i]->type == Type::neutre)
-					{
-						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
-						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
-						return;
-					}
-				}
-			}
-
-			else {return;}
 		}
 
-		else if(command->mousePositionX <= 930 && command->mousePositionX >= 770)
+		else if(command->unitClicked == UnitClickedType::NEU_PLUS)
 		{
-			if(command->mousePositionY <= 190 && command->mousePositionY >= 90)
+			for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
 			{
-				for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+				if(reinforcement->availableUnits[i]->type == Type::neutre)
 				{
-					if(reinforcement->availableUnits[i]->type == Type::attaquant)
-					{
-						reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
-						reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
-						return;
-					}
+					reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
+					reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
+					return;
 				}
 			}
-
-			else if(command->mousePositionY <= 500 && command->mousePositionY >= 400)
-			{
-				for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
-				{
-					if(reinforcement->selectedUnits[i]->type == Type::attaquant)
-					{
-						reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
-						reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
-						return;
-					}
-				}
-			}
-
-			else {return;}
 		}
+
+		else if(command->unitClicked == UnitClickedType::NEU_MOINS)
+		{
+			for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
+			{
+				if(reinforcement->selectedUnits[i]->type == Type::neutre)
+				{
+					reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
+					reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
+					return;
+				}
+			}
+		}
+
+		else if(command->unitClicked == UnitClickedType::ATT_PLUS)
+		{
+			for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
+			{
+				if(reinforcement->availableUnits[i]->type == Type::attaquant)
+				{
+					reinforcement->selectedUnits.push_back(reinforcement->availableUnits[i]);
+					reinforcement->availableUnits.erase(reinforcement->availableUnits.begin() + i);
+					return;
+				}
+			}
+		}
+
+		else if(command->unitClicked == UnitClickedType::ATT_MOINS)
+		{
+			for(unsigned int i = 0; i < reinforcement->selectedUnits.size(); i++)
+			{
+				if(reinforcement->selectedUnits[i]->type == Type::attaquant)
+				{
+					reinforcement->availableUnits.push_back(reinforcement->availableUnits[i]);
+					reinforcement->selectedUnits.erase(reinforcement->selectedUnits.begin() + i);
+					return;
+				}
+			}
+		}
+
+		else {return;}
 	}
 
 	else if(etat == 1 && command->pressedKey == KeyPressed::ENTER)
@@ -826,24 +652,6 @@ void GameEngine::ExecuteInitialisationCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
 	gameState->GoToNextAction();
-}
-
-
-int GameEngine::GetCountryClicked(int mousePositionX, int mousePositionY)
-{
-	sf::Image image;
-	char table[NB_COUNTRY][40] = {COUNTRY_SPRITE_RESSOURCES};
-	char country_name[NB_COUNTRY][40] = {COUNTRY_NAME};
-	for (int i = 0; i < NB_COUNTRY; i++) { 
-		if (!(image.loadFromFile(table[i])))
-          		printf("Cannot load image");
-		if(image.getPixel(mousePositionX,mousePositionY) != sf::Color::Transparent)
-		{
-			std::cout << country_name[i] << std::endl;
-			return(i);
-		}
-	}
-	return(-1);
 }
 
 

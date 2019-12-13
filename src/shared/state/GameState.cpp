@@ -122,10 +122,39 @@ void GameState::GoToNextAction()
 	}
 	if(currentAction->GetActionType() == ActionType::_ATTACK)
 	{
-		std::cout << " en phase d'attaque" << std::endl;
-		std::shared_ptr<Movement> movement = std::make_shared<Movement>();
-		currentAction = movement;
-		return;
+		if(currentPlayer->listOwnedCountry.size() <= 1)
+		{
+			std::shared_ptr<Reinforcements> reinforcement = std::make_shared<Reinforcements>();
+			for (unsigned int i = 0; i < listPlayer.size(); i++)
+			{
+				if(listPlayer[i] == currentPlayer)
+				{
+					currentPlayer = listPlayer[(i+1)%listPlayer.size()];
+					break;
+				}
+			}
+
+			for(int i = 0; i < currentPlayer->ReinforcementNumber(); i++)
+			{
+				std::shared_ptr<Unit> unit = std::make_shared<Unit>();
+				int type = rand()%3;
+				if(type == 0){unit->type = Type::attaquant;}
+				else if(type == 1){unit->type = Type::neutre;}
+				else{unit->type = Type::defensif;}
+				reinforcement->availableUnits.push_back(unit);
+			}
+			reinforcement->availableCountry = currentPlayer->listOwnedCountry;
+			currentAction = reinforcement;
+			return;
+		}
+
+		else
+		{
+			std::cout << " en phase d'attaque" << std::endl;
+			std::shared_ptr<Movement> movement = std::make_shared<Movement>();
+			currentAction = movement;
+			return;
+		}
 	}
 	if(currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
