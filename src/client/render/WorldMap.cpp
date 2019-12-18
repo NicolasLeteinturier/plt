@@ -27,7 +27,8 @@ WorldMap::WorldMap()
 
 		sf::Sprite sprite;
 		pays->sprite = sprite;
-		pays->sprite.setTexture(pays->texture);	//creation des sprites pour GraphicElement
+		pays->sprite.setTexture(pays->texture);
+		sprite.setColor(sf::Color::White);	//creation des sprites pour GraphicElement
 		listGraphicElement.push_back(pays);	//ajouts a listGraphicElements dans layer
 	}
 }
@@ -38,8 +39,13 @@ void WorldMap::Draw(std::shared_ptr<sf::RenderWindow> renderWindow)
 {
 	sf::Color colorTable[4] = {COLOR_TABLE};
 	for (int i = 0; i < NB_COUNTRY; i++) {
-		listGraphicElement[i]->SetElementColor(colorTable[listCountry[i]->owner->color]);
-		listGraphicElement[i]->DrawElement(renderWindow);
+		if (listCountry[i]->owner){
+			listGraphicElement[i]->SetElementColor(colorTable[listCountry[i]->owner->color]);
+			listGraphicElement[i]->DrawElement(renderWindow);}
+		else{
+			listGraphicElement[i]->SetElementColor(sf::Color::White);
+			listGraphicElement[i]->DrawElement(renderWindow);
+}
    }
 }
    

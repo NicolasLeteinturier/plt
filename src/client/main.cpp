@@ -27,16 +27,21 @@ int compteur = 0;
 
 int main(int argc,char* argv[])
 {
+	printf("check pointeurs");
 	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1267, 628), "Risk");
+	printf("check engine");
 	std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
+	printf("check state");
 	std::shared_ptr<GameState> gameState = std::make_shared<GameState>();
+	printf("check scene\n");
 	Scene scene(gameState);
+	printf("check controller");
 	Controller controler;
 	HeuristicAI ai;
 	RandomAI ai2;
 
 	//Creation et initialisation d'une scene
-	
+	printf("définir window");
 	scene.renderWindow = window;
 
 	gameEngine->gameState = gameState;	
@@ -47,13 +52,18 @@ int main(int argc,char* argv[])
 	ai.engine = gameEngine;
 	ai2.engine = gameEngine;
 
-        gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
-        gameState->AddPlayer(IAType::RANDOM, "IA 1");
-        gameState->AddPlayer(IAType::RANDOM, "IA 2");
-        gameState->AddPlayer(IAType::RANDOM, "IA 3");
 
-	for(unsigned int i = 0; i < 100; i++)
-		gameState->GoToNextAction();
+
+	printf("définir joueur");
+
+        gameState->AddPlayer(IAType::NONE,"Joueur 1");
+        gameState->AddPlayer(IAType::NONE, "IA 1");
+        gameState->AddPlayer(IAType::NONE, "IA 2");
+        gameState->AddPlayer(IAType::NONE, "IA 3");
+
+	/*for(unsigned int i = 0; i < 100; i++){
+		printf("dans init test provisoir");
+		gameState->GoToNextAction();}*/
 
 	sf::Text textMov;
 	sf::Font font;
@@ -82,6 +92,7 @@ int main(int argc,char* argv[])
 			ai.play();
 		}
 	});*/
+
 
 	while (window->isOpen())
 	{

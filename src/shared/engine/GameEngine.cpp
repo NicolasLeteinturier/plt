@@ -16,6 +16,7 @@ namespace engine {
 }
 
 #include "../state/GameState.h"
+#include "../state/Initialisation.h"
 #include "Command.h"
 
 namespace engine {
@@ -646,8 +647,35 @@ void GameEngine::ExecuteReinforcementCommand()
 
 void GameEngine::ExecuteInitialisationCommand()
 {
+	/*std::shared_ptr<Command> command = commands.front();
+	gameState->GoToNextAction();*/
+
+
+	/*on cherche à déterminé si le pays sélectionné est un pays qui appartien bien à personne si s'est le cas on attribut le pays au joueur. Sinon on passe le tour. Si il n'y a plus de pays libre on fait go to next action*/
+
+
+	printf("début ExecuteInitialisationCommand");
+	//for(unsigned int i = 0; i < init->unattributedCountry.size(); i++)
+
+	std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(gameState->currentAction);
 	std::shared_ptr<Command> command = commands.front();
-	gameState->GoToNextAction();
+
+
+	if (init->unattributedCountry.size()==0)
+		gameState->GoToNextAction();
+
+	selected_country = command->countryClicked;
+	
+	for(unsigned int i = 0; i < init->unattributedCountry.size(); i++)
+	{
+		if (selected_country == init->unattributedCountry[i])
+			init->AttributeCountry(selected_country,gameState->currentPlayer);
+		printf("dans init");}
+	
+
+
+	
+	
 }
 
 
