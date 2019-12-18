@@ -30,10 +30,13 @@ int main(int argc,char* argv[])
 	std::shared_ptr<sf::RenderWindow> window = std::make_shared<sf::RenderWindow>(sf::VideoMode(1267, 628), "Risk");
 	std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
 	std::shared_ptr<GameState> gameState = std::make_shared<GameState>();
+	std::shared_ptr<GameState> gameState_testCopy = std::make_shared<GameState>();
 	Scene scene(gameState);
 	Controller controler;
 	HeuristicAI ai;
 	RandomAI ai2;
+	DeepAI ai3;
+	std::shared_ptr<TreeNode> tree = std::make_shared<TreeNode>();
 
 	//Creation et initialisation d'une scene
 	
@@ -46,6 +49,9 @@ int main(int argc,char* argv[])
 
 	ai.engine = gameEngine;
 	ai2.engine = gameEngine;
+	ai3.engine = gameEngine;
+	ai3.treeHead = tree;
+	tree->gameState = gameState;
 
         gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
         gameState->AddPlayer(IAType::RANDOM, "IA 1");
@@ -86,7 +92,6 @@ int main(int argc,char* argv[])
 	while (window->isOpen())
 	{
 	        // check all the window's events that were triggered since the last iteration of the loop
-
 	        sf::Event event;
 	        while (window->pollEvent(event))
 	        {
