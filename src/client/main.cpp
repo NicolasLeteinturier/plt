@@ -35,8 +35,8 @@ int main(int argc,char* argv[])
 	Controller controler;
 	HeuristicAI ai;
 	RandomAI ai2;
-	DeepAI ai3;
-	std::shared_ptr<TreeNode> tree = std::make_shared<TreeNode>();
+	/*DeepAI ai3;
+	std::shared_ptr<TreeNode> tree = std::make_shared<TreeNode>();*/
 
 	//Creation et initialisation d'une scene
 	
@@ -49,17 +49,17 @@ int main(int argc,char* argv[])
 
 	ai.engine = gameEngine;
 	ai2.engine = gameEngine;
-	ai3.engine = gameEngine;
-	ai3.treeHead = tree;
-	tree->gameState = gameState;
+	//ai3.engine = gameEngine;
+	/*ai3.treeHead = tree;
+	tree->gameState = gameState;*/
 
-        gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
+        gameState->AddPlayer(IAType::NONE,"Joueur 1");
         gameState->AddPlayer(IAType::RANDOM, "IA 1");
-        gameState->AddPlayer(IAType::RANDOM, "IA 2");
-        gameState->AddPlayer(IAType::RANDOM, "IA 3");
+        gameState->AddPlayer(IAType::NONE, "IA 2");
+        gameState->AddPlayer(IAType::NONE, "IA 3");
 
-	for(unsigned int i = 0; i < 100; i++)
-		gameState->GoToNextAction();
+	/*for(unsigned int i = 0; i < 100; i++)
+		gameState->GoToNextAction();*/
 
 	sf::Text textMov;
 	sf::Font font;

@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "../../define.h"
 #include "../state/Attack.h"
+#include "../state/Initialisation.h"
 
 using namespace ai;
 using namespace state;
@@ -26,6 +27,22 @@ void RandomAI::play()
 	if(engine->gameState->currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
 
+	//initialisation 
+		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(engine->gameState->currentAction);
+
+
+		if(init->unattributedCountry.size()>0)
+			init->AttributeCountry(init->unattributedCountry[0],engine->gameState->currentPlayer);
+		for(unsigned int i = 0; i < engine->gameState->listPlayer.size(); i++) 
+		{
+			if (engine->gameState->listPlayer[i]==engine->gameState->currentPlayer){
+				unsigned int j=(i+1)%(engine->gameState->listPlayer.size());//on stock la valeur du joueur suivant
+				engine->gameState->currentPlayer = engine->gameState->listPlayer[j];
+				break;
+				//std::shared_ptr<Player> joueur = 
+			}
+		}
+		
 	}
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{

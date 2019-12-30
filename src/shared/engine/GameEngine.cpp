@@ -653,26 +653,41 @@ void GameEngine::ExecuteInitialisationCommand()
 
 	/*on cherche à déterminé si le pays sélectionné est un pays qui appartien bien à personne si s'est le cas on attribut le pays au joueur. Sinon on passe le tour. Si il n'y a plus de pays libre on fait go to next action*/
 
-
-	printf("début ExecuteInitialisationCommand");
-	//for(unsigned int i = 0; i < init->unattributedCountry.size(); i++)
-
 	std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(gameState->currentAction);
+	printf("début ExecuteInitialisationCommand");
 	std::shared_ptr<Command> command = commands.front();
-
-
-	if (init->unattributedCountry.size()==0)
-		gameState->GoToNextAction();
 
 	selected_country = command->countryClicked;
 	
 	for(unsigned int i = 0; i < init->unattributedCountry.size(); i++)
 	{
-		if (selected_country == init->unattributedCountry[i])
+		if (selected_country == init->unattributedCountry[i]){
 			init->AttributeCountry(selected_country,gameState->currentPlayer);
-		printf("dans init");}
-	
+		}
 
+	}
+	unsigned int j=0;
+	//déterminer le current Player
+	for(unsigned int i = 0; i < gameState->listPlayer.size(); i++) 
+	{
+		if (gameState->listPlayer[i]==gameState->currentPlayer){
+			unsigned int j=(i+1)%(gameState->listPlayer.size());//on stock la valeur du joueur suivant
+			gameState->currentPlayer = gameState->listPlayer[j];
+			break;
+			//std::shared_ptr<Player> joueur = 
+		}
+	}
+
+	
+			printf("%i\n",j);
+
+	if (init->unattributedCountry.size()==0)
+		gameState->GoToNextAction();
+
+	
+		
+	
+	//}
 
 	
 	
