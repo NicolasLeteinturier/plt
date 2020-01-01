@@ -16,6 +16,7 @@ TreeNode::TreeNode()
 
 void TreeNode::BuildLeaf()
 {
+	printf("tout de meme arrivé ici\n");
 	if(leafs.size() != 0)
 	{
 		printf("les feuilles sont déjà construite\n");

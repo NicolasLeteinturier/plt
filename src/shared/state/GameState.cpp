@@ -185,5 +185,3 @@ void GameState::GoToNextAction()
 	return;
 }
 
-
-

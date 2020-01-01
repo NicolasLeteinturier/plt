@@ -35,8 +35,8 @@ int main(int argc,char* argv[])
 	Controller controler;
 	HeuristicAI ai;
 	RandomAI ai2;
-	/*DeepAI ai3;
-	std::shared_ptr<TreeNode> tree = std::make_shared<TreeNode>();*/
+	DeepAI ai3;
+	std::shared_ptr<TreeNode> tree = std::make_shared<TreeNode>();
 
 	//Creation et initialisation d'une scene
 	
@@ -49,17 +49,17 @@ int main(int argc,char* argv[])
 
 	ai.engine = gameEngine;
 	ai2.engine = gameEngine;
-	//ai3.engine = gameEngine;
-	/*ai3.treeHead = tree;
-	tree->gameState = gameState;*/
+	ai3.engine = gameEngine;
+	ai3.treeHead = tree;
+	tree->gameState = gameState;
 
         gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
         gameState->AddPlayer(IAType::RANDOM, "IA 1");
         gameState->AddPlayer(IAType::RANDOM, "IA 2");
         gameState->AddPlayer(IAType::RANDOM, "IA 3");
 
-	/*for(unsigned int i = 0; i < 100; i++)
-		gameState->GoToNextAction();*/
+	for(unsigned int i = 0; i < 101; i++)
+		gameState->GoToNextAction();
 
 	sf::Text textMov;
 	sf::Font font;
@@ -74,6 +74,20 @@ int main(int argc,char* argv[])
 	// run the program as long as the window is open
 
 	sf::Color colorTable[4] = {COLOR_TABLE};
+
+	/*unsigned int compteurfeuille = 0;
+	tree->BuildLeaf();
+	printf("%d\n",tree->leafs.size());
+	for(unsigned int i; i < tree->leafs.size(); i++)
+	{
+		tree->leafs[i]->BuildLeaf();
+		for(unsigned int j; j < tree->leafs[i]->leafs.size(); j++)
+		{
+			tree->leafs[i]->leafs[j]->BuildLeaf();
+			compteurfeuille += tree->leafs[i]->leafs[j]->leafs.size();
+		}
+	}
+	printf("%d\n",compteurfeuille);*/
 
 	/*std::thread engine_thread([gameEngine](){
 		while(1)
@@ -103,12 +117,21 @@ int main(int argc,char* argv[])
 
 		window->clear();
 		window->draw(sprite);
+		
 		scene.Draw();
         	scene.Update();
 
-		ai.play();
-		ai2.play();
-		gameEngine->ExecuteCommands();
+		if(gameState->listPlayer.size() > 1)
+		{
+			ai.play();
+			ai2.play();
+			gameEngine->ExecuteCommands();
+		}
+		else
+		{
+			gameEngine->Rollback();
+			scene.gameState = gameEngine->gameState;
+		}
 
 		std::string curact;
 		if(gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)

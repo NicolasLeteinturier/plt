@@ -19,6 +19,13 @@ void HeuristicAI::play()
 {
 	if(engine->gameState->currentPlayer->isAnIA != IAType::HEURISTIC)
 	{
+		return;
+	}
+
+	printf("Heuristic IA playing\n");
+
+	if(engine->gameState->currentAction->GetActionType() == ActionType::_INITIALISATION)
+	{
 		//initialisation 
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(engine->gameState->currentAction);
 
@@ -34,13 +41,6 @@ void HeuristicAI::play()
 				//std::shared_ptr<Player> joueur = 
 			}
 		}
-	}
-
-	printf("Heuristic IA playing\n");
-
-	if(engine->gameState->currentAction->GetActionType() == ActionType::_INITIALISATION)
-	{
-		return;
 	}
 
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)

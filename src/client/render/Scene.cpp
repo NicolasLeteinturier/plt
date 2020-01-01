@@ -40,6 +40,12 @@ Scene::Scene(std::shared_ptr<GameState> _gameState)
 
 void Scene::Draw()
 {
+
+	worldMap->listCountry = gameState->listCountry;
+	unitRepresentation->listCountry = gameState->listCountry;
+        unitSelection->listCountry = gameState->listCountry;
+	attackDisplay->listCountry = gameState->listCountry;
+
 	worldMap->Draw(renderWindow);
 	unitRepresentation->Draw(renderWindow);
         //unitSelection->Draw(renderWindow);
@@ -54,6 +60,12 @@ void Scene::Draw()
 
 void Scene::Update()
 {
+
+	worldMap->listCountry = gameState->listCountry;
+	unitRepresentation->listCountry = gameState->listCountry;
+        unitSelection->listCountry = gameState->listCountry;
+	attackDisplay->listCountry = gameState->listCountry;
+
 	//worldMap->Update();
 	unitRepresentation->Update(renderWindow);
 	unitSelection->currentAction = gameState->currentAction;
