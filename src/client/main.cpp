@@ -53,10 +53,10 @@ int main(int argc,char* argv[])
 	/*ai3.treeHead = tree;
 	tree->gameState = gameState;*/
 
-        gameState->AddPlayer(IAType::NONE,"Joueur 1");
+        gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
         gameState->AddPlayer(IAType::RANDOM, "IA 1");
-        gameState->AddPlayer(IAType::NONE, "IA 2");
-        gameState->AddPlayer(IAType::NONE, "IA 3");
+        gameState->AddPlayer(IAType::RANDOM, "IA 2");
+        gameState->AddPlayer(IAType::RANDOM, "IA 3");
 
 	/*for(unsigned int i = 0; i < 100; i++)
 		gameState->GoToNextAction();*/
