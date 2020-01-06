@@ -13,6 +13,43 @@ TreeNode::TreeNode()
 {
 }
 
+int TreeNode::GetLeafScore()
+{
+	if(leafs.size() == 0)
+	{
+		return(GetStateScore());
+	}
+	else
+	{
+		if(maxNode)
+		{
+			int max = 0;
+			for(unsigned int i = 0; i < leafs.size(); i++)
+			{
+				int temp = leafs[i]->GetLeafScore();
+				if(temp >= max)
+					max = temp;
+			}
+			return(max);
+		}
+		else
+		{
+			int min = 999;
+			for(unsigned int i = 0; i < leafs.size(); i++)
+			{
+				int temp = leafs[i]->GetLeafScore();
+				if(temp <= min)
+					min = temp;
+			}
+			return(min);
+		}
+	}
+}
+
+int TreeNode::GetStateScore()
+{
+	return(0);
+}
 
 void TreeNode::BuildLeaf()
 {
@@ -169,6 +206,7 @@ void TreeNode::BuildLeaf()
 		return;
 	}
 
+	// generation des differentes possiblités de renforts
 	else if(gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{
 		for(unsigned int i = 0; i < gameState->currentPlayer->listOwnedCountry.size(); i++)
@@ -182,11 +220,13 @@ void TreeNode::BuildLeaf()
 			std::shared_ptr<Command> commanddest = std::make_shared<Command>();
 			std::shared_ptr<Command> commandfin = std::make_shared<Command>();
 
+			std::cout << treenode->gameState->currentPlayer->listOwnedCountry[i]->id << std::endl;
+			std::cout << treenode->gameState->currentPlayer->listOwnedCountry[i]->owner->id << std::endl;
 			commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
 			commanddest->unitClicked = UnitClickedType::NONE;
 			commanddest->pressedKey = KeyPressed::LEFT_CLICK;
-	
-			printf("ici avant seg fault reinforcement\n");
+
+			gameEngine->commands.push(commanddest);
 
 			for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
 			{
@@ -195,6 +235,7 @@ void TreeNode::BuildLeaf()
 				commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
 				gameEngine->commands.push(commandunitatt);
 			}
+
 
 			for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
 			{

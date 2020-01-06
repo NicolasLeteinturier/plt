@@ -80,7 +80,7 @@ void GameEngine::Rollback()
 	{
 		return;
 	}
-	printf("dans le rollback\n");
+	//printf("dans le rollback\n");
 	gameState = rollback.top();
 	rollback.pop();
 	return;
@@ -299,12 +299,12 @@ void GameEngine::ExecuteAttackCommand()
 		attack->unitSelected = false;
 
 		unsigned int n = attack->defencerCountry->listUnit.size();
-		std::cout << "nombre d'unité pays attaqué = " << std::to_string(attack->defencerCountry->listUnit.size()) << std::endl;
+		//std::cout << "nombre d'unité pays attaqué = " << std::to_string(attack->defencerCountry->listUnit.size()) << std::endl;
 
 		for(unsigned int i = 0; i < n; i++)
 		{
 			attack->AddUnit(attack->defencerCountry->listUnit[0]);
-			std::cout << "ajout d'une nouvelle unité à l'attaque" << std::endl;
+			//std::cout << "ajout d'une nouvelle unité à l'attaque" << std::endl;
 		}
 		attack->displayAttack = true;
 		etat = 3;
@@ -354,11 +354,11 @@ void GameEngine::ExecuteAttackCommand()
 		if(attacker_de > defencer_de){attack->KillUnit(attack->defencerUnits[0]);}
 		else if(attacker_de < defencer_de){attack->KillUnit(attack->attackerUnits[0]);}
 
-		std::cout << "score aux dés de l'attaquant = " << std::to_string(attacker_de) << std::endl;
-		std::cout << "score aux dés du defenceur = " << std::to_string(defencer_de) << std::endl;
+		//std::cout << "score aux dés de l'attaquant = " << std::to_string(attacker_de) << std::endl;
+		//std::cout << "score aux dés du defenceur = " << std::to_string(defencer_de) << std::endl;
 
-		std::cout << "nombre d'unité de l'attaquant = " << std::to_string((attack->attackerUnits.size())) << std::endl;
-		std::cout << "nombre d'unité du defenseur = " << std::to_string((attack->defencerUnits.size())) << std::endl;
+		//std::cout << "nombre d'unité de l'attaquant = " << std::to_string((attack->attackerUnits.size())) << std::endl;
+		//std::cout << "nombre d'unité du defenseur = " << std::to_string((attack->defencerUnits.size())) << std::endl;
 
 	}
 
@@ -563,7 +563,6 @@ void GameEngine::ExecuteReinforcementCommand()
 
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
-
 		if(command->unitClicked == UnitClickedType::DEF_PLUS)
 		{
 			for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
@@ -646,7 +645,7 @@ void GameEngine::ExecuteReinforcementCommand()
 	}
 
 	else if(etat == 1 && command->pressedKey == KeyPressed::ENTER)
-	{	
+	{
 		while(reinforcement->selectedUnits.size() != 0)
 		{
 			reinforcement->PlaceUnit(reinforcement->selectedUnits[0],selected_country);
