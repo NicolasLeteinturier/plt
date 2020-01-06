@@ -48,7 +48,13 @@ int TreeNode::GetLeafScore()
 
 int TreeNode::GetStateScore()
 {
-	return(0);
+	int score = 0;
+	std::shared_ptr<Player> actuel_player = treeHead->gameState->currentPlayer;
+	for(unsigned int i = 0; i < actuel_player->listOwnedCountry.size(); i++)
+	{
+		score += actuel_player->listOwnedCountry[i]->listUnit.size() + 10;
+	}
+	return(score);
 }
 
 void TreeNode::BuildLeaf()
@@ -124,7 +130,7 @@ void TreeNode::BuildLeaf()
 			}
 		}
 
-		std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
+		/*std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
 		treenode->gameState = CopyGameState();
 		std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
 		gameEngine->gameState = treenode->gameState;
@@ -132,7 +138,7 @@ void TreeNode::BuildLeaf()
 
 		std::shared_ptr<Command> commandor = std::make_shared<Command>();
 		commandor->pressedKey = KeyPressed::ESCAPE;
-		gameEngine->commands.push(commandor);
+		gameEngine->commands.push(commandor);*/
 
 		return;
 	}
@@ -278,6 +284,7 @@ std::shared_ptr<GameState> TreeNode::CopyGameState()
 			std::shared_ptr<Player> player_copy = std::make_shared<Player>();
 			player_copy->isAnIA = gameState->listPlayer[i]->isAnIA;
 			player_copy->id = gameState->listPlayer[i]->id;
+			player_copy->color = gameState->listPlayer[i]->color;
 			gameState_copy->listPlayer.push_back(player_copy);
 			if(gameState->currentPlayer == gameState->listPlayer[i])
 			{

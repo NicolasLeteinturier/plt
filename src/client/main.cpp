@@ -36,7 +36,6 @@ int main(int argc,char* argv[])
 	HeuristicAI ai;
 	RandomAI ai2;
 	DeepAI ai3;
-	std::shared_ptr<TreeNode> tree = std::make_shared<TreeNode>();
 
 	//Creation et initialisation d'une scene
 	
@@ -50,13 +49,11 @@ int main(int argc,char* argv[])
 	ai.engine = gameEngine;
 	ai2.engine = gameEngine;
 	ai3.engine = gameEngine;
-	ai3.treeHead = tree;
-	tree->gameState = gameState;
 
-        gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
-        gameState->AddPlayer(IAType::RANDOM, "IA 1");
-        gameState->AddPlayer(IAType::RANDOM, "IA 2");
-        gameState->AddPlayer(IAType::RANDOM, "IA 3");
+        gameState->AddPlayer(IAType::DEEP,"Joueur 1");
+        gameState->AddPlayer(IAType::HEURISTIC, "IA 1");
+        gameState->AddPlayer(IAType::HEURISTIC, "IA 2");
+        gameState->AddPlayer(IAType::HEURISTIC, "IA 3");
 
 	for(unsigned int i = 0; i < 101; i++)
 		gameState->GoToNextAction();
@@ -75,14 +72,16 @@ int main(int argc,char* argv[])
 
 	sf::Color colorTable[4] = {COLOR_TABLE};
 
-	/*unsigned int compteurfeuille = 0;
+	/*//unsigned int compteurfeuille = 0;
 	tree->BuildLeaf();
 	printf("%d\n",tree->leafs.size());
-	for(unsigned int i; i < tree->leafs.size(); i++)
+	for(unsigned int i = 0; i < tree->leafs.size(); i++)
 	{
+		printf("i = %d\n",i);
 		tree->leafs[i]->BuildLeaf();
-		for(unsigned int j; j < tree->leafs[i]->leafs.size(); j++)
+		for(unsigned int j = 0; j < tree->leafs[i]->leafs.size(); j++)
 		{
+			printf("j = %d\n",j);
 			tree->leafs[i]->leafs[j]->BuildLeaf();
 			compteurfeuille += tree->leafs[i]->leafs[j]->leafs.size();
 		}
@@ -125,6 +124,8 @@ int main(int argc,char* argv[])
 		{
 			ai.play();
 			ai2.play();
+			ai3.play();
+			scene.gameState = gameEngine->gameState;
 			gameEngine->ExecuteCommands();
 		}
 		else
@@ -134,13 +135,13 @@ int main(int argc,char* argv[])
 		}
 
 		std::string curact;
-		if(gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
+		if(gameEngine->gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
 			curact = "Movement ";
-		else if(gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
+		else if(gameEngine->gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 			curact = "Reinforcement ";
-		else if(gameState->currentAction->GetActionType() == ActionType::_ATTACK)
+		else if(gameEngine->gameState->currentAction->GetActionType() == ActionType::_ATTACK)
 			curact = "Attack ";
-		curact += gameState->currentPlayer->id;
+		curact += gameEngine->gameState->currentPlayer->id;
 
 
 		if (!font.loadFromFile("../res/FFF_Tusj.ttf"))

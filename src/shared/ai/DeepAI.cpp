@@ -15,9 +15,15 @@ void DeepAI::play()
 	{
 		return;
 	}
+	printf("ici avant seg fault deep ai\n");
 	treeHead = std::make_shared<TreeNode>();
+	printf("ici avant seg fault deep ai2\n");
 	treeHead->gameState = engine->gameState;
+	printf("ici avant seg fault deep ai3\n");
 	treeHead->maxNode = true;
+	printf("ici avant seg fault deep ai4\n");
+	treeHead->treeHead = treeHead;
+	printf("ici avant seg fault deep ai5\n");
 	int max_leaf_index = 0;
 	BuildTree();
 	int max = 0;
@@ -43,6 +49,7 @@ void DeepAI::BuildTree()
 	for(unsigned int i = 0; i < treeHead->leafs.size(); i++)
 	{
 		treeHead->leafs[i]->BuildLeaf();
+		treeHead->leafs[i]->treeHead = treeHead;
 		if(treeHead->leafs[i]->gameState->currentPlayer != treeHead->gameState->currentPlayer)
 			treeHead->leafs[i]->maxNode = false;
 		else
@@ -50,20 +57,22 @@ void DeepAI::BuildTree()
 		for(unsigned int j = 0; j < treeHead->leafs[i]->leafs.size(); j++)
 		{
 			//treeHead->leafs[i]->leafs[j]->BuildLeaf();
+			treeHead->leafs[i]->leafs[j]->treeHead = treeHead;
 			if(treeHead->leafs[i]->leafs[j]->gameState->currentPlayer != treeHead->gameState->currentPlayer)
 				treeHead->leafs[i]->leafs[j]->maxNode = false;
 			else
 				treeHead->leafs[i]->leafs[j]->maxNode = true;
-			compteurfeuille += treeHead->leafs[i]->leafs[j]->leafs.size();
+			//compteurfeuille += treeHead->leafs[i]->leafs[j]->leafs.size();
 			/*for(unsigned int k = 0; k < treeHead->leafs[i]->leafs[j]->leafs.size(); k++)
 			{
+				treeHead->leafs[i]->leafs[j]->leafs[k]->treeHead = treeHead;
 				if(treeHead->leafs[i]->leafs[j]->leafs[k]->gameState->currentPlayer != treeHead->gameState->currentPlayer)
-				treeHead->leafs[i]->leafs[j]->leafs[k]->maxNode = false;
-			else
-				treeHead->leafs[i]->leafs[j]->leafs[k]->maxNode = true;
+					treeHead->leafs[i]->leafs[j]->leafs[k]->maxNode = false;
+				else
+					treeHead->leafs[i]->leafs[j]->leafs[k]->maxNode = true;
 			}*/
 		}
 	}
-	printf("%d\n",compteurfeuille);
+	//printf("%d\n",compteurfeuille);
 	return;
 }
