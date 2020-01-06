@@ -5,6 +5,7 @@
 #include "../state/Attack.h"
 #include "../state/Movement.h"
 #include "../state/Initialisation.h"
+//#include "../state/Player.h"////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 using namespace ai;
 using namespace state;
@@ -28,10 +29,26 @@ void HeuristicAI::play()
 	{
 		//initialisation 
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(engine->gameState->currentAction);
+		//std::shared_ptr<Player> Player = std::dynamic_pointer_cast<Player>(engine->gameState->Player);
 
 
 		if(init->unattributedCountry.size()>0)
+			{
+			for(unsigned int i = 0; i < engine->gameState->currentPlayer->listOwnedCountry.size(); i++)				
+				{
+				for(unsigned int j = 0; j < engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor.size(); j++)			
+					{
+					for(unsigned int k = 0; k < init->unattributedCountry.size(); k++)
+						{
+						if (engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]==init->unattributedCountry[k])
+				 			init->AttributeCountry(init->unattributedCountry[k],engine->gameState->currentPlayer);
+						}
+					}
+				}
+				
 			init->AttributeCountry(init->unattributedCountry[0],engine->gameState->currentPlayer);
+			}
+		// géstion des joueur
 		for(unsigned int i = 0; i < engine->gameState->listPlayer.size(); i++) 
 		{
 			if (engine->gameState->listPlayer[i]==engine->gameState->currentPlayer){
