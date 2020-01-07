@@ -28,7 +28,7 @@ void Attack::AddUnit(std::shared_ptr<Unit> unit)
 		}
 	}
 
-	printf("Cette unité n'appartient ni au pays attaquant, ni au pays attaqué, elle n'a pas été ajouté\n");
+	//printf("Cette unité n'appartient ni au pays attaquant, ni au pays attaqué, elle n'a pas été ajouté\n");
 	return;
 
 }
@@ -53,7 +53,7 @@ void Attack::KillUnit(std::shared_ptr<Unit> unit)
 		}
 	}
 
-	printf("Cette unité n'a pas été trouvé dans la bataille, peut-être est-elle déjà morte ?\n");
+	//printf("Cette unité n'a pas été trouvé dans la bataille, peut-être est-elle déjà morte ?\n");
 
 	return;
 
@@ -70,7 +70,7 @@ void Attack::AttackIsOver()
 			defencerUnits.erase(defencerUnits.begin());
 		}
 
-		printf("L'attaquant à perdu, les unités du defenseur restante ont été remises dans leur pays d'origine\n");
+		//printf("L'attaquant à perdu, les unités du defenseur restante ont été remises dans leur pays d'origine\n");
 
 		return;
 	}
@@ -84,7 +84,7 @@ void Attack::AttackIsOver()
 			attackerUnits.erase(attackerUnits.begin());
 		}
 
-		printf("Le defenseur à perdu, les unités de l'attaquant ont été mises dans le pays du defenseur\n");
+		//printf("Le defenseur à perdu, les unités de l'attaquant ont été mises dans le pays du defenseur\n");
 
 		return;
 	}
@@ -103,7 +103,7 @@ void Attack::AttackIsOver()
 		attackerUnits.erase(attackerUnits.begin() + i);
 	}
 
-	printf("L'attaque est fini, toutes les unités survivantes on été remise dans leur pays d'origine\n");
+	//printf("L'attaque est fini, toutes les unités survivantes on été remise dans leur pays d'origine\n");
 
 	return;
 }

@@ -51,7 +51,7 @@ int main(int argc,char* argv[])
 	ai3.engine = gameEngine;
 
         gameState->AddPlayer(IAType::DEEP,"Joueur 1");
-        gameState->AddPlayer(IAType::HEURISTIC, "IA 1");
+        gameState->AddPlayer(IAType::NONE, "IA 1");
         gameState->AddPlayer(IAType::HEURISTIC, "IA 2");
         gameState->AddPlayer(IAType::HEURISTIC, "IA 3");
 

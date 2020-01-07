@@ -47,7 +47,7 @@ void Player::DeleteOwnedCountry(std::shared_ptr<Country> country)
 			return;
 		}
 	}
-	printf("le pays n'appartient pas à ce joueur");
+	//printf("le pays n'appartient pas à ce joueur");
 	return;
 }
 

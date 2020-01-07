@@ -22,7 +22,7 @@ void RandomAI::play()
 		return;
 	}
 
-	printf("Random IA playing\n");
+	//printf("Random IA playing\n");
 
 	if(engine->gameState->currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
@@ -31,8 +31,10 @@ void RandomAI::play()
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(engine->gameState->currentAction);
 
 
-		if(init->unattributedCountry.size()>0)
-			init->AttributeCountry(init->unattributedCountry[0],engine->gameState->currentPlayer);
+		if(init->unattributedCountry.size()>0){
+			int count = rand() % init->unattributedCountry.size();
+			init->AttributeCountry(init->unattributedCountry[count],engine->gameState->currentPlayer);}
+			
 		for(unsigned int i = 0; i < engine->gameState->listPlayer.size(); i++) 
 		{
 			if (engine->gameState->listPlayer[i]==engine->gameState->currentPlayer){

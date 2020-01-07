@@ -92,7 +92,7 @@ void GameState::GoToNextAction()
 	std::cout << currentPlayer->id;
 	if(currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
-		std::cout << " en phase d'initialisation" << std::endl;
+		//std::cout << " en phase d'initialisation" << std::endl;
 		srand (time(NULL));
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(currentAction);
 		init->EndInitialisation();
@@ -112,7 +112,7 @@ void GameState::GoToNextAction()
 	}
 	if(currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{	
-		std::cout << " en phase de renfort" << std::endl;
+		//std::cout << " en phase de renfort" << std::endl;
 		std::shared_ptr<Reinforcements> reinforcement = std::dynamic_pointer_cast<Reinforcements>(currentAction);
 		reinforcement->EndReinforcements();
 
@@ -150,7 +150,7 @@ void GameState::GoToNextAction()
 
 		else
 		{
-			std::cout << " en phase d'attaque" << std::endl;
+			//std::cout << " en phase d'attaque" << std::endl;
 			std::shared_ptr<Movement> movement = std::make_shared<Movement>();
 			currentAction = movement;
 			return;
@@ -158,7 +158,7 @@ void GameState::GoToNextAction()
 	}
 	if(currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
-		std::cout << " en phase de mouvement" << std::endl;
+		//std::cout << " en phase de mouvement" << std::endl;
 		std::shared_ptr<Reinforcements> reinforcement = std::make_shared<Reinforcements>();
 		for (unsigned int i = 0; i < listPlayer.size(); i++)
 		{

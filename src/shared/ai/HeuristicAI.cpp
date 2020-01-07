@@ -30,7 +30,7 @@ void HeuristicAI::play()
 		//initialisation 
 		std::shared_ptr<Initialisation> init = std::dynamic_pointer_cast<Initialisation>(engine->gameState->currentAction);
 		//std::shared_ptr<Player> Player = std::dynamic_pointer_cast<Player>(engine->gameState->Player);
-
+		bool turnDone = false;
 
 		if(init->unattributedCountry.size()>0)
 			{
@@ -41,7 +41,13 @@ void HeuristicAI::play()
 					for(unsigned int k = 0; k < init->unattributedCountry.size(); k++)
 						{
 						if (engine->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]==init->unattributedCountry[k])
-				 			init->AttributeCountry(init->unattributedCountry[k],engine->gameState->currentPlayer);
+							{
+							if(turnDone == false)
+								{
+								turnDone = true;
+				 				init->AttributeCountry(init->unattributedCountry[k],engine->gameState->currentPlayer);
+								}
+							}
 						}
 					}
 				}
@@ -67,7 +73,7 @@ void HeuristicAI::play()
 
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_ATTACK)
 	{
-		printf("\nIA debut phase attaque\n");
+		//printf("\nIA debut phase attaque\n");
 		std::shared_ptr<Country> originCountry = std::make_shared<Country>();
 		std::shared_ptr<Country> destinationCountry = std::make_shared<Country>();
 
@@ -178,7 +184,7 @@ void HeuristicAI::play()
 		engine->commands.push(commandspace);
 	}
 
-	printf("\nIA fin phase attaque\n");
+	//printf("\nIA fin phase attaque\n");
 	}
 
 
@@ -190,7 +196,7 @@ void HeuristicAI::play()
 
 	else if(engine->gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
-		printf("\nIA debut phase Mouvement\n");
+		//printf("\nIA debut phase Mouvement\n");
 		std::shared_ptr<Country> originCountry = std::make_shared<Country>();
 		std::shared_ptr<Country> destinationCountry = std::make_shared<Country>();
 
@@ -286,7 +292,7 @@ void HeuristicAI::play()
 			engine->commands.push(commandunitneu);
 		}
 }
-		printf("\nIA fin phase Mouvement\n");
+		//printf("\nIA fin phase Mouvement\n");
 		commandfin->pressedKey = KeyPressed::ENTER;
 		engine->commands.push(commandfin);
 

@@ -18,7 +18,7 @@ void Movement::MoveUnit(std::shared_ptr<Unit> unit)
 		}
 	}
 
-	printf("Cette unité ne fait pas partie des unités à deplacer\n");
+	//printf("Cette unité ne fait pas partie des unités à deplacer\n");
 
 	return;
 }
@@ -32,7 +32,7 @@ void Movement::MoveAllUnit()
 		units.erase(units.begin());
 	}
 
-	printf("Les mouvements sont finis, toutes les unités ont atteint leurs destinations\n");
+	//printf("Les mouvements sont finis, toutes les unités ont atteint leurs destinations\n");
 
 	return;
 }
@@ -46,7 +46,7 @@ void Movement::StopMovement()
 		units.erase(units.begin());
 	}
 
-	printf("Les mouvements sont arrêté, toutes les unités non déplacé sont revenu à leur pays d'origine\n");
+	//printf("Les mouvements sont arrêté, toutes les unités non déplacé sont revenu à leur pays d'origine\n");
 
 	return;
 }
