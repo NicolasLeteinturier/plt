@@ -1,6 +1,7 @@
 #include <queue>
 #include "TreeNode.h"
 #include <thread>
+#include <mutex>
 #include "../state.h"
 #include <iostream>
 
@@ -8,6 +9,8 @@
 using namespace ai;
 using namespace engine;
 using namespace state;
+
+std::mutex mutex;
 
 TreeNode::TreeNode()
 {
@@ -17,6 +20,7 @@ int TreeNode::GetLeafScore()
 {
 	if(leafs.size() == 0)
 	{
+		printf("%d\n",treeHead->leafs.size());
 		return(GetStateScore());
 	}
 	else
@@ -102,65 +106,77 @@ void TreeNode::BuildLeaf()
 	// generation des differentes possibilités d'attaques
 	else if(gameState->currentAction->GetActionType() == ActionType::_ATTACK)
 	{
+
+		std::vector<std::thread> threads;
+
 		for(unsigned int i = 0; i < gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
 			for(unsigned int j = 0; j < gameState->currentPlayer->listOwnedCountry[i]->neighboor.size(); j++)
 			{
 				if(gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->owner != gameState->currentPlayer)
 				{
-					std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
-					treenode->gameState = CopyGameState();
-					std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
-					gameEngine->gameState = treenode->gameState;
-					leafs.push_back(treenode);
+					threads.emplace_back(([&,i,j](){
+						std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
+						mutex.lock();
+						treenode->gameState = CopyGameState();
+						mutex.unlock();
+						std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
+						gameEngine->gameState = treenode->gameState;
+						leafs.push_back(treenode);
 
-					std::shared_ptr<Command> commandor = std::make_shared<Command>();
-					std::shared_ptr<Command> commanddest = std::make_shared<Command>();
-					std::shared_ptr<Command> commandfin = std::make_shared<Command>();
+						std::shared_ptr<Command> commandor = std::make_shared<Command>();
+						std::shared_ptr<Command> commanddest = std::make_shared<Command>();
+						std::shared_ptr<Command> commandfin = std::make_shared<Command>();
 
-					commandor->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
-					commandor->unitClicked = UnitClickedType::NONE;
-					commandor->pressedKey = KeyPressed::LEFT_CLICK;
+						commandor->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
+						commandor->unitClicked = UnitClickedType::NONE;
+						commandor->pressedKey = KeyPressed::LEFT_CLICK;
 
-					commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j];
-					commanddest->unitClicked = UnitClickedType::NONE;
-					commanddest->pressedKey = KeyPressed::LEFT_CLICK;
+						commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j];
+						commanddest->unitClicked = UnitClickedType::NONE;
+						commanddest->pressedKey = KeyPressed::LEFT_CLICK;
 
-					unsigned int nbUnitAtt = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant);
-					unsigned int nbUnitNeu = (2*treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::neutre)/2);
+						unsigned int nbUnitAtt = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant);
+						unsigned int nbUnitNeu = (2*treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::neutre)/2);
 
-					gameEngine->commands.push(commandor);
-					gameEngine->commands.push(commanddest);
+						gameEngine->commands.push(commandor);
+						gameEngine->commands.push(commanddest);
 
-					for(unsigned int k = 0; k < nbUnitAtt; k++)
-					{
-						std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
-						commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
-						commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
-						gameEngine->commands.push(commandunitatt);
-					}
+						for(unsigned int k = 0; k < nbUnitAtt; k++)
+						{
+							std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
+							commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
+							commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
+							gameEngine->commands.push(commandunitatt);
+						}
 
-					for(unsigned int k = 0; k < nbUnitNeu; k++)
-					{
-						std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
-						commandunitdef->unitClicked = UnitClickedType::NEU_PLUS;
-						commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
-						gameEngine->commands.push(commandunitdef);
-					}
+						for(unsigned int k = 0; k < nbUnitNeu; k++)
+						{
+							std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
+							commandunitdef->unitClicked = UnitClickedType::NEU_PLUS;
+							commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
+							gameEngine->commands.push(commandunitdef);
+						}
 
-					commandfin->pressedKey = KeyPressed::ENTER;
-					gameEngine->commands.push(commandfin);
+						commandfin->pressedKey = KeyPressed::ENTER;
+						gameEngine->commands.push(commandfin);
 
-					for(unsigned int k = 0; k < (nbUnitAtt + nbUnitNeu + treenode->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->listUnit.size() + 1); k++)
-					{
-						std::shared_ptr<Command> commandspace = std::make_shared<Command>();
-						commandspace->pressedKey = KeyPressed::SPACE_BARRE;
-						gameEngine->commands.push(commandspace);
-					}
+						for(unsigned int k = 0; k < (nbUnitAtt + nbUnitNeu + treenode->gameState->currentPlayer->listOwnedCountry[i]->neighboor[j]->listUnit.size() + 1); k++)
+						{
+							std::shared_ptr<Command> commandspace = std::make_shared<Command>();
+							commandspace->pressedKey = KeyPressed::SPACE_BARRE;
+							gameEngine->commands.push(commandspace);
+						}
 
-					gameEngine->ExecuteCommands();
+						gameEngine->ExecuteCommands();
+					}));
 				}
 			}
+		}
+
+		for(unsigned int i = 0; i < threads.size(); i++)
+		{
+			threads[i].join();
 		}
 
 		/*std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
@@ -179,67 +195,76 @@ void TreeNode::BuildLeaf()
 	// generation des differentes possibilités de mouvement
 	else if(gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
+		std::vector<std::thread> threads;
 		for(unsigned int i = 0; i < gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
 			for(unsigned int j = 0; j < gameState->currentPlayer->listOwnedCountry.size(); j++)
 			{
 				if(i != j)
 				{
-					std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
-					treenode->gameState = CopyGameState();
-					std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
-					gameEngine->gameState = treenode->gameState;
-					leafs.push_back(treenode);
+					threads.emplace_back(([&,i,j](){
+						std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
+						mutex.lock();
+						treenode->gameState = CopyGameState();
+						mutex.unlock();
+						std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
+						gameEngine->gameState = treenode->gameState;
+						leafs.push_back(treenode);
 
-					std::shared_ptr<Command> commandor = std::make_shared<Command>();
-					std::shared_ptr<Command> commanddest = std::make_shared<Command>();
-					std::shared_ptr<Command> commandfin = std::make_shared<Command>();
+						std::shared_ptr<Command> commandor = std::make_shared<Command>();
+						std::shared_ptr<Command> commanddest = std::make_shared<Command>();
+						std::shared_ptr<Command> commandfin = std::make_shared<Command>();
 
-					commandor->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
-					commandor->unitClicked = UnitClickedType::NONE;
-					commandor->pressedKey = KeyPressed::LEFT_CLICK;
+						commandor->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
+						commandor->unitClicked = UnitClickedType::NONE;
+						commandor->pressedKey = KeyPressed::LEFT_CLICK;
 
-					commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[j];
-					commanddest->unitClicked = UnitClickedType::NONE;
-					commanddest->pressedKey = KeyPressed::LEFT_CLICK;
+						commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[j];
+						commanddest->unitClicked = UnitClickedType::NONE;
+						commanddest->pressedKey = KeyPressed::LEFT_CLICK;
 
-					gameEngine->commands.push(commandor);
-					gameEngine->commands.push(commanddest);
+						gameEngine->commands.push(commandor);
+						gameEngine->commands.push(commanddest);
 
-					unsigned int nbUnitAtt = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant);
-					unsigned int nbUnitDef = 2*treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::defensif)/2;
-					unsigned int nbUnitNeu = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::neutre)/2;
+						unsigned int nbUnitAtt = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant);
+						unsigned int nbUnitDef = 2*treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::defensif)/2;
+						unsigned int nbUnitNeu = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::neutre)/2;
 
-					for(unsigned int i = 0; i < nbUnitAtt; i++)
-					{
-						std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
-						commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
-						commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
-						gameEngine->commands.push(commandunitatt);
-					}
+						for(unsigned int i = 0; i < nbUnitAtt; i++)
+						{
+							std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
+							commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
+							commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
+							gameEngine->commands.push(commandunitatt);
+						}
 
-					for(unsigned int i = 0; i < nbUnitDef; i++)
-					{
-						std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
-						commandunitdef->unitClicked = UnitClickedType::DEF_PLUS;
-						commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
-						gameEngine->commands.push(commandunitdef);
-					}
+						for(unsigned int i = 0; i < nbUnitDef; i++)
+						{
+							std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
+							commandunitdef->unitClicked = UnitClickedType::DEF_PLUS;
+							commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
+							gameEngine->commands.push(commandunitdef);
+						}
 
-					for(unsigned int i = 0; i < nbUnitNeu; i++)
-					{
-						std::shared_ptr<Command> commandunitneu = std::make_shared<Command>();
-						commandunitneu->unitClicked = UnitClickedType::NEU_PLUS;
-						commandunitneu->pressedKey = KeyPressed::LEFT_CLICK;
-						gameEngine->commands.push(commandunitneu);
-					}
+						for(unsigned int i = 0; i < nbUnitNeu; i++)
+						{
+							std::shared_ptr<Command> commandunitneu = std::make_shared<Command>();
+							commandunitneu->unitClicked = UnitClickedType::NEU_PLUS;
+							commandunitneu->pressedKey = KeyPressed::LEFT_CLICK;
+							gameEngine->commands.push(commandunitneu);
+						}
 
-					commandfin->pressedKey = KeyPressed::ENTER;
-					gameEngine->commands.push(commandfin);
+						commandfin->pressedKey = KeyPressed::ENTER;
+						gameEngine->commands.push(commandfin);
 
-					gameEngine->ExecuteCommands();
+						gameEngine->ExecuteCommands();
+					}));
 				}
 			}
+		}
+		for(unsigned int i = 0; i < threads.size(); i++)
+		{
+			threads[i].join();
 		}
 
 		return;
@@ -248,52 +273,62 @@ void TreeNode::BuildLeaf()
 	// generation des differentes possiblités de renforts
 	else if(gameState->currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{
+		std::vector<std::thread> threads;
 		for(unsigned int i = 0; i < gameState->currentPlayer->listOwnedCountry.size(); i++)
 		{
-			std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
-			treenode->gameState = CopyGameState();
-			std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
-			gameEngine->gameState = treenode->gameState;
-			leafs.push_back(treenode);
+			threads.emplace_back(([&,i](){
+				std::shared_ptr<TreeNode> treenode = std::make_shared<TreeNode>();
+				mutex.lock();
+				treenode->gameState = CopyGameState();
+				mutex.unlock();
+				std::shared_ptr<GameEngine> gameEngine = std::make_shared<GameEngine>();
+				gameEngine->gameState = treenode->gameState;
+				leafs.push_back(treenode);
 
-			std::shared_ptr<Command> commanddest = std::make_shared<Command>();
-			std::shared_ptr<Command> commandfin = std::make_shared<Command>();
+				std::shared_ptr<Command> commanddest = std::make_shared<Command>();
+				std::shared_ptr<Command> commandfin = std::make_shared<Command>();
 
-			commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
-			commanddest->unitClicked = UnitClickedType::NONE;
-			commanddest->pressedKey = KeyPressed::LEFT_CLICK;
+				commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
+				commanddest->unitClicked = UnitClickedType::NONE;
+				commanddest->pressedKey = KeyPressed::LEFT_CLICK;
 
-			gameEngine->commands.push(commanddest);
+				gameEngine->commands.push(commanddest);
 
-			for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
-			{
-				std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
-				commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
-				commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
-				gameEngine->commands.push(commandunitatt);
-			}
+				for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
+				{
+					std::shared_ptr<Command> commandunitatt = std::make_shared<Command>();
+					commandunitatt->unitClicked = UnitClickedType::ATT_PLUS;
+					commandunitatt->pressedKey = KeyPressed::LEFT_CLICK;
+					gameEngine->commands.push(commandunitatt);
+				}
 
 
-			for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
-			{
-				std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
-				commandunitdef->unitClicked = UnitClickedType::DEF_PLUS;
-				commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
-				gameEngine->commands.push(commandunitdef);
-			}
+				for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
+				{
+					std::shared_ptr<Command> commandunitdef = std::make_shared<Command>();
+					commandunitdef->unitClicked = UnitClickedType::DEF_PLUS;
+					commandunitdef->pressedKey = KeyPressed::LEFT_CLICK;
+					gameEngine->commands.push(commandunitdef);
+				}
 
-			for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
-			{
-				std::shared_ptr<Command> commandunitneu = std::make_shared<Command>();
-				commandunitneu->unitClicked = UnitClickedType::NEU_PLUS;
-				commandunitneu->pressedKey = KeyPressed::LEFT_CLICK;
-				gameEngine->commands.push(commandunitneu);
-			}
+				for(unsigned int j = 0; j < gameState->currentPlayer->ReinforcementNumber(); j++)
+				{
+					std::shared_ptr<Command> commandunitneu = std::make_shared<Command>();
+					commandunitneu->unitClicked = UnitClickedType::NEU_PLUS;
+					commandunitneu->pressedKey = KeyPressed::LEFT_CLICK;
+					gameEngine->commands.push(commandunitneu);
+				}
 
-			commandfin->pressedKey = KeyPressed::ENTER;
-			gameEngine->commands.push(commandfin);
+				commandfin->pressedKey = KeyPressed::ENTER;
+				gameEngine->commands.push(commandfin);
 
-			gameEngine->ExecuteCommands();
+				gameEngine->ExecuteCommands();
+			}));
+		}
+
+		for(unsigned int i = 0; i < threads.size(); i++)
+		{
+			threads[i].join();
 		}
 
 		return;

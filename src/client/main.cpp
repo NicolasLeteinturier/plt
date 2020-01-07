@@ -51,7 +51,7 @@ int main(int argc,char* argv[])
 	ai3.engine = gameEngine;
 
         gameState->AddPlayer(IAType::DEEP,"Joueur 1");
-        gameState->AddPlayer(IAType::NONE, "IA 1");
+        gameState->AddPlayer(IAType::HEURISTIC, "IA 1");
         gameState->AddPlayer(IAType::HEURISTIC, "IA 2");
         gameState->AddPlayer(IAType::HEURISTIC, "IA 3");
 
@@ -93,7 +93,7 @@ int main(int argc,char* argv[])
 		{
 			gameEngine->ExecuteCommands();
 		}
-	}); 
+	});
 
 	std::thread ai_thread([&ai](){
 		while(1)
@@ -149,7 +149,7 @@ int main(int argc,char* argv[])
 		textMov.setFont(font);
 		textMov.setString(curact);
 		textMov.setPosition(10,10);
-		textMov.setFillColor(colorTable[gameState->currentPlayer->color]);
+		textMov.setFillColor(colorTable[gameEngine->gameState->currentPlayer->color]);
 		window->draw(textMov);
 
 		window->display();
