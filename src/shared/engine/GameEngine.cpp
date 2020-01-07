@@ -33,6 +33,7 @@ namespace engine {
     std::queue<std::shared_ptr<Command>> commands;
   private:
     std::stack<std::shared_ptr<state::GameState>> rollback;
+    unsigned int etat;
     // Operations
   public:
     GameEngine ();
@@ -66,12 +67,11 @@ namespace engine {
 using namespace engine;
 using namespace state;
 
-unsigned int etat = 0;
-std::shared_ptr<Country> selected_country = std::make_shared<Country>();
+//unsigned int etat = 0;
 
 GameEngine::GameEngine()
 {
-
+	etat = 0;
 }
 
 void GameEngine::Rollback()
@@ -94,6 +94,7 @@ void GameEngine::ExecuteCommands()
 	}
 
 	unsigned int n = commands.size();
+	printf("nbre de commande = %d\n",n);
 
 	for(unsigned int i = 0; i < n; i++)
 	{
@@ -130,6 +131,7 @@ void GameEngine::ExecuteCommands()
 void GameEngine::ExecuteAttackCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
+	std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
 	{
@@ -341,15 +343,18 @@ void GameEngine::ExecuteAttackCommand()
 
 		srand (time(NULL));
 
-		int attacker_de;
-		int defencer_de;
+		int attacker_de = 0;
+		int defencer_de = 0;
 
-		if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de = rand()%8;}
-		else if(attack->attackerUnits[0]->type == Type::defensif){attacker_de = rand()%4;}
-		else if(attack->attackerUnits[0]->type == Type::neutre){attacker_de = rand()%6;}
-		if(attack->defencerUnits[0]->type == Type::attaquant){defencer_de = rand()%4;}
-		else if(attack->defencerUnits[0]->type == Type::defensif){defencer_de = rand()%8;}
-		else if(attack->defencerUnits[0]->type == Type::neutre){defencer_de = rand()%6;}
+		while(attacker_de == defencer_de)
+		{
+			if(attack->attackerUnits[0]->type == Type::attaquant){attacker_de = rand()%8;}
+			else if(attack->attackerUnits[0]->type == Type::defensif){attacker_de = rand()%4;}
+			else if(attack->attackerUnits[0]->type == Type::neutre){attacker_de = rand()%6;}
+			if(attack->defencerUnits[0]->type == Type::attaquant){defencer_de = rand()%4;}
+			else if(attack->defencerUnits[0]->type == Type::defensif){defencer_de = rand()%8;}
+			else if(attack->defencerUnits[0]->type == Type::neutre){defencer_de = rand()%6;}
+		}
 
 		if(attacker_de > defencer_de){attack->KillUnit(attack->defencerUnits[0]);}
 		else if(attacker_de < defencer_de){attack->KillUnit(attack->attackerUnits[0]);}
@@ -370,6 +375,9 @@ void GameEngine::ExecuteAttackCommand()
 void GameEngine::ExecuteMovementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
+	std::shared_ptr<Country> selected_country = std::make_shared<Country>();
+
+	printf("etat = %d\n",etat);
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
 	{
@@ -397,6 +405,7 @@ void GameEngine::ExecuteMovementCommand()
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		selected_country = command->countryClicked;
+		std::cout << selected_country->owner->id << std::endl;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("ce pays ne vous appartient pas\n");
@@ -537,6 +546,7 @@ void GameEngine::ExecuteMovementCommand()
 void GameEngine::ExecuteReinforcementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
+	static std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 
 	std::shared_ptr<Reinforcements> reinforcement = std::dynamic_pointer_cast<Reinforcements>(gameState->currentAction);
 	//static std::shared_ptr<Country> selected_country = std::make_shared<Country>();
@@ -667,6 +677,7 @@ void GameEngine::ExecuteReinforcementCommand()
 
 void GameEngine::ExecuteInitialisationCommand()
 {
+	std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 	/*std::shared_ptr<Command> command = commands.front();
 	gameState->GoToNextAction();*/
 

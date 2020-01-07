@@ -50,16 +50,49 @@ int TreeNode::GetStateScore()
 {
 	int score = 0;
 	std::shared_ptr<Player> actuel_player = treeHead->gameState->currentPlayer;
+	int facteur_elimination = 2;
+	int compt_unite_actu = 0;
+	int compt_unite_adv_actu = 0;
+	int compt_unite_prev = 0;
+	int compt_unite_adv_prev = 0;
 	for(unsigned int i = 0; i < actuel_player->listOwnedCountry.size(); i++)
 	{
-		score += actuel_player->listOwnedCountry[i]->listUnit.size() + 10;
+		int facteur_pays = 10;
+		int facteur_pays_tot = facteur_pays - actuel_player->listOwnedCountry[i]->GetEnemiesCountry().size();
+		int facteur_unite = 50;
+		int facteur_unite_tot = (actuel_player->listOwnedCountry[i]->GetEnemiesCountry().size()*facteur_unite);
+		//score += (actuel_player->listOwnedCountry[i]->listUnit.size()/**(actuel_player->listOwnedCountry[i]->GetEnemiesCountry().size() + 1)*/) + 50;
+		score += actuel_player->listOwnedCountry[i]->listUnit.size()*facteur_unite_tot + facteur_pays_tot;
+		compt_unite_actu += actuel_player->listOwnedCountry[i]->listUnit.size();
 	}
+	int compteur_bn_pays_enemies = 0;
+	for(unsigned int i = 0; i < treeHead->gameState->listCountry.size(); i++)
+	{
+		if(treeHead->gameState->listCountry[i]->owner != actuel_player)
+		{
+			compt_unite_adv_actu += treeHead->gameState->listCountry[i]->listUnit.size();
+			compteur_bn_pays_enemies++;
+		}
+	}
+	if(compteur_bn_pays_enemies == 0)
+	{
+		score += 100000;
+	}
+	for(unsigned int i = 0; i < treeHead->treeHead->gameState->listCountry.size(); i++)
+	{
+		if(treeHead->treeHead->gameState->listCountry[i]->owner != actuel_player)
+			compt_unite_adv_prev += treeHead->gameState->listCountry[i]->listUnit.size();
+		else
+			compt_unite_prev += treeHead->gameState->listCountry[i]->listUnit.size();
+	}
+	
+	score += ((compt_unite_adv_prev - compt_unite_adv_actu) - (compt_unite_prev - compt_unite_actu))*facteur_elimination;
+
 	return(score);
 }
 
 void TreeNode::BuildLeaf()
 {
-	printf("tout de meme arrivé ici\n");
 	if(leafs.size() != 0)
 	{
 		printf("les feuilles sont déjà construite\n");
@@ -94,7 +127,7 @@ void TreeNode::BuildLeaf()
 					commanddest->pressedKey = KeyPressed::LEFT_CLICK;
 
 					unsigned int nbUnitAtt = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant);
-					unsigned int nbUnitNeu = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::neutre)/3;
+					unsigned int nbUnitNeu = (2*treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::neutre)/2);
 
 					gameEngine->commands.push(commandor);
 					gameEngine->commands.push(commanddest);
@@ -173,8 +206,8 @@ void TreeNode::BuildLeaf()
 					gameEngine->commands.push(commandor);
 					gameEngine->commands.push(commanddest);
 
-					unsigned int nbUnitAtt = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant)/2;
-					unsigned int nbUnitDef = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::defensif)/2;
+					unsigned int nbUnitAtt = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::attaquant);
+					unsigned int nbUnitDef = 2*treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::defensif)/2;
 					unsigned int nbUnitNeu = treenode->gameState->currentPlayer->listOwnedCountry[i]->FindTypeNumber(Type::neutre)/2;
 
 					for(unsigned int i = 0; i < nbUnitAtt; i++)
@@ -226,8 +259,6 @@ void TreeNode::BuildLeaf()
 			std::shared_ptr<Command> commanddest = std::make_shared<Command>();
 			std::shared_ptr<Command> commandfin = std::make_shared<Command>();
 
-			std::cout << treenode->gameState->currentPlayer->listOwnedCountry[i]->id << std::endl;
-			std::cout << treenode->gameState->currentPlayer->listOwnedCountry[i]->owner->id << std::endl;
 			commanddest->countryClicked = treenode->gameState->currentPlayer->listOwnedCountry[i];
 			commanddest->unitClicked = UnitClickedType::NONE;
 			commanddest->pressedKey = KeyPressed::LEFT_CLICK;

@@ -15,16 +15,10 @@ void DeepAI::play()
 	{
 		return;
 	}
-	printf("ici avant seg fault deep ai\n");
 	treeHead = std::make_shared<TreeNode>();
-	printf("ici avant seg fault deep ai2\n");
 	treeHead->gameState = engine->gameState;
-	printf("ici avant seg fault deep ai3\n");
 	treeHead->maxNode = true;
-	printf("ici avant seg fault deep ai4\n");
 	treeHead->treeHead = treeHead;
-	printf("ici avant seg fault deep ai5\n");
-	int max_leaf_index = 0;
 	BuildTree();
 	int max = 0;
 	int index = 0;
