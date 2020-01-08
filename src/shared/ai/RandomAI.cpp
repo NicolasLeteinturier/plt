@@ -22,7 +22,7 @@ void RandomAI::play()
 		return;
 	}
 
-	//printf("Random IA playing\n");
+	printf("Random IA playing\n");
 
 	if(engine->gameState->currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{

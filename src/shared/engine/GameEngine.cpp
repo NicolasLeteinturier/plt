@@ -89,7 +89,7 @@ void GameEngine::Rollback()
 	{
 		return;
 	}
-	//printf("dans le rollback\n");
+	printf("dans le rollback\n");
 	gameState = rollback.top();
 	rollback.pop();
 	return;
@@ -129,7 +129,8 @@ void GameEngine::ExecuteCommands()
 			ExecuteMovementCommand();
 			commands.pop();
 		}
-		//SaveGameState();
+		if(rollbackActive)		
+			SaveGameState();
 	}
 
 	return;
@@ -152,7 +153,7 @@ void GameEngine::ExecuteAttackCommand()
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		
-		printf("ici avant seg fault 1\n");
+		//printf("ici avant seg fault 1\n");
 		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
@@ -169,7 +170,7 @@ void GameEngine::ExecuteAttackCommand()
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		
-		printf("ici avant seg fault 2\n");
+		//printf("ici avant seg fault 2\n");
 		selected_country = command->countryClicked;
 		if(selected_country->owner == gameState->currentPlayer)
 		{
@@ -198,7 +199,7 @@ void GameEngine::ExecuteAttackCommand()
 	// etat vaut 2 : l'attaquant selectionne les unités avec lesquelles il souhaite attaquer
 	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{		
-		printf("ici avant seg fault 3\n");
+		//printf("ici avant seg fault 3\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
 		if(command->unitClicked == UnitClickedType::DEF_PLUS)
@@ -312,7 +313,7 @@ void GameEngine::ExecuteAttackCommand()
 	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
 		
-		printf("ici avant seg fault 4\n");
+		//printf("ici avant seg fault 4\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 		attack->unitSelected = false;
 
@@ -332,7 +333,7 @@ void GameEngine::ExecuteAttackCommand()
 	else if(etat == 3 && command->pressedKey == KeyPressed::SPACE_BARRE)
 	{
 		
-		printf("ici avant seg fault 5\n");
+		//printf("ici avant seg fault 5\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
 
 		if(attack->attackerUnits.size() == 0)
@@ -406,7 +407,7 @@ void GameEngine::ExecuteMovementCommand()
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		
-		printf("ici avant seg fault 6\n");
+		//printf("ici avant seg fault 6\n");
 		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
@@ -424,9 +425,8 @@ void GameEngine::ExecuteMovementCommand()
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		
-		printf("ici avant seg fault 7\n");
+		//printf("ici avant seg fault 7\n");
 		selected_country = command->countryClicked;
-		std::cout << selected_country->owner->id << std::endl;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
 			printf("ce pays ne vous appartient pas\n");
@@ -444,7 +444,7 @@ void GameEngine::ExecuteMovementCommand()
 	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		
-		printf("ici avant seg fault 8\n");
+		//printf("ici avant seg fault 8\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 
 		if(command->unitClicked == UnitClickedType::DEF_PLUS)
@@ -558,7 +558,7 @@ void GameEngine::ExecuteMovementCommand()
 	else if(etat == 2 && command->pressedKey == KeyPressed::ENTER)
 	{
 		
-		printf("ici avant seg fault 9\n");
+		//printf("ici avant seg fault 9\n");
 		std::shared_ptr<Movement> movement = std::dynamic_pointer_cast<Movement>(gameState->currentAction);
 		movement->unitSelected = false;
 		movement->MoveAllUnit();
@@ -588,7 +588,7 @@ void GameEngine::ExecuteReinforcementCommand()
 	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		
-		printf("ici avant seg fault 10\n");
+		//printf("ici avant seg fault 10\n");
 		selected_country = command->countryClicked;
 		if(selected_country->owner != gameState->currentPlayer)
 		{
@@ -602,7 +602,7 @@ void GameEngine::ExecuteReinforcementCommand()
 	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
 	{
 		
-		printf("ici avant seg fault 11\n");
+		//printf("ici avant seg fault 11\n");
 		if(command->unitClicked == UnitClickedType::DEF_PLUS)
 		{
 			for(unsigned int i = 0; i < reinforcement->availableUnits.size(); i++)
@@ -686,28 +686,18 @@ void GameEngine::ExecuteReinforcementCommand()
 
 	else if(etat == 1 && command->pressedKey == KeyPressed::ENTER)
 	{
-		
-		printf("ici avant seg fault 12\n");
 		while(reinforcement->selectedUnits.size() != 0)
 		{
-			printf("ici avant seg fault 12.1\n");
 			reinforcement->PlaceUnit(reinforcement->selectedUnits[0],selected_country);
 		}
-		printf("ici avant seg fault 12.2\n");
 		reinforcement->unitSelected = false;
-		printf("ici avant seg fault 12.3\n");
 		etat = 0;
-		printf("ici avant seg fault 12.4\n");
 		if(reinforcement->availableUnits.size() == 0)
 		{
-			printf("ici avant seg fault 12.5\n");
 			reinforcement->unitSelected = false;
-			printf("ici avant seg fault 12.6\n");
 			gameState->GoToNextAction();
-			printf("ici avant seg fault 12.7\n");
 			return;
 		}
-		printf("ici avant seg fault 12.8\n");
 		return;
 	}
 

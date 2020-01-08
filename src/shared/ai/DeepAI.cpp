@@ -33,7 +33,6 @@ void DeepAI::play()
 		}
 	}
 	engine->gameState = treeHead->leafs[index]->gameState;
-	printf("ici avant seg fault 6\n");
 	return;
 }
 
