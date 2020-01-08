@@ -110,21 +110,35 @@ int main(int argc,char* argv[])
 	sprite.setTexture(texture);
 	// run the program as long as the window is open
 
-	sf::Color colorTable[4] = {COLOR_TABLE};
+	sf::Color colorTable[4] = {COLOR_TABLE};	
 
 	std::mutex mutex1;
+	std::mutex mutex2;
 
-	/*std::thread engine_thread([&mutex1,gameEngine](){
-		while(1)
+	/*if(argc == 2 && strcmp(argv[1],"thread") == 0)
+	{
+		std::thread engine_thread([&mutex1,gameEngine](){
+			while(1)
+			{
+				//mutex1.lock();
+				gameEngine->ExecuteCommands();
+				//mutex1.unlock();
+			}
+		});
+	}*/
+
+	std::thread engine_thread([&mutex1,gameEngine](){
+		while(gameEngine->gameState->listPlayer.size() > 1)
 		{
-			//mutex1.lock();
+			mutex1.lock();
 			gameEngine->ExecuteCommands();
-			//mutex1.unlock();
+			mutex1.unlock();
+			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
-	});*/
+	});
 
-	/*std::thread ai_thread([&mutex1,&ai,&ai2,&ai3,&scene,gameEngine](){
-		while(1)
+	std::thread ai_thread([&mutex1,&ai,&ai2,&ai3,&scene,gameEngine](){
+		while(gameEngine->gameState->listPlayer.size() > 1)
 		{
 			mutex1.lock();
 			if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
@@ -141,8 +155,9 @@ int main(int argc,char* argv[])
 				scene.gameState = gameEngine->gameState;
 			}
 			mutex1.unlock();
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
-	});*/
+	});
 
 	while (window->isOpen())
 	{
@@ -164,7 +179,7 @@ int main(int argc,char* argv[])
 
 		if(gameState->listPlayer.size() > 1)
 		{
-			if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
+			/*if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
 			{
 				ai.play();
 			}
@@ -177,7 +192,8 @@ int main(int argc,char* argv[])
 				ai3.play();
 				scene.gameState = gameEngine->gameState;
 			}
-			gameEngine->ExecuteCommands();
+			if(!(argc == 2 && strcmp(argv[1],"thread") == 0))
+				gameEngine->ExecuteCommands();*/
 		}
 		else
 		{
@@ -213,8 +229,8 @@ int main(int argc,char* argv[])
 
 	}
 
-	/*engine_thread.join();
-	ai_thread.join();*/
+	engine_thread.join();
+	ai_thread.join();
 
 	return 0;
    
