@@ -31,6 +31,8 @@ namespace engine {
   public:
     std::shared_ptr<state::GameState> gameState;
     std::queue<std::shared_ptr<Command>> commands;
+    bool JSONActive     = false;
+    bool rollbackActive     = false;
   private:
     std::stack<std::shared_ptr<state::GameState>> rollback;
     unsigned int etat;
@@ -39,6 +41,7 @@ namespace engine {
     GameEngine ();
     void ExecuteCommands ();
     void Rollback ();
+    void ExportCommandToJSON (std::shared_ptr<Command> command);
   private:
     void ExecuteAttackCommand ();
     void ExecuteMovementCommand ();
@@ -63,6 +66,12 @@ namespace engine {
 #include "../state/Reinforcements.h"
 #include <algorithm>
 #include <string>
+//JSON export
+#include <fstream>
+#include "json/json.h"
+
+std::ofstream json_out_file;
+Json::Value json_commandes;
 
 using namespace engine;
 using namespace state;
@@ -130,6 +139,7 @@ void GameEngine::ExecuteCommands()
 void GameEngine::ExecuteAttackCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
+	ExportCommandToJSON(command);
 	std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
@@ -383,6 +393,7 @@ void GameEngine::ExecuteAttackCommand()
 void GameEngine::ExecuteMovementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
+	ExportCommandToJSON(command);
 	std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 
 	if(command->pressedKey == KeyPressed::ESCAPE)
@@ -560,6 +571,7 @@ void GameEngine::ExecuteMovementCommand()
 void GameEngine::ExecuteReinforcementCommand()
 {
 	std::shared_ptr<Command> command = commands.front();
+	ExportCommandToJSON(command);
 	static std::shared_ptr<Country> selected_country = std::make_shared<Country>();
 
 	std::shared_ptr<Reinforcements> reinforcement = std::dynamic_pointer_cast<Reinforcements>(gameState->currentAction);
@@ -1005,6 +1017,28 @@ void GameEngine::SaveGameState()
 	rollback.push(gameState_copy);
 }
 
+void GameEngine::ExportCommandToJSON (std::shared_ptr<Command> command)
+{
+	if(JSONActive)
+	{
+		static int i = 0;
+
+		Json::Value JsonCmd;
+		JsonCmd["pressedKey"] = command->pressedKey;
+		if(command->countryClicked != NULL)
+			JsonCmd["countryClicked"] = command->countryClicked->id;
+		else
+			JsonCmd["countryClicked"] = "NULL";
+		JsonCmd["unitClicked"] = command->unitClicked;
+
+		json_out_file.open("../commandes.json");
+		json_commandes["commandes"][i] = JsonCmd;
+		json_out_file << json_commandes;
+		json_out_file.close();
+		i++;
+	}
+	return;
+}
 
 
 

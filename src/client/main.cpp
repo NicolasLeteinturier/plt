@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <mutex>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -24,6 +25,8 @@ using namespace engine;
 using namespace ai;
 
 int compteur = 0;
+std::mutex mutex1;
+std::mutex mutex2;
 
 int main(int argc,char* argv[])
 {
@@ -41,7 +44,8 @@ int main(int argc,char* argv[])
 	
 	scene.renderWindow = window;
 
-	gameEngine->gameState = gameState;	
+	gameEngine->gameState = gameState;
+	gameEngine->JSONActive = true;	
 
 	controler.renderWindow = window;
 	controler.engine = gameEngine;
@@ -50,7 +54,7 @@ int main(int argc,char* argv[])
 	ai2.engine = gameEngine;
 	ai3.engine = gameEngine;
 
-        gameState->AddPlayer(IAType::DEEP,"Joueur 1");
+        gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");
         gameState->AddPlayer(IAType::HEURISTIC, "IA 1");
         gameState->AddPlayer(IAType::HEURISTIC, "IA 2");
         gameState->AddPlayer(IAType::HEURISTIC, "IA 3");
@@ -72,33 +76,33 @@ int main(int argc,char* argv[])
 
 	sf::Color colorTable[4] = {COLOR_TABLE};
 
-	/*//unsigned int compteurfeuille = 0;
-	tree->BuildLeaf();
-	printf("%d\n",tree->leafs.size());
-	for(unsigned int i = 0; i < tree->leafs.size(); i++)
-	{
-		printf("i = %d\n",i);
-		tree->leafs[i]->BuildLeaf();
-		for(unsigned int j = 0; j < tree->leafs[i]->leafs.size(); j++)
-		{
-			printf("j = %d\n",j);
-			tree->leafs[i]->leafs[j]->BuildLeaf();
-			compteurfeuille += tree->leafs[i]->leafs[j]->leafs.size();
-		}
-	}
-	printf("%d\n",compteurfeuille);*/
-
 	/*std::thread engine_thread([gameEngine](){
 		while(1)
 		{
+			mutex1.lock();
 			gameEngine->ExecuteCommands();
+			mutex1.unlock();
 		}
-	});
+	})*/
 
-	std::thread ai_thread([&ai](){
+	/*std::thread ai_thread([&ai,&ai2,&ai3,&scene,gameEngine](){
 		while(1)
 		{
-			ai.play();
+			mutex1.lock();
+			if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
+			{
+				ai.play();
+			}
+			else if(gameEngine->gameState->currentPlayer->isAnIA == IAType::RANDOM)
+			{
+				ai2.play();
+			}
+			else if(gameEngine->gameState->currentPlayer->isAnIA == IAType::DEEP)
+			{
+				ai3.play();
+				scene.gameState = gameEngine->gameState;
+			}
+			mutex1.unlock();
 		}
 	});*/
 
