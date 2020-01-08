@@ -89,7 +89,6 @@ void GameState::ChangeCountryOwner(std::shared_ptr<Country> country, std::shared
 
 void GameState::GoToNextAction()
 {
-	printf("ici avant seg fault 12.7.1\n");
 	//std::cout << currentPlayer->id;
 	if(currentAction->GetActionType() == ActionType::_INITIALISATION)
 	{
@@ -111,7 +110,6 @@ void GameState::GoToNextAction()
 		currentAction = reinforcement;
 		return;
 	}
-	printf("ici avant seg fault 12.7.2\n");
 	if(currentAction->GetActionType() == ActionType::_REINFORCEMENTS)
 	{	
 		//std::cout << " en phase de renfort" << std::endl;
@@ -122,7 +120,6 @@ void GameState::GoToNextAction()
 		currentAction = attack;
 		return;
 	}
-	printf("ici avant seg fault 12.7.3\n");
 	if(currentAction->GetActionType() == ActionType::_ATTACK)
 	{
 		if(currentPlayer->listOwnedCountry.size() <= 1)
@@ -159,7 +156,6 @@ void GameState::GoToNextAction()
 			return;
 		}
 	}
-	printf("ici avant seg fault 12.7.4\n");
 	if(currentAction->GetActionType() == ActionType::_MOVEMENT)
 	{
 		//std::cout << " en phase de mouvement" << std::endl;

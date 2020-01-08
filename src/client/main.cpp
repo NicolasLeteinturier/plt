@@ -1,5 +1,6 @@
 #include <iostream>
 #include <thread>
+#include <mutex>
 
 // Les lignes suivantes ne servent qu'à vérifier que la compilation avec SFML fonctionne
 #include <SFML/Graphics.hpp>
@@ -16,6 +17,7 @@ void testSFML() {
 #include "render.h"
 #include "engine.h"
 #include "ai.h"
+#include <string.h>
 
 using namespace std;
 using namespace state;
@@ -41,7 +43,8 @@ int main(int argc,char* argv[])
 	
 	scene.renderWindow = window;
 
-	gameEngine->gameState = gameState;	
+	gameEngine->gameState = gameState;
+	gameEngine->JSONActive = true;	
 
 	controler.renderWindow = window;
 	controler.engine = gameEngine;
@@ -50,10 +53,47 @@ int main(int argc,char* argv[])
 	ai2.engine = gameEngine;
 	ai3.engine = gameEngine;
 
-        gameState->AddPlayer(IAType::DEEP,"Joueur 1");
-        gameState->AddPlayer(IAType::HEURISTIC, "IA 1");
-        gameState->AddPlayer(IAType::HEURISTIC, "IA 2");
-        gameState->AddPlayer(IAType::HEURISTIC, "IA 3");
+	if(argc == 2 && strcmp(argv[1],"random_ai") == 0)
+	{
+		printf("commande reçu %s\n",argv[1]);
+		gameState->AddPlayer(IAType::RANDOM,"Joueur 1");	//Rouge
+        	gameState->AddPlayer(IAType::RANDOM, "IA 1");		//Vert
+        	gameState->AddPlayer(IAType::RANDOM, "IA 2");		//Bleu
+        	gameState->AddPlayer(IAType::RANDOM, "IA 3");		//Noir
+	}
+	else if(argc == 2 && strcmp(argv[1],"heuristic_ai") == 0)
+	{
+		printf("commande reçu %s\n",argv[1]);
+        	gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");	//Rouge
+        	gameState->AddPlayer(IAType::RANDOM, "IA 1");		//Vert
+        	gameState->AddPlayer(IAType::RANDOM, "IA 2");		//Bleu
+        	gameState->AddPlayer(IAType::RANDOM, "IA 3");		//Noir
+	}
+	else if(argc == 2 && strcmp(argv[1],"deep_ai") == 0)
+	{
+		printf("commande reçu %s\n",argv[1]);
+		gameState->AddPlayer(IAType::DEEP,"Joueur 1");		//Rouge
+        	gameState->AddPlayer(IAType::HEURISTIC, "IA 1");	//Vert
+        	gameState->AddPlayer(IAType::HEURISTIC, "IA 2");	//Bleu
+        	gameState->AddPlayer(IAType::HEURISTIC, "IA 3");	//Noir
+	}
+	else if(argc == 2 && strcmp(argv[1],"rollback") == 0)
+	{
+		printf("commande reçu %s\n",argv[1]);
+		gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");	//Rouge
+        	gameState->AddPlayer(IAType::RANDOM, "IA 1");		//Vert
+        	gameState->AddPlayer(IAType::RANDOM, "IA 2");		//Bleu
+        	gameState->AddPlayer(IAType::RANDOM, "IA 3");		//Noir
+		gameEngine->rollbackActive = true;
+	}
+	else
+	{
+		printf("pas de commande correspondant à %s\n",argv[1]);
+		gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");	//Rouge
+        	gameState->AddPlayer(IAType::RANDOM, "IA 1");		//Vert
+        	gameState->AddPlayer(IAType::RANDOM, "IA 2");		//Bleu
+        	gameState->AddPlayer(IAType::RANDOM, "IA 3");		//Noir
+	}
 
 	for(unsigned int i = 0; i < 101; i++)
 		gameState->GoToNextAction();
@@ -72,33 +112,35 @@ int main(int argc,char* argv[])
 
 	sf::Color colorTable[4] = {COLOR_TABLE};
 
-	/*//unsigned int compteurfeuille = 0;
-	tree->BuildLeaf();
-	printf("%d\n",tree->leafs.size());
-	for(unsigned int i = 0; i < tree->leafs.size(); i++)
-	{
-		printf("i = %d\n",i);
-		tree->leafs[i]->BuildLeaf();
-		for(unsigned int j = 0; j < tree->leafs[i]->leafs.size(); j++)
-		{
-			printf("j = %d\n",j);
-			tree->leafs[i]->leafs[j]->BuildLeaf();
-			compteurfeuille += tree->leafs[i]->leafs[j]->leafs.size();
-		}
-	}
-	printf("%d\n",compteurfeuille);*/
+	std::mutex mutex1;
 
-	/*std::thread engine_thread([gameEngine](){
+	/*std::thread engine_thread([&mutex1,gameEngine](){
 		while(1)
 		{
+			//mutex1.lock();
 			gameEngine->ExecuteCommands();
+			//mutex1.unlock();
 		}
-	});
+	});*/
 
-	std::thread ai_thread([&ai](){
+	/*std::thread ai_thread([&mutex1,&ai,&ai2,&ai3,&scene,gameEngine](){
 		while(1)
 		{
-			ai.play();
+			mutex1.lock();
+			if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
+			{
+				ai.play();
+			}
+			else if(gameEngine->gameState->currentPlayer->isAnIA == IAType::RANDOM)
+			{
+				ai2.play();
+			}
+			else if(gameEngine->gameState->currentPlayer->isAnIA == IAType::DEEP)
+			{
+				ai3.play();
+				scene.gameState = gameEngine->gameState;
+			}
+			mutex1.unlock();
 		}
 	});*/
 
@@ -122,17 +164,31 @@ int main(int argc,char* argv[])
 
 		if(gameState->listPlayer.size() > 1)
 		{
-			ai.play();
-			ai2.play();
-			ai3.play();
-			scene.gameState = gameEngine->gameState;
+			if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
+			{
+				ai.play();
+			}
+			else if(gameEngine->gameState->currentPlayer->isAnIA == IAType::RANDOM)
+			{
+				ai2.play();
+			}
+			else if(gameEngine->gameState->currentPlayer->isAnIA == IAType::DEEP)
+			{
+				ai3.play();
+				scene.gameState = gameEngine->gameState;
+			}
 			gameEngine->ExecuteCommands();
 		}
 		else
 		{
-			gameEngine->Rollback();
-			scene.gameState = gameEngine->gameState;
+			if(gameEngine->rollbackActive)
+			{			
+				gameEngine->Rollback();
+				scene.gameState = gameEngine->gameState;
+			}
 		}
+
+		// Affichage en haut à gauche de l'écran du joueur actuel et de la phase de jeu en cours
 
 		std::string curact;
 		if(gameEngine->gameState->currentAction->GetActionType() == ActionType::_MOVEMENT)
