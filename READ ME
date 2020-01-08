@@ -5,12 +5,22 @@ $cd build
 $cmake..
 $make
 
+
+
+
+
 --------------------------------------------
 
 Pour executer le programme à partir du root:
 
 $cd bin
 $./client
+
+ensuite en ajoutant des arguments supplementaire on peu choisir le niveaux des IA que l'on veut sélectionner:
+$./client random_ia 	selectionne que des IA random
+$./client heuristic_ia	selectionne l'IA rouge en heuristique et la fait jouer contre 3 IA random
+$./client deep_ia	selectionne l'IA rouge en deep et la fait jouer contre 3 IA heuristique
+$./client rollback	execute une partie avec une IA heuristique contre des IA random et à la fin de la partie refait tous les coups joué à l'envers pour revenir à l'état initial.
 
 --------------------------------------------
 

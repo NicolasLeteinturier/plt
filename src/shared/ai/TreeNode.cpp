@@ -54,16 +54,16 @@ int TreeNode::GetStateScore()
 {
 	int score = 0;
 	std::shared_ptr<Player> actuel_player = treeHead->gameState->currentPlayer;
-	int facteur_elimination = 2;
+	int facteur_elimination = 5;
 	int compt_unite_actu = 0;
 	int compt_unite_adv_actu = 0;
 	int compt_unite_prev = 0;
 	int compt_unite_adv_prev = 0;
 	for(unsigned int i = 0; i < actuel_player->listOwnedCountry.size(); i++)
 	{
-		int facteur_pays = 10;
+		int facteur_pays = 1000;
 		int facteur_pays_tot = facteur_pays - actuel_player->listOwnedCountry[i]->GetEnemiesCountry().size();
-		int facteur_unite = 50;
+		int facteur_unite = 70;
 		int facteur_unite_tot = (actuel_player->listOwnedCountry[i]->GetEnemiesCountry().size()*facteur_unite);
 		//score += (actuel_player->listOwnedCountry[i]->listUnit.size()/**(actuel_player->listOwnedCountry[i]->GetEnemiesCountry().size() + 1)*/) + 50;
 		score += actuel_player->listOwnedCountry[i]->listUnit.size()*facteur_unite_tot + facteur_pays_tot;
