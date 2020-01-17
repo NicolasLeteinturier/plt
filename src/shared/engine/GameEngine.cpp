@@ -150,7 +150,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// etat vaut 0 : selection du pays attaquant
-	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK && command->countryClicked != NULL)
 	{
 		
 		//printf("ici avant seg fault 1\n");
@@ -167,7 +167,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// etat vaut 1 : selection du pays à attaquer
-	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK && command->countryClicked != NULL)
 	{
 		
 		//printf("ici avant seg fault 2\n");
@@ -197,7 +197,7 @@ void GameEngine::ExecuteAttackCommand()
 	}
 
 	// etat vaut 2 : l'attaquant selectionne les unités avec lesquelles il souhaite attaquer
-	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK && command->unitClicked != UnitClickedType::NONE)
 	{		
 		//printf("ici avant seg fault 3\n");
 		std::shared_ptr<Attack> attack = std::dynamic_pointer_cast<Attack>(gameState->currentAction);
@@ -404,7 +404,7 @@ void GameEngine::ExecuteMovementCommand()
 	}
 
 	// etat vaut 0 : selection du pays d'origine
-	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK && command->countryClicked != NULL)
 	{
 		
 		//printf("ici avant seg fault 6\n");
@@ -422,7 +422,7 @@ void GameEngine::ExecuteMovementCommand()
 
 	// etat vaut 1 : selection du pays de destination
 
-	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK && command->countryClicked != NULL)
 	{
 		
 		//printf("ici avant seg fault 7\n");
@@ -441,7 +441,7 @@ void GameEngine::ExecuteMovementCommand()
 
 	// etat vaut 2 : selection des unités à deplacer
 
-	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 2 && command->pressedKey == KeyPressed::LEFT_CLICK && command->unitClicked != UnitClickedType::NONE)
 	{
 		
 		//printf("ici avant seg fault 8\n");
@@ -585,7 +585,7 @@ void GameEngine::ExecuteReinforcementCommand()
 		return;
 	}
 
-	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 0 && command->pressedKey == KeyPressed::LEFT_CLICK  && command->countryClicked != NULL)
 	{
 		
 		//printf("ici avant seg fault 10\n");
@@ -599,7 +599,7 @@ void GameEngine::ExecuteReinforcementCommand()
 		return;
 	}
 
-	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK)
+	else if(etat == 1 && command->pressedKey == KeyPressed::LEFT_CLICK && command->unitClicked != UnitClickedType::NONE)
 	{
 		
 		//printf("ici avant seg fault 11\n");

@@ -20,7 +20,7 @@ void DeepAI::play()
 	treeHead->gameState = engine->gameState;
 	treeHead->maxNode = true;
 	treeHead->treeHead = treeHead;
-	BuildTreeFromNode(2,treeHead);
+	BuildTreeFromNode(1,treeHead);
 	int max = 0;
 	int index = 0;
 	for(unsigned int i = 0; i < treeHead->leafs.size(); i++)

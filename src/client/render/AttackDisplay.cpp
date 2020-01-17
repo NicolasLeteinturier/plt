@@ -195,7 +195,7 @@ void AttackDisplay::Draw(std::shared_ptr<sf::RenderWindow> renderWindow){
 	int Yoffset = 300;
 	float rectPosX = (sizeX/2)-(width/2);
 
-	float sizeAtt= attCmpt*(667-Yoffset)/(attCmpt + defCmpt);
+	float sizeAtt= attCmpt*(667-Yoffset)/(attCmpt + defCmpt + 1);
 
 
 

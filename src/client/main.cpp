@@ -89,9 +89,9 @@ int main(int argc,char* argv[])
 	else
 	{
 		printf("pas de commande correspondant à %s\n",argv[1]);
-		gameState->AddPlayer(IAType::HEURISTIC,"Joueur 1");	//Rouge
-        	gameState->AddPlayer(IAType::RANDOM, "IA 1");		//Vert
-        	gameState->AddPlayer(IAType::RANDOM, "IA 2");		//Bleu
+		gameState->AddPlayer(IAType::NONE,"Joueur 1");		//Rouge
+        	gameState->AddPlayer(IAType::DEEP, "IA 1");		//Vert
+        	gameState->AddPlayer(IAType::HEURISTIC, "IA 2");	//Bleu
         	gameState->AddPlayer(IAType::RANDOM, "IA 3");		//Noir
 	}
 
@@ -127,7 +127,7 @@ int main(int argc,char* argv[])
 		});
 	}*/
 
-	std::thread engine_thread([&mutex1,gameEngine](){
+	/*std::thread engine_thread([&mutex1,gameEngine](){
 		while(gameEngine->gameState->listPlayer.size() > 1)
 		{
 			mutex1.lock();
@@ -135,9 +135,9 @@ int main(int argc,char* argv[])
 			mutex1.unlock();
 			std::this_thread::sleep_for(std::chrono::milliseconds(100));
 		}
-	});
+	});*/
 
-	std::thread ai_thread([&mutex1,&ai,&ai2,&ai3,&scene,gameEngine](){
+	/*std::thread ai_thread([&mutex1,&ai,&ai2,&ai3,&scene,gameEngine](){
 		while(gameEngine->gameState->listPlayer.size() > 1)
 		{
 			mutex1.lock();
@@ -157,7 +157,7 @@ int main(int argc,char* argv[])
 			mutex1.unlock();
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		}
-	});
+	});*/
 
 	while (window->isOpen())
 	{
@@ -179,7 +179,7 @@ int main(int argc,char* argv[])
 
 		if(gameState->listPlayer.size() > 1)
 		{
-			/*if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
+			if(gameEngine->gameState->currentPlayer->isAnIA == IAType::HEURISTIC)
 			{
 				ai.play();
 			}
@@ -192,8 +192,8 @@ int main(int argc,char* argv[])
 				ai3.play();
 				scene.gameState = gameEngine->gameState;
 			}
-			if(!(argc == 2 && strcmp(argv[1],"thread") == 0))
-				gameEngine->ExecuteCommands();*/
+			//if(!(argc == 2 && strcmp(argv[1],"thread") == 0))
+				gameEngine->ExecuteCommands();
 		}
 		else
 		{
@@ -229,8 +229,8 @@ int main(int argc,char* argv[])
 
 	}
 
-	engine_thread.join();
-	ai_thread.join();
+	//engine_thread.join();
+	//ai_thread.join();
 
 	return 0;
    

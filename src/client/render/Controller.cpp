@@ -46,7 +46,10 @@ void Controller::CheckUserCommand(sf::Event event)
 			if(t == -1 && GetUnitClicked(sf::Mouse::getPosition(*(renderWindow)).x,sf::Mouse::getPosition(*(renderWindow)).y) == UnitClickedType::NONE)
 				return;			
 			std::shared_ptr<Command> newCommand = std::make_shared<Command>();
-			newCommand->countryClicked = engine->gameState->listCountry[t];
+			if(t == -1)
+				newCommand->countryClicked = NULL;
+			else
+				newCommand->countryClicked = engine->gameState->listCountry[t];
 			newCommand->unitClicked = GetUnitClicked(sf::Mouse::getPosition(*(renderWindow)).x,sf::Mouse::getPosition(*(renderWindow)).y);
 			newCommand->pressedKey = KeyPressed::LEFT_CLICK;
 			engine->commands.push(newCommand);
@@ -58,7 +61,10 @@ void Controller::CheckUserCommand(sf::Event event)
 			if(t == -1 && GetUnitClicked(sf::Mouse::getPosition(*(renderWindow)).x,sf::Mouse::getPosition(*(renderWindow)).y) == UnitClickedType::NONE)
 				return;			
 			std::shared_ptr<Command> newCommand = std::make_shared<Command>();
-			newCommand->countryClicked = engine->gameState->listCountry[t];
+			if(t == -1)
+				newCommand->countryClicked = NULL;
+			else
+				newCommand->countryClicked = engine->gameState->listCountry[t];
 			newCommand->unitClicked = GetUnitClicked(sf::Mouse::getPosition(*(renderWindow)).x,sf::Mouse::getPosition(*(renderWindow)).y);
 			newCommand->pressedKey = KeyPressed::LEFT_CLICK;
 			engine->commands.push(newCommand);
@@ -93,11 +99,11 @@ UnitClickedType Controller::GetUnitClicked(unsigned int mousePositionX, unsigned
 	{
 		if(mousePositionY <= 190 && mousePositionY >= 90)
 		{
-			return(UnitClickedType::DEF_MOINS);
+			return(UnitClickedType::DEF_PLUS);
 		}
 		else if(mousePositionY <= 500 && mousePositionY >= 400)
 		{
-			return(UnitClickedType::DEF_PLUS);
+			return(UnitClickedType::DEF_MOINS);
 		}
 		else {return(UnitClickedType::NONE);}
 	}
@@ -106,11 +112,11 @@ UnitClickedType Controller::GetUnitClicked(unsigned int mousePositionX, unsigned
 	{
 		if(mousePositionY <= 190 && mousePositionY >= 90)
 		{
-			return(UnitClickedType::NEU_MOINS);
+			return(UnitClickedType::NEU_PLUS);
 		}
 		else if(mousePositionY <= 500 && mousePositionY >= 400)
 		{
-			return(UnitClickedType::NEU_PLUS);
+			return(UnitClickedType::NEU_MOINS);
 		}
 		else {return(UnitClickedType::NONE);}
 	}
@@ -119,11 +125,11 @@ UnitClickedType Controller::GetUnitClicked(unsigned int mousePositionX, unsigned
 	{
 		if(mousePositionY <= 190 && mousePositionY >= 90)
 		{
-			return(UnitClickedType::ATT_MOINS);
+			return(UnitClickedType::ATT_PLUS);
 		}
 		else if(mousePositionY <= 500 && mousePositionY >= 400)
 		{
-			return(UnitClickedType::ATT_PLUS);
+			return(UnitClickedType::ATT_MOINS);
 		}
 		else {return(UnitClickedType::NONE);}
 	}

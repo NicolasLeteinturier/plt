@@ -38,7 +38,7 @@ int TreeNode::GetLeafScore()
 		}
 		else
 		{
-			int min = 999;
+			int min = 999999;
 			for(unsigned int i = 0; i < leafs.size(); i++)
 			{
 				int temp = leafs[i]->GetLeafScore();
